@@ -323,6 +323,26 @@
                                     </Button>
                                 </Grid>
                             </TabItem>
+                            <TabItem Header="Metas">
+                                <Grid Margin="5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition ></RowDefinition>
+                                        <RowDefinition ></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Button Grid.Column="2" ToolTip="Subir" Command="{Binding Metas_UploadCommand}"  Height="20" Margin="2,2,0,2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/VersionPost-32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                                    </Button>
+                                    <TextBox Grid.Column="0"  Text="{Binding Metas_File , Mode=TwoWay}" Margin="1.8,2,1.4,2" ></TextBox>
+                                    <Button Grid.Column="1" ToolTip="Elegir archivo" Command="{Binding Metas_BrowseCommand}"  Height="20" Margin="1.6,2,0,2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/FolderConnectionAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                                    </Button>
+                                </Grid>
+                            </TabItem>
                             <TabItem Header="Colores" >
                                 <Grid Margin="5">
                                     <Grid.RowDefinitions>

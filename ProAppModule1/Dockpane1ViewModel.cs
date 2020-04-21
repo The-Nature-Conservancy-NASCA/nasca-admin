@@ -42,8 +42,8 @@ namespace ProAppModule1
         private const string _dockPaneID = "ProAppModule1_Dockpane1";
 
         // Constants
-        //private const string _serviceURL = "https://services9.arcgis.com/LQG65AprqDvQfUnp/ArcGIS/rest/services/TNCServices4/FeatureServer";
-        private const string _serviceURL = "https://services9.arcgis.com/LQG65AprqDvQfUnp/arcgis/rest/services/TNC_Pruebas/FeatureServer";
+        //private const string _serviceURL = "https://services9.arcgis.com/LQG65AprqDvQfUnp/ArcGIS/rest/services/TNCServices4/FeatureServer"; // Production
+        private const string _serviceURL = "https://services9.arcgis.com/LQG65AprqDvQfUnp/arcgis/rest/services/TNC_Pruebas/FeatureServer"; // Testing
 
         // Commands for estrategias
 
@@ -405,6 +405,19 @@ namespace ProAppModule1
         private readonly ICommand _aliados_uploadCommand;
         public ICommand Aliados_UploadCommand => _aliados_uploadCommand;
 
+        // Properties and commands for metas
+        private string _metas_file;
+        public string Metas_File { get { return _metas_file;} set { _metas_file = value; NotifyPropertyChanged(() => Metas_File);}}
+
+        private Item _metas_browsedItem;
+        public Item MetasBrowsed_Item {get { return _metas_browsedItem; }set {_metas_browsedItem = value; NotifyPropertyChanged(() => MetasBrowsed_Item);}}
+
+        private readonly ICommand _metas_browseCommand;
+        public ICommand Metas_BrowseCommand => _metas_browseCommand;
+
+        private readonly ICommand _metas_uploadCommand;
+        public ICommand Metas_UploadCommand => _metas_uploadCommand;
+
         // Properties and commands for participantes
         private string _participantes_file;
         public string Participantes_File
@@ -679,6 +692,10 @@ namespace ProAppModule1
             _aliados_browseCommand = new RelayCommand(() => BrowseAliados(), () => true);
             _aliados_uploadCommand = new RelayCommand(() => UploadAliados(), () => true);
 
+            // Set up commands metas
+            _metas_browseCommand = new RelayCommand(() => BrowseMetas(), () => true);
+            _metas_uploadCommand = new RelayCommand(() => UploadMetas(), () => true);
+
             // Set up commands participantes
             _participantes_browseCommand = new RelayCommand(() => BrowseParticipantes(), () => true);
             _participantes_uploadCommand = new RelayCommand(() => UploadParticipantes(), () => true);
@@ -774,7 +791,7 @@ namespace ProAppModule1
         {
             var openFeatureClass = new OpenItemDialog()
             {
-                Title = "Seleccione la tabla con los datos de Carrusel de imágenes",
+                Title = "Seleccione la hoja de excel o la tabla de geodatabase con los datos de Carrusel de imágenes",
                 Filter = ItemFilters.tables_all
             };
 
@@ -812,7 +829,7 @@ namespace ProAppModule1
         {
             var openFeatureClass = new OpenItemDialog()
             {
-                Title = "Seleccione el feature class con los datos de Biodiversidad",
+                Title = "Seleccione el shape file o el feature class de puntos con los datos de Biodiversidad",
                 Filter = ItemFilters.featureClasses_all
             };
 
@@ -851,7 +868,7 @@ namespace ProAppModule1
         {
             var openFeatureClass = new OpenItemDialog()
             {
-                Title = "Seleccione la tabla con los datos de Colores",
+                Title = "Seleccione la hoja de excel o la tabla de geodatabase con los datos de Colores",
                 Filter = ItemFilters.tables_all
             };
 
@@ -890,7 +907,7 @@ namespace ProAppModule1
         {
             var openFeatureClass = new OpenItemDialog()
             {
-                Title = "Seleccione la tabla con los datos de Carbono",
+                Title = "Seleccione la hoja de excel o la tabla de geodatabase con los datos de Carbono",
                 Filter = ItemFilters.tables_all
             };
 
@@ -929,7 +946,7 @@ namespace ProAppModule1
         {
             var openFeatureClass = new OpenItemDialog()
             {
-                Title = "Seleccione la tabla con los datos de Cobertura",
+                Title = "Seleccione la hoja de excel o la tabla de geodatabase con los datos de Cobertura",
                 Filter = ItemFilters.tables_all
             };
 
@@ -968,7 +985,7 @@ namespace ProAppModule1
         {
             var openFeatureClass = new OpenItemDialog()
             {
-                Title = "Seleccione la tabla con los datos de Implementación",
+                Title = "Seleccione la hoja de excel o la tabla de geodatabase con los datos de Implementación",
                 Filter = ItemFilters.tables_all
             };
 
@@ -1006,7 +1023,7 @@ namespace ProAppModule1
         {
             var openFeatureClass = new OpenItemDialog()
             {
-                Title = "Seleccione el feature class con los datos de Predio",
+                Title = "Seleccione el shape file o el feature class de polígonos con los datos de Predio",
                 Filter = ItemFilters.featureClasses_all
             };
 
@@ -1045,7 +1062,7 @@ namespace ProAppModule1
         {
             var openFeatureClass = new OpenItemDialog()
             {
-                Title = "Seleccione la tabla con los datos de Contribuciones",
+                Title = "Seleccione la hoja de excel o la tabla de geodatabase con los datos de Contribuciones",
                 Filter = ItemFilters.tables_all
             };
 
@@ -1084,7 +1101,7 @@ namespace ProAppModule1
         {
             var openFeatureClass = new OpenItemDialog()
             {
-                Title = "Seleccione la tabla con los datos de Participantes",
+                Title = "Seleccione la hoja de excel o la tabla de geodatabase con los datos de Participantes",
                 Filter = ItemFilters.tables_all
             };
 
@@ -1126,7 +1143,7 @@ namespace ProAppModule1
         {
             var openFeatureClass = new OpenItemDialog()
             {
-                Title = "Seleccione la tabla con los datos de Aliados",
+                Title = "Seleccione la hoja de excel o la tabla de geodatabase con los datos de Aliados",
                 //Filter = ItemFilters.tables_all
             };
 
@@ -1136,6 +1153,47 @@ namespace ProAppModule1
                 AliadosBrowsed_Item = openFeatureClass.Items.First();
                 _aliados_file = AliadosBrowsed_Item.Path;
                 NotifyPropertyChanged(() => Aliados_File);
+            }
+        }
+
+        private void UploadMetas()
+        {
+            var service = String.Format("{0}/6", _serviceURL);
+
+            try
+            {
+                if (MetasBrowsed_Item != null)
+                {
+                    if (MetasBrowsed_Item.Type == "File Geodatabase Table")
+                        LocalInteraction.UploadTable(MetasBrowsed_Item, service, "ProAppModule1.Meta");
+                    else
+                    {
+                        LocalInteraction.UploadExcel(MetasBrowsed_Item, service, "ProAppModule1.Meta");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                return;
+            }
+            return;
+        }
+
+        private void BrowseMetas()
+        {
+            var openFeatureClass = new OpenItemDialog()
+            {
+                Title = "Seleccione la hoja de excel o la tabla de geodatabase con los datos de Metas",
+                //Filter = ItemFilters.tables_all
+            };
+
+            Nullable<bool> result = openFeatureClass.ShowDialog();
+            if (result == true)
+            {
+                MetasBrowsed_Item = openFeatureClass.Items.First();
+                _metas_file = MetasBrowsed_Item.Path;
+                NotifyPropertyChanged(() => Metas_File);
             }
         }
 
@@ -1164,7 +1222,7 @@ namespace ProAppModule1
 
             var openFeatureClass = new OpenItemDialog()
             {
-                Title = "Seleccione la Región",
+                Title = "Seleccione el shape file o el feature class de polígonos con los datos de la Región",
                 Filter = ItemFilters.featureClasses_all
             };
 
@@ -1204,7 +1262,7 @@ namespace ProAppModule1
 
             var openTable = new OpenItemDialog()
             {
-                Title = "Seleccione la tabla que contiene la estrategia",
+                Title = "Seleccione la hoja de excel o la tabla de geodatabase que contiene los datos de estrategia",
                 Filter = ItemFilters.tables_all
             };
             Nullable<bool> result = openTable.ShowDialog();
@@ -1242,7 +1300,7 @@ namespace ProAppModule1
 
             var openTable = new OpenItemDialog()
             {
-                Title = "Seleccione la tabla que contiene el Proyecto",
+                Title = "Seleccione la hoja de excel o la tabla de geodatabase que contiene los datos de Proyecto",
                 Filter = ItemFilters.tables_all
             };
 
