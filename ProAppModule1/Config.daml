@@ -1,0 +1,59 @@
+﻿<ArcGIS defaultAssembly="ProAppModule1.dll" defaultNamespace="ProAppModule1" xmlns="http://schemas.esri.com/DADF/Registry" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.esri.com/DADF/Registry file:///C:/Program%20Files/ArcGIS/Pro/bin/ArcGIS.Desktop.Framework.xsd">
+  <AddInInfo id="{14b2cc27-dcb5-4835-b060-439a8345a8a6}" version="1.0" desktopVersion="2.4.19948">
+    <Name>TNC</Name>
+    <Description>Administración TNC</Description>
+    <Image>Images\AddinDesktop32.png</Image>
+    <Author>jescudero</Author>
+    <Company>Acme</Company>
+    <Date>1/9/2020 5:40:59 PM, 2020</Date>
+    <Subject>Framework</Subject>
+    <!-- Note subject can be one or more of these topics:
+                    Content, Framework, Editing, Geodatabase, Geometry, Geoprocessing, Layouts, Map Authoring, Map Exploration -->
+  </AddInInfo>
+  <modules>
+    <insertModule id="ProAppModule1_Module" className="Module1" autoLoad="false" caption="Module1">
+      <!-- uncomment to have the control hosted on a separate tab-->
+      <tabs>
+        <tab id="ProAppModule1_Tab1" caption="TNC">
+          <group refID="ProAppModule1_Group1" />
+        </tab>
+      </tabs>
+      <groups>
+        <!-- comment this out if you have no controls on the Addin tab to avoid
+              an empty group-->
+        <group id="ProAppModule1_Group1" caption="Herramientas" appearsOnAddInTab="true">
+          <!-- host controls within groups -->
+          <button refID="ProAppModule1_Dockpane1_ShowButton" size="large" />
+          <!--<button refID="ProAppModule1_ProWindow1" size="large" />-->
+          <!--<button refID="ProAppModule1_Update" size="large" />-->
+          <!--<button refID="ProAppModule1_CrearProyecto" size="large" />
+          <button refID="ProAppModule1_EditarProyecto" size="large" />-->
+        </group>
+      </groups>
+      <controls>
+        <!-- add your controls here -->
+        <!--<button id="ProAppModule1_Dockpane1_ShowButton" caption="Administración" className="Dockpane1_ShowButton" loadOnClick="true" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonPurple16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonPurple32.png">-->
+        <button id="ProAppModule1_Dockpane1_ShowButton" caption="Administración" className="Dockpane1_ShowButton" loadOnClick="true" smallImage="Images\tnc.png" largeImage="Images\tnc.png">
+          <tooltip heading="Administración">Administración<disabledText /></tooltip>
+        </button>
+        <!--<button id="ProAppModule1_ProWindow1" caption="ProWindow 1" className="ShowProWindow1" loadOnClick="true" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonPurple16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonPurple32.png">
+          <tooltip heading="Tooltip Heading">Tooltip text<disabledText /></tooltip>
+        </button>-->
+        <!--<button id="ProAppModule1_Update" caption="Update" className="ShowUpdate" loadOnClick="true" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonPurple16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonPurple32.png">
+          <tooltip heading="Tooltip Heading">Tooltip text<disabledText /></tooltip>
+        </button>-->
+        <!--<button id="ProAppModule1_CrearProyecto" caption="CrearProyecto" className="ShowCrearProyecto" loadOnClick="true" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonPurple16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonPurple32.png">
+          <tooltip heading="Tooltip Heading">Tooltip text<disabledText /></tooltip>
+        </button>
+        <button id="ProAppModule1_EditarProyecto" caption="EditarProyecto" className="ShowEditarProyecto" loadOnClick="true" smallImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonPurple16.png" largeImage="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericButtonPurple32.png">
+          <tooltip heading="Tooltip Heading">Tooltip text<disabledText /></tooltip>
+        </button>-->
+      </controls>
+      <dockPanes>
+        <dockPane id="ProAppModule1_Dockpane1" caption="Administración" className="Dockpane1ViewModel" dock="group" dockWith="esri_core_contentsDockPane">
+          <content className="Dockpane1View" />
+        </dockPane>
+      </dockPanes>
+    </insertModule>
+  </modules>
+</ArcGIS>
