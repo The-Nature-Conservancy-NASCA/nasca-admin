@@ -1,42 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ArcGIS.Core.CIM;
-using ArcGIS.Core.Data;
-using ArcGIS.Core.Geometry;
 using ArcGIS.Desktop.Catalog;
 using ArcGIS.Desktop.Core;
-using ArcGIS.Desktop.Editing;
-using ArcGIS.Desktop.Extensions;
 using ArcGIS.Desktop.Framework;
 using ArcGIS.Desktop.Framework.Contracts;
-using ArcGIS.Desktop.Framework.Dialogs;
-using ArcGIS.Desktop.Framework.Threading.Tasks;
-using ArcGIS.Desktop.Mapping;
-using ArcGIS.Desktop.Mapping.Events;
 using MessageBox = ArcGIS.Desktop.Framework.Dialogs.MessageBox;
 using System.Data;
 using System.Windows.Input;
-using System.IO;
-using System.Net;
-using System.Web.UI;
-using System.Web.Script.Serialization;
-using System.Windows.Media;
-using Microsoft.Win32;
-using System.Diagnostics;
-using System.Windows.Data;
-using ArcGIS.Desktop.Core.Geoprocessing;
-using System.Configuration;
-using System.Collections.Specialized;
 
 namespace ProAppModule1
 {
-
     /// View Model for the dockpane
     internal class Dockpane1ViewModel : DockPane
-
     {
         // Dockpane id
         private const string _dockPaneID = "ProAppModule1_Dockpane1";
@@ -45,638 +21,271 @@ namespace ProAppModule1
         //private const string _serviceURL = "https://services9.arcgis.com/LQG65AprqDvQfUnp/ArcGIS/rest/services/TNCServices4/FeatureServer"; // Production
         private const string _serviceURL = "https://services9.arcgis.com/LQG65AprqDvQfUnp/arcgis/rest/services/TNC_Pruebas/FeatureServer"; // Testing
 
-        // Commands for estrategias
+        /// <summary>
+        /// Properties and commands for Estrategia
+        /// </summary>
+        private int _selectedIndex_pry;
+        private string _name_pry;
+        private string _desc_pry;
+        private string _id_estra_pry;
+        private string _id_proye_pry;
+        private string _color_pry;
+        private string _image_pry;
+        private string _icon_pry;
+        private string _estrategia_file;
+        private Item _selectedItem_estrategia;
+        private DataTable _estrategiasDataTable = new DataTable();
+
+        public int SelectedIndex_pry { get { return _selectedIndex_pry; } set { _selectedIndex_pry = value; NotifyPropertyChanged(() => SelectedIndex_pry); } }
+        public string name_pry { get { return _name_pry; } set { _name_pry = value; NotifyPropertyChanged(() => name_pry); } }
+        public string desc_pry { get { return _desc_pry; } set { _desc_pry = value; NotifyPropertyChanged(() => desc_pry); } }
+        public string id_estra_pry { get { return _id_estra_pry; } set { _id_estra_pry = value; NotifyPropertyChanged(() => id_estra_pry); } }
+        public string id_proye_pry { get { return _id_proye_pry; } set { _id_proye_pry = value; NotifyPropertyChanged(() => id_proye_pry); } }
+        public string color_pry { get { return _color_pry; } set { _color_pry = value; NotifyPropertyChanged(() => color_pry); } }
+        public string image_pry { get { return _image_pry; } set { _image_pry = value; NotifyPropertyChanged(() => image_pry); } }
+        public string icon_pry { get { return _icon_pry; } set { _icon_pry = value; NotifyPropertyChanged(() => icon_pry); } }
+        public string Estrategia_File { get { return _estrategia_file; } set { _estrategia_file = value; NotifyPropertyChanged(() => Estrategia_File); } }
+        public Item SelectedItem_Estrategia { get { return _selectedItem_estrategia; } set { _selectedItem_estrategia = value; NotifyPropertyChanged(() => SelectedItem_Estrategia); } }
+        public DataTable EstrategiasDataTable { get { return _estrategiasDataTable; } set { SetProperty(ref _estrategiasDataTable, value, () => EstrategiasDataTable); } }
 
         private readonly ICommand _testCommand;
-        public ICommand TestCommand => _testCommand;
-
         private readonly ICommand _estrategiasSelectionCommand;
-        public ICommand EstrategiasSelectionCommand => _estrategiasSelectionCommand;
-
         private readonly ICommand _loadDataCommand;
-        public ICommand LoadDataCommand => _loadDataCommand;
-
         private readonly ICommand _showProWindow;
-        public ICommand ShowProWindow => _showProWindow;
-
         private readonly ICommand _showProWindowUpdateCommand;
-        public ICommand ShowProWindowUpdateCommand => _showProWindowUpdateCommand;
-
         private readonly ICommand _addNewRowCommand;
-        public ICommand AddNewRowCommand => _addNewRowCommand;
-
         private readonly ICommand _updateSelectedRowCommand;
-        public ICommand UpdateSelectedRowCommand => _updateSelectedRowCommand;
-
         private readonly ICommand _eliminateSelectedRow;
-        public ICommand EliminateSelectedRow => _eliminateSelectedRow;
-
         private readonly ICommand _unselectRowCommand;
-        public ICommand UnselectRowCommand => _unselectRowCommand;
-
         private readonly ICommand _uploadEstrategiaCommand;
-        public ICommand UploadEstrategiaCommand => _uploadEstrategiaCommand;
-
         private readonly ICommand _browseFileEstrategiaCommand;
+        //public readonly ICommand _attachmentEstrategiaCommand;
+
+        public ICommand TestCommand => _testCommand;
+        public ICommand EstrategiasSelectionCommand => _estrategiasSelectionCommand;
+        public ICommand LoadDataCommand => _loadDataCommand;
+        public ICommand ShowProWindow => _showProWindow;
+        public ICommand ShowProWindowUpdateCommand => _showProWindowUpdateCommand;
+        public ICommand AddNewRowCommand => _addNewRowCommand;
+        public ICommand UpdateSelectedRowCommand => _updateSelectedRowCommand;
+        public ICommand EliminateSelectedRow => _eliminateSelectedRow;
+        public ICommand UnselectRowCommand => _unselectRowCommand;
+        public ICommand UploadEstrategiaCommand => _uploadEstrategiaCommand;
         public ICommand BrowseFileEstrategiaCommand => _browseFileEstrategiaCommand;
+        //public ICommand AttachmentEstrategiaCommand => _attachmentEstrategiaCommand;
 
-        public readonly ICommand _attachmentEstrategiaCommand;
-        public ICommand AttachmentEstrategiaCommand => _attachmentEstrategiaCommand;
+       
+        /// <summary>
+        /// Properties and commands for Proyecto
+        /// </summary>
+        private int _selectedIndex;
+        private string _name;
+        private string _desc;
+        private string _id_estra;
+        private string _id_proye;
+        private string _color;
+        private string _image;
+        private string _icon;
+        private string _proyecto_file;
+        private Item _selectedItem_proyecto;
+        private DataTable _proyectosDataTable = new DataTable();
 
-        // Commands for proyectos
+        public int SelectedIndex { get { return _selectedIndex; } set { _selectedIndex = value; NotifyPropertyChanged(() => SelectedIndex); } }
+        public string name { get { return _name; } set { _name = value; NotifyPropertyChanged(() => name); } }
+        public string desc { get { return _desc; } set { _desc = value; NotifyPropertyChanged(() => desc); } }
+        public string id_estra { get { return _id_estra; } set { _id_estra = value; NotifyPropertyChanged(() => id_estra); } }
+        public string id_proye { get { return _id_proye; } set { _id_proye = value; NotifyPropertyChanged(() => id_proye); } }
+        public string color { get { return _color; } set { _color = value; NotifyPropertyChanged(() => color); } }
+        public string image { get { return _image; } set { _image = value; NotifyPropertyChanged(() => image); } }
+        public string icon { get { return _icon; } set { _icon = value; NotifyPropertyChanged(() => icon); } }
+        public string Proyecto_File { get { return _proyecto_file; } set { _proyecto_file = value; NotifyPropertyChanged(() => Proyecto_File); } }
+        public Item SelectedItem_Proyecto { get { return _selectedItem_proyecto; } set { _selectedItem_proyecto = value; NotifyPropertyChanged(() => SelectedItem_Proyecto); } }
+        public DataTable ProyectosDataTable { get { return _proyectosDataTable; } set { SetProperty(ref _proyectosDataTable, value, () => ProyectosDataTable); } }
 
         private readonly ICommand _loadDataCommand_pry;
-        public ICommand LoadDataCommand_pry => _loadDataCommand_pry;
-
         private readonly ICommand _showProWindow_pry;
-        public ICommand ShowProWindow_pry => _showProWindow_pry;
-
         private readonly ICommand _showProWindowUpdateCommand_pry;
-        public ICommand ShowProWindowUpdateCommand_pry => _showProWindowUpdateCommand_pry;
-
         private readonly ICommand _addNewRowCommand_pry;
-        public ICommand AddNewRowCommand_pry => _addNewRowCommand_pry;
-
         private readonly ICommand _updateSelectedRowCommand_pry;
-        public ICommand UpdateSelectedRowCommand_pry => _updateSelectedRowCommand_pry;
-
         private readonly ICommand _eliminateSelectedRow_pry;
-        public ICommand EliminateSelectedRow_pry => _eliminateSelectedRow_pry;
-
         private readonly ICommand _uploadProyectoCommand;
-        public ICommand UploadProyectoCommand => _uploadProyectoCommand;
-
         private readonly ICommand _browseFileProyectoCommand;
+
+        public ICommand LoadDataCommand_pry => _loadDataCommand_pry;
+        public ICommand ShowProWindow_pry => _showProWindow_pry;
+        public ICommand ShowProWindowUpdateCommand_pry => _showProWindowUpdateCommand_pry;
+        public ICommand AddNewRowCommand_pry => _addNewRowCommand_pry;
+        public ICommand UpdateSelectedRowCommand_pry => _updateSelectedRowCommand_pry;
+        public ICommand EliminateSelectedRow_pry => _eliminateSelectedRow_pry;
+        public ICommand UploadProyectoCommand => _uploadProyectoCommand;
         public ICommand BrowseFileProyectoCommand => _browseFileProyectoCommand;
 
-        //  Property for data storage
-        private DataTable _estrategiasDataTable = new DataTable();
-        public DataTable EstrategiasDataTable
-        {
-            get { return _estrategiasDataTable; }
-            set { SetProperty(ref _estrategiasDataTable, value, () => EstrategiasDataTable); }
-        }
-
-        //  Property for data storage
-        private DataTable _proyectosDataTable = new DataTable();
-        public DataTable ProyectosDataTable
-        {
-            get { return _proyectosDataTable; }
-            set { SetProperty(ref _proyectosDataTable, value, () => ProyectosDataTable); }
-        }
-
-        // Properties for estrategia
-
-        private int _selectedIndex_pry;
-        public int SelectedIndex_pry
-        {
-            get { return _selectedIndex_pry; }
-            set
-            {
-                _selectedIndex_pry = value;
-                NotifyPropertyChanged(() => SelectedIndex_pry);
-            }
-        }
-
-        private string _name_pry;
-        public string name_pry
-        {
-            get { return _name_pry; }
-            set
-            {
-                _name_pry = value;
-                NotifyPropertyChanged(() => name_pry);
-            }
-        }
-
-        private string _desc_pry;
-        public string desc_pry
-        {
-            get { return _desc_pry; }
-            set
-            {
-                _desc_pry = value;
-                NotifyPropertyChanged(() => desc_pry);
-            }
-        }
-
-        private string _id_estra_pry;
-        public string id_estra_pry
-        {
-            get { return _id_estra_pry; }
-            set
-            {
-                _id_estra_pry = value;
-                NotifyPropertyChanged(() => id_estra_pry);
-            }
-        }
-
-        private string _id_proye_pry;
-        public string id_proye_pry
-        {
-            get { return _id_proye_pry; }
-            set
-            {
-                _id_proye_pry = value;
-                NotifyPropertyChanged(() => id_proye_pry);
-            }
-        }
-
-        private string _color_pry;
-        public string color_pry
-        {
-            get { return _color_pry; }
-            set
-            {
-                _color_pry = value;
-                NotifyPropertyChanged(() => color_pry);
-            }
-        }
-
-        private string _image_pry;
-        public string image_pry
-        {
-            get { return _image_pry; }
-            set
-            {
-                _image_pry = value;
-                NotifyPropertyChanged(() => image_pry);
-            }
-        }
-
-        private string _icon_pry;
-        public string icon_pry
-        {
-            get { return _icon_pry; }
-            set
-            {
-                _icon_pry = value;
-                NotifyPropertyChanged(() => icon_pry);
-            }
-        }
-
-        private string _estrategia_file;
-        public string Estrategia_File
-        {
-            get { return _estrategia_file; }
-            set
-            {
-                _estrategia_file = value;
-                NotifyPropertyChanged(() => Estrategia_File);
-            }
-        }
-
-        private Item _selectedItem_estrategia;
-        public Item SelectedItem_Estrategia
-        {
-            get { return _selectedItem_estrategia; }
-            set
-            {
-                _selectedItem_estrategia = value;
-                NotifyPropertyChanged(() => SelectedItem_Estrategia);
-            }
-        }
-
-        // properties for proyectos
-        private int _selectedIndex;
-        public int SelectedIndex
-        {
-            get { return _selectedIndex; }
-            set
-            {
-                _selectedIndex = value;
-                NotifyPropertyChanged(() => SelectedIndex);
-            }
-        }
-
-        private string _name;
-        public string name
-        {
-            get { return _name; }
-            set
-            {
-                _name = value;
-                NotifyPropertyChanged(() => name);
-            }
-        }
-
-        private string _desc;
-        public string desc
-        {
-            get { return _desc; }
-            set
-            {
-                _desc = value;
-                NotifyPropertyChanged(() => desc);
-            }
-        }
-
-        private string _id_estra;
-        public string id_estra
-        {
-            get { return _id_estra; }
-            set
-            {
-                _id_estra = value;
-                NotifyPropertyChanged(() => id_estra);
-            }
-        }
-
-        private string _id_proye;
-        public string id_proye
-        {
-            get { return _id_proye; }
-            set
-            {
-                _id_proye = value;
-                NotifyPropertyChanged(() => id_proye);
-            }
-        }
-
-        private string _color;
-        public string color
-        {
-            get { return _color; }
-            set
-            {
-                _color = value;
-                NotifyPropertyChanged(() => color);
-            }
-        }
-
-        private string _image;
-        public string image
-        {
-            get { return _image; }
-            set
-            {
-                _image = value;
-                NotifyPropertyChanged(() => image);
-            }
-        }
-
-        private string _icon;
-        public string icon
-        {
-            get { return _icon; }
-            set
-            {
-                _icon = value;
-                NotifyPropertyChanged(() => icon);
-            }
-        }
-
-        private string _proyecto_file;
-        public string Proyecto_File
-        {
-            get { return _proyecto_file; }
-            set
-            {
-                _proyecto_file = value;
-                NotifyPropertyChanged(() => Proyecto_File);
-            }
-        }
-
-        private Item _selectedItem_proyecto;
-        public Item SelectedItem_Proyecto
-        {
-            get { return _selectedItem_proyecto; }
-            set
-            {
-                _selectedItem_proyecto = value;
-                NotifyPropertyChanged(() => SelectedItem_Proyecto);
-            }
-        }
-
-        // Properties and commands for regiones
+        
+        /// Properties and commands for Regiones
         private string _region_file;
-        public string Region_File
-        {
-            get { return _region_file; }
-            set {
-                _region_file = value;
-                NotifyPropertyChanged(() => Region_File);
-            }
-        }
-
         private Item _region_browsedItem;
-        public Item RegionBrowsed_Item
-        {
-            get { return _region_browsedItem; }
-            set
-            {
-                _region_browsedItem = value;
-                NotifyPropertyChanged(() => RegionBrowsed_Item);
-            }
-        }
+
+        public string Region_File { get { return _region_file; } set { _region_file = value; NotifyPropertyChanged(() => Region_File); } }
+        public Item RegionBrowsed_Item { get { return _region_browsedItem; } set { _region_browsedItem = value; NotifyPropertyChanged(() => RegionBrowsed_Item); } }
 
         private readonly ICommand _region_browseCommand;
-        public ICommand Region_BrowseCommand => _region_browseCommand;
-
         private readonly ICommand _region_uploadCommand;
+
+        public ICommand Region_BrowseCommand => _region_browseCommand;
         public ICommand Region_UploadCommand => _region_uploadCommand;
 
-        // Properties and commands for aliados
-        private string _aliados_file;
-        public string Aliados_File
-        {
-            get { return _aliados_file; }
-            set
-            {
-                _aliados_file = value;
-                NotifyPropertyChanged(() => Aliados_File);
-            }
-        }
 
+        /// Properties and commands for aliados
+        private string _aliados_file;
         private Item _aliados_browsedItem;
-        public Item AliadosBrowsed_Item
-        {
-            get { return _aliados_browsedItem; }
-            set
-            {
-                _aliados_browsedItem = value;
-                NotifyPropertyChanged(() => AliadosBrowsed_Item);
-            }
-        }
+
+        public string Aliados_File { get { return _aliados_file; } set { _aliados_file = value; NotifyPropertyChanged(() => Aliados_File); } }
+        public Item AliadosBrowsed_Item { get { return _aliados_browsedItem; } set { _aliados_browsedItem = value; NotifyPropertyChanged(() => AliadosBrowsed_Item); } }
 
         private readonly ICommand _aliados_browseCommand;
-        public ICommand Aliados_BrowseCommand => _aliados_browseCommand;
-
         private readonly ICommand _aliados_uploadCommand;
+
+        public ICommand Aliados_BrowseCommand => _aliados_browseCommand;
         public ICommand Aliados_UploadCommand => _aliados_uploadCommand;
 
-        // Properties and commands for metas
-        private string _metas_file;
-        public string Metas_File { get { return _metas_file;} set { _metas_file = value; NotifyPropertyChanged(() => Metas_File);}}
 
+        /// Properties and commands for metas
+        private string _metas_file;
         private Item _metas_browsedItem;
+
+        public string Metas_File { get { return _metas_file;} set { _metas_file = value; NotifyPropertyChanged(() => Metas_File);}}
         public Item MetasBrowsed_Item {get { return _metas_browsedItem; }set {_metas_browsedItem = value; NotifyPropertyChanged(() => MetasBrowsed_Item);}}
 
         private readonly ICommand _metas_browseCommand;
-        public ICommand Metas_BrowseCommand => _metas_browseCommand;
-
         private readonly ICommand _metas_uploadCommand;
+
+        public ICommand Metas_BrowseCommand => _metas_browseCommand;
         public ICommand Metas_UploadCommand => _metas_uploadCommand;
 
-        // Properties and commands for participantes
-        private string _participantes_file;
-        public string Participantes_File
-        {
-            get { return _participantes_file; }
-            set
-            {
-                _participantes_file = value;
-                NotifyPropertyChanged(() => Participantes_File);
-            }
-        }
 
+        /// Properties and commands for participantes
+        private string _participantes_file;
         private Item _participantes_browsedItem;
-        public Item ParticipantesBrowsed_Item
-        {
-            get { return _participantes_browsedItem; }
-            set
-            {
-                _participantes_browsedItem = value;
-                NotifyPropertyChanged(() => ParticipantesBrowsed_Item);
-            }
-        }
+
+        public string Participantes_File { get { return _participantes_file; } set { _participantes_file = value; NotifyPropertyChanged(() => Participantes_File); } }
+        public Item ParticipantesBrowsed_Item { get { return _participantes_browsedItem; } set { _participantes_browsedItem = value; NotifyPropertyChanged(() => ParticipantesBrowsed_Item); } }
 
         private readonly ICommand _participantes_browseCommand;
-        public ICommand Participantes_BrowseCommand => _participantes_browseCommand;
-
         private readonly ICommand _participantes_uploadCommand;
+
+        public ICommand Participantes_BrowseCommand => _participantes_browseCommand;
         public ICommand Participantes_UploadCommand => _participantes_uploadCommand;
 
-        // Properties and commands for contribuciones
-        private string _contribuciones_file;
-        public string Contribuciones_File
-        {
-            get { return _contribuciones_file; }
-            set
-            {
-                _contribuciones_file = value;
-                NotifyPropertyChanged(() => Contribuciones_File);
-            }
-        }
 
+        /// Properties and commands for contribuciones
+        private string _contribuciones_file;
         private Item _contribuciones_browsedItem;
-        public Item ContribucionesBrowsed_Item
-        {
-            get { return _contribuciones_browsedItem; }
-            set
-            {
-                _contribuciones_browsedItem = value;
-                NotifyPropertyChanged(() => ContribucionesBrowsed_Item);
-            }
-        }
+
+        public string Contribuciones_File { get { return _contribuciones_file; } set { _contribuciones_file = value; NotifyPropertyChanged(() => Contribuciones_File); } }
+        public Item ContribucionesBrowsed_Item { get { return _contribuciones_browsedItem; } set { _contribuciones_browsedItem = value; NotifyPropertyChanged(() => ContribucionesBrowsed_Item); } }
 
         private readonly ICommand _contribuciones_browseCommand;
-        public ICommand Contribuciones_BrowseCommand => _contribuciones_browseCommand;
-
         private readonly ICommand _contribuciones_uploadCommand;
+
+        public ICommand Contribuciones_BrowseCommand => _contribuciones_browseCommand;
         public ICommand Contribuciones_UploadCommand => _contribuciones_uploadCommand;
 
-        // Properties and commands for predios
-        private string _predio_file;
-        public string Predio_File
-        {
-            get { return _predio_file; }
-            set
-            {
-                _predio_file = value;
-                NotifyPropertyChanged(() => Predio_File);
-            }
-        }
 
+        /// Properties and commands for predios
+        private string _predio_file;
         private Item _predio_browsedItem;
-        public Item PredioBrowsed_Item
-        {
-            get { return _predio_browsedItem; }
-            set
-            {
-                _predio_browsedItem = value;
-                NotifyPropertyChanged(() => PredioBrowsed_Item);
-            }
-        }
+
+        public string Predio_File { get { return _predio_file; } set { _predio_file = value; NotifyPropertyChanged(() => Predio_File); } }
+        public Item PredioBrowsed_Item { get { return _predio_browsedItem; } set { _predio_browsedItem = value; NotifyPropertyChanged(() => PredioBrowsed_Item); } }
 
         private readonly ICommand _predio_browseCommand;
-        public ICommand Predio_BrowseCommand => _predio_browseCommand;
-
         private readonly ICommand _predio_uploadCommand;
+
+        public ICommand Predio_BrowseCommand => _predio_browseCommand;
         public ICommand Predio_UploadCommand => _predio_uploadCommand;
 
-        // Properties and commands for Implementacion
-        private string _implementacion_file;
-        public string Implementacion_File
-        {
-            get { return _implementacion_file; }
-            set
-            {
-                _implementacion_file = value;
-                NotifyPropertyChanged(() => Implementacion_File);
-            }
-        }
 
+        /// Properties and commands for Implementacion
+        private string _implementacion_file;
         private Item _implementacion_browsedItem;
-        public Item ImplementacionBrowsed_Item
-        {
-            get { return _implementacion_browsedItem; }
-            set
-            {
-                _implementacion_browsedItem = value;
-                NotifyPropertyChanged(() => ImplementacionBrowsed_Item);
-            }
-        }
+
+        public string Implementacion_File { get { return _implementacion_file; } set { _implementacion_file = value; NotifyPropertyChanged(() => Implementacion_File); } }
+        public Item ImplementacionBrowsed_Item { get { return _implementacion_browsedItem; } set { _implementacion_browsedItem = value; NotifyPropertyChanged(() => ImplementacionBrowsed_Item); } }
 
         private readonly ICommand _implementacion_browseCommand;
-        public ICommand Implementacion_BrowseCommand => _implementacion_browseCommand;
-
         private readonly ICommand _implementacion_uploadCommand;
+
+        public ICommand Implementacion_BrowseCommand => _implementacion_browseCommand;
         public ICommand Implementacion_UploadCommand => _implementacion_uploadCommand;
 
-        // Properties and commands for Cobertura
-        private string _cobertura_file;
-        public string Cobertura_File
-        {
-            get { return _cobertura_file; }
-            set
-            {
-                _cobertura_file = value;
-                NotifyPropertyChanged(() => Cobertura_File);
-            }
-        }
 
+        /// Properties and commands for Cobertura
+        private string _cobertura_file;
         private Item _cobertura_browsedItem;
-        public Item CoberturaBrowsed_Item
-        {
-            get { return _cobertura_browsedItem; }
-            set
-            {
-                _cobertura_browsedItem = value;
-                NotifyPropertyChanged(() => CoberturaBrowsed_Item);
-            }
-        }
+
+        public string Cobertura_File { get { return _cobertura_file; } set { _cobertura_file = value; NotifyPropertyChanged(() => Cobertura_File); } }
+        public Item CoberturaBrowsed_Item { get { return _cobertura_browsedItem; } set { _cobertura_browsedItem = value; NotifyPropertyChanged(() => CoberturaBrowsed_Item); } }
 
         private readonly ICommand _cobertura_browseCommand;
-        public ICommand Cobertura_BrowseCommand => _cobertura_browseCommand;
-
         private readonly ICommand _cobertura_uploadCommand;
+
+        public ICommand Cobertura_BrowseCommand => _cobertura_browseCommand;
         public ICommand Cobertura_UploadCommand => _cobertura_uploadCommand;
 
-        // Properties and commands for Carbono
-        private string _carbono_file;
-        public string Carbono_File
-        {
-            get { return _carbono_file; }
-            set
-            {
-                _carbono_file = value;
-                NotifyPropertyChanged(() => Carbono_File);
-            }
-        }
 
+        /// Properties and commands for Carbono
+        private string _carbono_file;
         private Item _carbono_browsedItem;
-        public Item CarbonoBrowsed_Item
-        {
-            get { return _carbono_browsedItem; }
-            set
-            {
-                _carbono_browsedItem = value;
-                NotifyPropertyChanged(() => CarbonoBrowsed_Item);
-            }
-        }
+
+        public string Carbono_File { get { return _carbono_file; } set { _carbono_file = value; NotifyPropertyChanged(() => Carbono_File); } }
+        public Item CarbonoBrowsed_Item { get { return _carbono_browsedItem; } set { _carbono_browsedItem = value; NotifyPropertyChanged(() => CarbonoBrowsed_Item); } }
 
         private readonly ICommand _carbono_browseCommand;
-        public ICommand Carbono_BrowseCommand => _carbono_browseCommand;
-
         private readonly ICommand _carbono_uploadCommand;
+
+        public ICommand Carbono_BrowseCommand => _carbono_browseCommand;
         public ICommand Carbono_UploadCommand => _carbono_uploadCommand;
 
-        // Properties and commands for Colores
-        private string _colores_file;
-        public string Colores_File
-        {
-            get { return _colores_file; }
-            set
-            {
-                _colores_file = value;
-                NotifyPropertyChanged(() => Colores_File);
-            }
-        }
 
+        /// Properties and commands for Colores
+        private string _colores_file;
         private Item _colores_browsedItem;
-        public Item ColoresBrowsed_Item
-        {
-            get { return _colores_browsedItem; }
-            set
-            {
-                _colores_browsedItem = value;
-                NotifyPropertyChanged(() => ColoresBrowsed_Item);
-            }
-        }
+
+        public string Colores_File { get { return _colores_file; } set { _colores_file = value; NotifyPropertyChanged(() => Colores_File); } }
+        public Item ColoresBrowsed_Item { get { return _colores_browsedItem; } set { _colores_browsedItem = value; NotifyPropertyChanged(() => ColoresBrowsed_Item); } }
 
         private readonly ICommand _colores_browseCommand;
-        public ICommand Colores_BrowseCommand => _colores_browseCommand;
-
         private readonly ICommand _colores_uploadCommand;
+
+        public ICommand Colores_BrowseCommand => _colores_browseCommand;
         public ICommand Colores_UploadCommand => _colores_uploadCommand;
 
-        // Properties and commands for Biodiversidad
-        private string _biodiversidad_file;
-        public string Biodiversidad_File
-        {
-            get { return _biodiversidad_file; }
-            set
-            {
-                _biodiversidad_file = value;
-                NotifyPropertyChanged(() => Biodiversidad_File);
-            }
-        }
 
+        /// Properties and commands for Biodiversidad
+        private string _biodiversidad_file;
         private Item _biodiversidad_browsedItem;
-        public Item BiodiversidadBrowsed_Item
-        {
-            get { return _biodiversidad_browsedItem; }
-            set
-            {
-                _biodiversidad_browsedItem = value;
-                NotifyPropertyChanged(() => BiodiversidadBrowsed_Item);
-            }
-        }
+
+        public string Biodiversidad_File { get { return _biodiversidad_file; } set { _biodiversidad_file = value; NotifyPropertyChanged(() => Biodiversidad_File); } }
+        public Item BiodiversidadBrowsed_Item { get { return _biodiversidad_browsedItem; } set { _biodiversidad_browsedItem = value; NotifyPropertyChanged(() => BiodiversidadBrowsed_Item); } }
 
         private readonly ICommand _biodiversidad_browseCommand;
-        public ICommand Biodiversidad_BrowseCommand => _biodiversidad_browseCommand;
-
         private readonly ICommand _biodiversidad_uploadCommand;
+
+        public ICommand Biodiversidad_BrowseCommand => _biodiversidad_browseCommand;
         public ICommand Biodiversidad_UploadCommand => _biodiversidad_uploadCommand;
 
-        // Properties and commands for Carrusel
+        
+        /// Properties and commands for Carrusel
         private string _carrusel_file;
-        public string Carrusel_File
-        {
-            get { return _carrusel_file; }
-            set
-            {
-                _carrusel_file = value;
-                NotifyPropertyChanged(() => Carrusel_File);
-            }
-        }
-
         private Item _carrusel_browsedItem;
-        public Item CarruselBrowsed_Item
-        {
-            get { return _carrusel_browsedItem; }
-            set
-            {
-                _carrusel_browsedItem = value;
-                NotifyPropertyChanged(() => CarruselBrowsed_Item);
-            }
-        }
+
+        public string Carrusel_File { get { return _carrusel_file; } set { _carrusel_file = value; NotifyPropertyChanged(() => Carrusel_File); } }
+        public Item CarruselBrowsed_Item { get { return _carrusel_browsedItem; } set { _carrusel_browsedItem = value; NotifyPropertyChanged(() => CarruselBrowsed_Item); } }
 
         private readonly ICommand _carrusel_browseCommand;
-        public ICommand Carrusel_BrowseCommand => _carrusel_browseCommand;
-
         private readonly ICommand _carrusel_uploadCommand;
+
+        public ICommand Carrusel_BrowseCommand => _carrusel_browseCommand;
         public ICommand Carrusel_UploadCommand => _carrusel_uploadCommand;
 
 
@@ -684,6 +293,29 @@ namespace ProAppModule1
         protected Dockpane1ViewModel()
 
         {
+            // Set up commands estrategia
+            _estrategiasSelectionCommand = new RelayCommand(() => OnEstrategiaSelecionada(), () => true);
+            _loadDataCommand = new RelayCommand(() => LoadData(), () => true);
+            _showProWindow = new RelayCommand(() => ShowWindow(), () => true);
+            _showProWindowUpdateCommand = new RelayCommand(() => ShowProWindowUpdate(), () => true);
+            _addNewRowCommand = new RelayCommand(() => AddNewRow(), () => true);
+            _eliminateSelectedRow = new RelayCommand(() => EliminateRow(), () => true);
+            _updateSelectedRowCommand = new RelayCommand(() => UpdateSelectedRow(), () => true);
+            _unselectRowCommand = new RelayCommand(() => UnselectRow(), () => true);
+            _uploadEstrategiaCommand = new RelayCommand(() => UploadEstrategia(), () => true);
+            _browseFileEstrategiaCommand = new RelayCommand(() => BrowseFileEstrategia(), () => true);
+            //_attachmentEstrategiaCommand = new RelayCommand(() => AttachmentEstrategia(), () => true);
+
+            // Set up commands proyecto
+            _loadDataCommand_pry = new RelayCommand(() => LoadData_pry(), () => true);
+            _showProWindow_pry = new RelayCommand(() => ShowWindow_pry(), () => true);
+            _showProWindowUpdateCommand_pry = new RelayCommand(() => ShowProWindowUpdate_pry(), () => true);
+            _addNewRowCommand_pry = new RelayCommand(() => AddNewRow_pry(), () => true);
+            _eliminateSelectedRow_pry = new RelayCommand(() => EliminateRow_pry(), () => true);
+            _updateSelectedRowCommand_pry = new RelayCommand(() => UpdateSelectedRow_pry(), () => true);
+            _uploadProyectoCommand = new RelayCommand(() => UploadProyecto(), () => true);
+            _browseFileProyectoCommand = new RelayCommand(() => BrowseFileProyecto(), () => true);
+
             // Set up commands region
             _region_browseCommand = new RelayCommand(() => BrowseRegion(), () => true);
             _region_uploadCommand = new RelayCommand(() => UploadRegion(), () => true);
@@ -733,29 +365,6 @@ namespace ProAppModule1
             _carrusel_uploadCommand = new RelayCommand(() => UploadCarrusel(), () => true);
 
 
-            // Set up commands estrategia
-            _estrategiasSelectionCommand = new RelayCommand(() => OnEstrategiaSelecionada(), () => true);
-            _loadDataCommand = new RelayCommand(() => LoadData(), () => true);
-            _showProWindow = new RelayCommand(() => ShowWindow(), () => true);
-            _showProWindowUpdateCommand = new RelayCommand(() => ShowProWindowUpdate(), () => true);
-            _addNewRowCommand = new RelayCommand(() => AddNewRow(), () => true);
-            _eliminateSelectedRow = new RelayCommand(() => EliminateRow(), () => true);
-            _updateSelectedRowCommand = new RelayCommand(() => UpdateSelectedRow(), () => true);
-            _unselectRowCommand = new RelayCommand(() => UnselectRow(), ()=> true);
-            _uploadEstrategiaCommand = new RelayCommand(() => UploadEstrategia(), () => true);
-            _browseFileEstrategiaCommand = new RelayCommand(() => BrowseFileEstrategia(), () => true);
-            //_attachmentEstrategiaCommand = new RelayCommand(() => AttachmentEstrategia(), () => true);
-
-            // Set up commands proyecto
-            _loadDataCommand_pry = new RelayCommand(() => LoadData_pry(), () => true);
-            _showProWindow_pry = new RelayCommand(() => ShowWindow_pry(), () => true);
-            _showProWindowUpdateCommand_pry = new RelayCommand(() => ShowProWindowUpdate_pry(), () => true);
-            _addNewRowCommand_pry = new RelayCommand(() => AddNewRow_pry(), () => true);
-            _eliminateSelectedRow_pry = new RelayCommand(() => EliminateRow_pry(), () => true);
-            _updateSelectedRowCommand_pry = new RelayCommand(() => UpdateSelectedRow_pry(), () => true);
-            _uploadProyectoCommand = new RelayCommand(() => UploadProyecto(), () => true);
-            _browseFileProyectoCommand = new RelayCommand(() => BrowseFileProyecto(), () => true);
-
             // Load data 
             LoadData();
             LoadData_pry();
@@ -768,7 +377,6 @@ namespace ProAppModule1
         private void UploadCarrusel()
         {
             var service = String.Format("{0}/10", _serviceURL);
-
             try
             {
                 if (CarruselBrowsed_Item != null)
@@ -781,7 +389,7 @@ namespace ProAppModule1
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(string.Format("Error al Cargar los datos de Carrusel {0}", ex.ToString()));
                 return;
             }
             return;
@@ -819,7 +427,7 @@ namespace ProAppModule1
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(string.Format("Error al Cargar los datos de Biodiversidad {0}", ex.ToString()));
                 return;
             }
             return;
@@ -845,7 +453,6 @@ namespace ProAppModule1
         private void UploadColores()
         {
             var service = String.Format("{0}/12", _serviceURL);
-
             try
             {
                 if (ColoresBrowsed_Item != null)
@@ -858,7 +465,7 @@ namespace ProAppModule1
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(string.Format("Error al Cargar los datos de Colores {0}", ex.ToString()));
                 return;
             }
             return;
@@ -884,7 +491,6 @@ namespace ProAppModule1
         private void UploadCarbono()
         {
             var service = String.Format("{0}/11", _serviceURL);
-
             try
             {
                 if (CarbonoBrowsed_Item != null)
@@ -897,7 +503,7 @@ namespace ProAppModule1
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(string.Format("Error al Cargar los datos de Carbono {0}", ex.ToString()));
                 return;
             }
             return;
@@ -936,7 +542,7 @@ namespace ProAppModule1
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(string.Format("Error al Cargar los datos de Cobertura {0}", ex.ToString()));
                 return;
             }
             return;
@@ -975,7 +581,7 @@ namespace ProAppModule1
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(string.Format("Error al Cargar los datos de Implementación {0}", ex.ToString()));
                 return;
             }
             return;
@@ -1013,7 +619,7 @@ namespace ProAppModule1
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(string.Format("Error al Cargar los datos de Predio {0}", ex.ToString()));
                 return;
             }
             return;
@@ -1052,7 +658,7 @@ namespace ProAppModule1
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(string.Format("Error al Cargar los datos de Contribución {0}", ex.ToString()));
                 return;
             }
             return;
@@ -1091,7 +697,7 @@ namespace ProAppModule1
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(string.Format("Error al Cargar los datos de Participantes {0}", ex.ToString()));
                 return;
             }
             return;
@@ -1133,7 +739,7 @@ namespace ProAppModule1
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(string.Format("Error al Cargar los datos de Aliados {0}", ex.ToString()));
                 return;
             }
             return;
@@ -1159,7 +765,6 @@ namespace ProAppModule1
         private void UploadMetas()
         {
             var service = String.Format("{0}/6", _serviceURL);
-
             try
             {
                 if (MetasBrowsed_Item != null)
@@ -1174,7 +779,7 @@ namespace ProAppModule1
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(string.Format("Error al Cargar los datos de Metas {0}", ex.ToString()));
                 return;
             }
             return;
@@ -1252,7 +857,7 @@ namespace ProAppModule1
                 }
             } catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(string.Format("Error al Cargar los datos de Estrategia {0}", ex.ToString()));
                 return;
             }
             return;
@@ -1289,7 +894,7 @@ namespace ProAppModule1
                 }
             } catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(string.Format("Error al Cargar los datos de Proyecto {0}", ex.ToString()));
                 return;
             }
             return;
@@ -1369,7 +974,6 @@ namespace ProAppModule1
         public void UpdateSelectedRow() {
 
             var service = String.Format("{0}/3", _serviceURL);
-
             if (SelectedIndex >= 0)
             {
                 var row = EstrategiasDataTable.Rows[SelectedIndex];
@@ -1455,7 +1059,6 @@ namespace ProAppModule1
                 var row = ProyectosDataTable.Rows[SelectedIndex_pry];
                 var rowEstrategia = EstrategiasDataTable.Rows[SelectedIndex];
 
-
                 var _objectid = row["OBJECTID"];
                 if (_objectid != null)
                 {
@@ -1479,7 +1082,6 @@ namespace ProAppModule1
                     _prowindow2_pry.Close();
 
             }
-
         }
 
 
@@ -1599,7 +1201,6 @@ namespace ProAppModule1
 
                 if (SelectedIndex >= 0)
                 {
-
                     var row = EstrategiasDataTable.Rows[SelectedIndex];
                     name = Convert.ToString(row["Nombre"]);
                     desc = Convert.ToString(row["Descripcion"]);
@@ -1607,22 +1208,18 @@ namespace ProAppModule1
                     color = Convert.ToString(row["Color"]);
                     image = Convert.ToString(row["Fondo"]);
                     icon = Convert.ToString(row["Icono"]);
-
                 }
                 else {
-
                     MessageBox.Show("Seleccione el elemento que desea actualizar de la tabla de Estrategias ");
                     _prowindow2.Close();
                 }
 
                 _prowindow2.DataContext = this;
-
                 _prowindow2.Show();
                 //uncomment for modal
                 //_prowindow2.ShowDialog();
             }
         }
-
 
 
         // Method for Load Data to dockpane
@@ -1739,7 +1336,6 @@ namespace ProAppModule1
                 }
 
                 _prowindow2_pry.DataContext = this;
-
                 _prowindow2_pry.Show();
                 //uncomment for modal
                 //_prowindow2.ShowDialog();
@@ -1747,7 +1343,6 @@ namespace ProAppModule1
         }
     }
 
-   
     /// Button implementation to show the DockPane.
     internal class Dockpane1_ShowButton : Button
     {

@@ -1,9 +1,5 @@
 ﻿using ArcGIS.Core.Data;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProAppModule1
 {
@@ -43,12 +39,10 @@ namespace ProAppModule1
             //_fecha = (TimeZoneInfo.ConvertTimeToUtc(Convert.ToDateTime(row["fecha"])) - new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalMilliseconds; 
             //_area = Convert.ToDouble(row["area"]);
 
-
         }
 
         public Region() { }
     }
-
 
 
     public class Estrategia
@@ -677,9 +671,4 @@ namespace ProAppModule1
 
         public Carrusel() { }
     }
-
-
-
-
-
 }

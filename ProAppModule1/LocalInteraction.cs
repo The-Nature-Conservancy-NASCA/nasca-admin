@@ -5,12 +5,8 @@ using ArcGIS.Desktop.Core.Geoprocessing;
 using ArcGIS.Desktop.Framework.Dialogs;
 using ArcGIS.Desktop.Framework.Threading.Tasks;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
 namespace ProAppModule1
@@ -259,39 +255,45 @@ namespace ProAppModule1
             int n = 0;
             await QueuedTask.Run(() =>
             {
-
-                var outTable = conversionProcess.Values[0];
-                Uri path = new System.Uri(outTable);
-                Uri directory = new Uri(path, ".");
-                var gdbPath = directory.AbsolutePath.Remove(directory.AbsolutePath.Length - 1);
-                Uri gdb = new Uri(gdbPath);
-
-                var geodatabase = new Geodatabase(new FileGeodatabaseConnectionPath(gdb));
-                var table = geodatabase.OpenDataset<Table>(Path.GetFileName(outTable));
-
-                // validate fields
-                Type t = Type.GetType(ClassName);
-                var item = Activator.CreateInstance(t);
-                TableDefinition table_def = table.GetDefinition();
-                var schema = ValidateFields(item, table_def);
-                if (schema != true)
+                try
                 {
-                    progressDlg2.Hide();
-                    return;
-                }
+                    var outTable = conversionProcess.Values[0];
+                    Uri path = new System.Uri(outTable);
+                    Uri directory = new Uri(path, ".");
+                    var gdbPath = directory.AbsolutePath.Remove(directory.AbsolutePath.Length - 1);
+                    Uri gdb = new Uri(gdbPath);
 
-                using (RowCursor rowCursor = table.Search())
-                {
-                    while (rowCursor.MoveNext())
+                    var geodatabase = new Geodatabase(new FileGeodatabaseConnectionPath(gdb));
+                    var table = geodatabase.OpenDataset<Table>(Path.GetFileName(outTable));
+
+                    // validate fields
+                    Type t = Type.GetType(ClassName);
+                    var item = Activator.CreateInstance(t);
+                    TableDefinition table_def = table.GetDefinition();
+                    var schema = ValidateFields(item, table_def);
+                    if (schema != true)
                     {
-                        using (Row row = rowCursor.Current)
+                        progressDlg2.Hide();
+                        return;
+                    }
+
+                    using (RowCursor rowCursor = table.Search())
+                    {
+                        while (rowCursor.MoveNext())
                         {
-                            var _attributes = Activator.CreateInstance(t, row);
-                            WebInteraction.AddFeatures(service, _attributes);
-                            n += 1;
+                            using (Row row = rowCursor.Current)
+                            {
+                                var _attributes = Activator.CreateInstance(t, row);
+                                WebInteraction.AddFeatures(service, _attributes);
+                                n += 1;
+                            }
                         }
                     }
                 }
+                catch (Exception e) { 
+                    MessageBox.Show(string.Format("Ha ocurrido un error al convertir el archivo de entrada {0}", e));
+                }
+
             });
 
             progressDlg2.Hide();
