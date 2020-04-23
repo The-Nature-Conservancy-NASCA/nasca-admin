@@ -8,6 +8,7 @@ using ArcGIS.Desktop.Framework.Contracts;
 using MessageBox = ArcGIS.Desktop.Framework.Dialogs.MessageBox;
 using System.Data;
 using System.Windows.Input;
+using System.Windows;
 
 namespace ProAppModule1
 {
@@ -389,7 +390,7 @@ namespace ProAppModule1
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Error al Cargar los datos de Carrusel {0}", ex.ToString()));
+                MessageBox.Show(string.Format("Error al Cargar los datos de Carrusel {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             return;
@@ -427,7 +428,7 @@ namespace ProAppModule1
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Error al Cargar los datos de Biodiversidad {0}", ex.ToString()));
+                MessageBox.Show(string.Format("Error al Cargar los datos de Biodiversidad {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             return;
@@ -465,7 +466,7 @@ namespace ProAppModule1
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Error al Cargar los datos de Colores {0}", ex.ToString()));
+                MessageBox.Show(string.Format("Error al Cargar los datos de Colores {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             return;
@@ -503,7 +504,7 @@ namespace ProAppModule1
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Error al Cargar los datos de Carbono {0}", ex.ToString()));
+                MessageBox.Show(string.Format("Error al Cargar los datos de Carbono {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             return;
@@ -542,7 +543,7 @@ namespace ProAppModule1
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Error al Cargar los datos de Cobertura {0}", ex.ToString()));
+                MessageBox.Show(string.Format("Error al Cargar los datos de Cobertura {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             return;
@@ -581,7 +582,7 @@ namespace ProAppModule1
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Error al Cargar los datos de Implementación {0}", ex.ToString()));
+                MessageBox.Show(string.Format("Error al Cargar los datos de Implementación {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             return;
@@ -619,7 +620,7 @@ namespace ProAppModule1
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Error al Cargar los datos de Predio {0}", ex.ToString()));
+                MessageBox.Show(string.Format("Error al Cargar los datos de Predio {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             return;
@@ -658,7 +659,7 @@ namespace ProAppModule1
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Error al Cargar los datos de Contribución {0}", ex.ToString()));
+                MessageBox.Show(string.Format("Error al Cargar los datos de Contribución {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             return;
@@ -697,7 +698,7 @@ namespace ProAppModule1
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Error al Cargar los datos de Participantes {0}", ex.ToString()));
+                MessageBox.Show(string.Format("Error al Cargar los datos de Participantes {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             return;
@@ -736,7 +737,7 @@ namespace ProAppModule1
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Error al Cargar los datos de Aliados {0}", ex.ToString()));
+                MessageBox.Show(string.Format("Error al Cargar los datos de Aliados {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             return;
@@ -774,7 +775,7 @@ namespace ProAppModule1
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Error al Cargar los datos de Metas {0}", ex.ToString()));
+                MessageBox.Show(string.Format("Error al Cargar los datos de Metas {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             return;
@@ -811,7 +812,7 @@ namespace ProAppModule1
                 }
             } catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(string.Format("Error al Cargar los datos de Regiones {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             return;
@@ -851,7 +852,7 @@ namespace ProAppModule1
                 LoadData();
             } catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Error al Cargar los datos de Estrategia {0}", ex.ToString()));
+                MessageBox.Show(string.Format("Error al Cargar los datos de Estrategia {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             return;
@@ -890,7 +891,7 @@ namespace ProAppModule1
                 }
             } catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Error al Cargar los datos de Proyecto {0}", ex.ToString()));
+                MessageBox.Show(string.Format("Error al Cargar los datos de Proyecto {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             return;
@@ -935,35 +936,41 @@ namespace ProAppModule1
 
         public void EliminateRow() {
 
+            
+
             var service = String.Format("{0}/3", _serviceURL);
 
             if (SelectedIndex >= 0)
             {
-                var row = EstrategiasDataTable.Rows[SelectedIndex];
-                var _objectid = row["OBJECTID"];
-                var estrategia = Convert.ToString(row["ID_estrategia"]);
+                var answer = MessageBox.Show("¿Desea eliminar el registro seleccionado?", "Borrar registro", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes);
 
-                if (_objectid != null)
-                {
-                    var objectid = Convert.ToInt32(_objectid);
-                    WebInteraction.DeleteFeatures(service, objectid);
+                if (answer == MessageBoxResult.Yes) {
+                    var row = EstrategiasDataTable.Rows[SelectedIndex];
+                    var _objectid = row["OBJECTID"];
+                    var estrategia = Convert.ToString(row["ID_estrategia"]);
+
+                    if (_objectid != null)
+                    {
+                        var objectid = Convert.ToInt32(_objectid);
+                        WebInteraction.DeleteFeatures(service, objectid);
+                    }
+
+                    row.Delete();
+                    EstrategiasDataTable.AcceptChanges();
+                    NotifyPropertyChanged(() => EstrategiasDataTable);
+
+                    var service_pry = String.Format("{0}/4", _serviceURL);
+                    DataRow[] drr = ProyectosDataTable.Select("ID_estrategia='" + estrategia + "' ");
+                    for (int i = 0; i < drr.Length; i++)
+                    {
+                        var _objectid_proyecto = Convert.ToInt32(drr[i]["OBJECTID"]);
+                        WebInteraction.DeleteFeatures(service_pry, _objectid_proyecto);
+                        drr[i].Delete();
+                    }
+
+                    ProyectosDataTable.AcceptChanges();
+                    NotifyPropertyChanged(() => ProyectosDataTable);
                 }
-
-                row.Delete();
-                EstrategiasDataTable.AcceptChanges();
-                NotifyPropertyChanged(() => EstrategiasDataTable);
-
-                var service_pry = String.Format("{0}/4", _serviceURL);
-                DataRow[] drr = ProyectosDataTable.Select("ID_estrategia='" + estrategia + "' ");
-                for (int i = 0; i < drr.Length; i++)
-                {
-                    var _objectid_proyecto = Convert.ToInt32(drr[i]["OBJECTID"]);
-                    WebInteraction.DeleteFeatures(service_pry,  _objectid_proyecto);
-                    drr[i].Delete();
-                }
-                    
-                ProyectosDataTable.AcceptChanges();
-                NotifyPropertyChanged(() => ProyectosDataTable);
             }
         }
 
@@ -978,7 +985,7 @@ namespace ProAppModule1
                 if (_objectid != null)
                 {
                     var objectid = Convert.ToInt32(_objectid);
-                    var _attributes = new { ID_estrategia = id_estra, nombre = name, descripcion = desc, color = color, fondo = image, icono = icon };
+                    var _attributes = new { OBJECTID = objectid, ID_estrategia = id_estra, nombre = name, descripcion = desc, color = color, fondo = image, icono = icon };
                     WebInteraction.UpdateFeatures(service, objectid, _attributes);
                 }
 
@@ -1028,18 +1035,23 @@ namespace ProAppModule1
             var service = String.Format("{0}/4", _serviceURL);
             if (SelectedIndex_pry >= 0)
             {
-                var row = ProyectosDataTable.Rows[SelectedIndex_pry];
 
-                var _objectid = row["OBJECTID"];
-                if (_objectid != null)
+                var answer = MessageBox.Show("¿Desea eliminar el registro seleccionado?", "Borrar registro", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes);
+
+                if (answer == MessageBoxResult.Yes)
                 {
-                    var objectid = Convert.ToInt32(_objectid);
-                    WebInteraction.DeleteFeatures(service, objectid);
-                }
+                    var row = ProyectosDataTable.Rows[SelectedIndex_pry];
 
-                row.Delete();
-                ProyectosDataTable.AcceptChanges();
-                NotifyPropertyChanged(() => ProyectosDataTable);
+                    var _objectid = row["OBJECTID"];
+                    if (_objectid != null)
+                    {
+                        var objectid = Convert.ToInt32(_objectid);
+                        WebInteraction.DeleteFeatures(service, objectid);
+                    }
+                    row.Delete();
+                    ProyectosDataTable.AcceptChanges();
+                    NotifyPropertyChanged(() => ProyectosDataTable);
+                }
 
             }
         }
@@ -1206,8 +1218,9 @@ namespace ProAppModule1
                     icon = Convert.ToString(row["Icono"]);
                 }
                 else {
-                    MessageBox.Show("Seleccione el elemento que desea actualizar de la tabla de Estrategias ");
+                    MessageBox.Show("Seleccione el elemento que desea actualizar de la tabla de Estrategias", "Actualiazar registro", MessageBoxButton.OK, MessageBoxImage.Information);
                     _prowindow2.Close();
+                    return;
                 }
 
                 _prowindow2.DataContext = this;
@@ -1327,8 +1340,9 @@ namespace ProAppModule1
                 }
                 else
                 {
-                    MessageBox.Show("Seleccione el elemento que desea actualizar de la tabla de Proyectos ");
+                    MessageBox.Show("Seleccione el elemento que desea actualizar de la tabla de Proyectos", "Actualizar registro", MessageBoxButton.OK, MessageBoxImage.Information);
                     _prowindow2_pry.Close();
+                    return;
                 }
 
                 _prowindow2_pry.DataContext = this;

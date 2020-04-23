@@ -9,6 +9,8 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
+using MessageBox = ArcGIS.Desktop.Framework.Dialogs.MessageBox;
+using System.Windows;
 
 namespace ProAppModule1
 
@@ -27,7 +29,7 @@ namespace ProAppModule1
                 int index = table_def.FindField(name);
                 if (index < 0)
                 {
-                    MessageBox.Show($"El campo {name} no fue encontrado en el elemento seleccionado.");
+                    MessageBox.Show($"El campo {name} no fue encontrado en el elemento seleccionado.", "Validación de campos", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return false;
                 }
             }
@@ -43,7 +45,7 @@ namespace ProAppModule1
                 int index = table_def.FindField(name);
                 if (index < 0)
                 {
-                    MessageBox.Show($"El campo {name} no fue encontrado en el elemento seleccionado.");
+                    MessageBox.Show($"El campo {name} no fue encontrado en el elemento seleccionado.", "Validación de campos", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return false;
                 }
             }
@@ -59,7 +61,7 @@ namespace ProAppModule1
                 int index = fc_def.FindField(name);
                 if (index < 0)
                 {
-                    MessageBox.Show($"El campo {name} no fue encontrado en el archivo seleccionado.");
+                    MessageBox.Show($"El campo {name} no fue encontrado en el elemento seleccionado.", "Validación de campos", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return false;
                 }
             }
@@ -123,7 +125,11 @@ namespace ProAppModule1
                 }
             });
             progressDlg.Hide();
-            MessageBox.Show(string.Format("Registros cargados: {0}", n));
+
+            if (n > 0)
+                MessageBox.Show(string.Format("Registros cargados: {0}", n), "Resultado de cargue", MessageBoxButton.OK, MessageBoxImage.Information);
+            else
+                MessageBox.Show("No se cargó ningún registro", "Resultado de cargue", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
 
@@ -178,7 +184,11 @@ namespace ProAppModule1
             });
 
             progressDlg.Hide();
-            MessageBox.Show(string.Format("Registros cargados: {0}", n));
+
+            if (n>0)
+                MessageBox.Show(string.Format("Registros cargados: {0}", n), "Resultado de cargue", MessageBoxButton.OK, MessageBoxImage.Information);
+            else
+                MessageBox.Show("No se cargó ningún registro", "Resultado de cargue", MessageBoxButton.OK, MessageBoxImage.Warning);
 
         }
 
@@ -226,7 +236,11 @@ namespace ProAppModule1
             });
 
             progressDlg.Hide();
-            MessageBox.Show(string.Format("Registros cargados: {0}", n));
+
+            if (n > 0)
+                MessageBox.Show(string.Format("Registros cargados: {0}", n), "Resultado de cargue", MessageBoxButton.OK, MessageBoxImage.Information);
+            else
+                MessageBox.Show("No se cargó ningún registro", "Resultado de cargue", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
 
@@ -302,7 +316,11 @@ namespace ProAppModule1
             });
 
             progressDlg2.Hide();
-            MessageBox.Show(string.Format("Registros cargados: {0}", n));
+
+            if (n > 0)
+                MessageBox.Show(string.Format("Registros cargados: {0}", n), "Resultado de cargue", MessageBoxButton.OK, MessageBoxImage.Information);
+            else
+                MessageBox.Show("No se cargó ningún registro", "Resultado de cargue", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
     }
