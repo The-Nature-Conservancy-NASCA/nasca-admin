@@ -7,14 +7,16 @@ using ArcGIS.Desktop.Framework.Threading.Tasks;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
 namespace ProAppModule1
 
 {
-    
     class LocalInteraction
+
     {
+       
 
         public static bool ValidateFields(Object item, TableDefinition table_def) {
 
@@ -73,7 +75,8 @@ namespace ProAppModule1
             return rings;
         }
 
-        public static async void UploadFeatureClass(ArcGIS.Desktop.Core.Item SelectedItem, string service, string ClassName) {
+
+        public static async Task UploadFeatureClass(ArcGIS.Desktop.Core.Item SelectedItem, string service, string ClassName) {
 
             var progressDlg = new ProgressDialog("Leyendo datos del Feature class seleccionado", "Cancelar", false);
             progressDlg.Show();
@@ -124,7 +127,7 @@ namespace ProAppModule1
         }
 
 
-        public static async void UploadShapefile(ArcGIS.Desktop.Core.Item SelectedItem, string service, string ClassName)
+        public static async Task UploadShapefile(ArcGIS.Desktop.Core.Item SelectedItem, string service, string ClassName)
         {
 
             var progressDlg = new ProgressDialog("Leyendo datos del Shapefile seleccionado", "Cancelar", false);
@@ -179,7 +182,7 @@ namespace ProAppModule1
 
         }
 
-        public static async void UploadTable(ArcGIS.Desktop.Core.Item SelectedItem, string service, string ClassName)
+        public static async Task UploadTable(ArcGIS.Desktop.Core.Item SelectedItem, string service, string ClassName)
         {
 
             var progressDlg = new ProgressDialog("Leyendo datos de la tabla seleccionada", "Cancelar", false);
@@ -226,7 +229,8 @@ namespace ProAppModule1
             MessageBox.Show(string.Format("Registros cargados: {0}", n));
         }
 
-        public static async void UploadExcel(ArcGIS.Desktop.Core.Item SelectedItem, string service, string ClassName)
+
+        public static async Task UploadExcel(ArcGIS.Desktop.Core.Item SelectedItem, string service, string ClassName)
         {
 
             var progressDlg = new ProgressDialog("Leyendo datos del archivo Excel seleccionado", "Cancelar", false);
@@ -239,7 +243,7 @@ namespace ProAppModule1
                 string outName = string.Format("Tabla_{0}", DateTime.Now.ToString("yyyyMMddHHmmssfff"));
                 string outhTable = System.IO.Path.Combine(outPath, outName);
                 string toolPath = "conversion.ExcelToTable";
-                var parameters = Geoprocessing.MakeValueArray(SelectedItem.Path, outhTable);
+                var parameters = Geoprocessing.MakeValueArray(SelectedItem.PhysicalPath, outhTable);
                 var environments = Geoprocessing.MakeEnvironmentArray(overwriteoutput: true);
                 var result = Geoprocessing.ExecuteToolAsync(toolPath, parameters, environments, new CancelableProgressorSource(progressDlg).Progressor, GPExecuteToolFlags.Default);
                 return result;
@@ -290,7 +294,8 @@ namespace ProAppModule1
                         }
                     }
                 }
-                catch (Exception e) { 
+                catch (Exception e)
+                {
                     MessageBox.Show(string.Format("Ha ocurrido un error al convertir el archivo de entrada {0}", e));
                 }
 

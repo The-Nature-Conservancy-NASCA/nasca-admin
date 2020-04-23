@@ -374,7 +374,7 @@ namespace ProAppModule1
             SelectedIndex_pry = -1;
         }
 
-        private void UploadCarrusel()
+        private async void UploadCarrusel()
         {
             var service = String.Format("{0}/10", _serviceURL);
             try
@@ -382,9 +382,9 @@ namespace ProAppModule1
                 if (CarruselBrowsed_Item != null)
                 {
                     if (CarruselBrowsed_Item.Type == "File Geodatabase Table")
-                        LocalInteraction.UploadTable(CarruselBrowsed_Item, service, "ProAppModule1.Carrusel");
+                        await LocalInteraction.UploadTable(CarruselBrowsed_Item, service, "ProAppModule1.Carrusel");
                     else
-                        LocalInteraction.UploadTable(CarruselBrowsed_Item, service, "ProAppModule1.Carrusel");
+                        await LocalInteraction.UploadExcel(CarruselBrowsed_Item, service, "ProAppModule1.Carrusel");
                 }
             }
             catch (Exception ex)
@@ -412,7 +412,7 @@ namespace ProAppModule1
             }
         }
 
-        private void UploadBiodiversidad()
+        private async void UploadBiodiversidad()
         {
             var service = String.Format("{0}/2", _serviceURL);
             try
@@ -420,9 +420,9 @@ namespace ProAppModule1
                 if (BiodiversidadBrowsed_Item != null)
                 {
                     if (BiodiversidadBrowsed_Item.Type == "Shapefile")
-                        LocalInteraction.UploadShapefile(BiodiversidadBrowsed_Item, service, "ProAppModule1.Biodiversidad");
+                        await LocalInteraction.UploadShapefile(BiodiversidadBrowsed_Item, service, "ProAppModule1.Biodiversidad");
                     else
-                        LocalInteraction.UploadFeatureClass(BiodiversidadBrowsed_Item, service, "ProAppModule1.Biodiversidad");
+                        await LocalInteraction.UploadFeatureClass(BiodiversidadBrowsed_Item, service, "ProAppModule1.Biodiversidad");
                 }
             }
             catch (Exception ex)
@@ -450,7 +450,7 @@ namespace ProAppModule1
             }
         }
 
-        private void UploadColores()
+        private async void UploadColores()
         {
             var service = String.Format("{0}/12", _serviceURL);
             try
@@ -458,9 +458,9 @@ namespace ProAppModule1
                 if (ColoresBrowsed_Item != null)
                 {
                     if (ColoresBrowsed_Item.Type == "File Geodatabase Table")
-                        LocalInteraction.UploadTable(ColoresBrowsed_Item, service, "ProAppModule1.Color");
+                        await LocalInteraction.UploadTable(ColoresBrowsed_Item, service, "ProAppModule1.Color");
                     else
-                        LocalInteraction.UploadTable(ColoresBrowsed_Item, service, "ProAppModule1.Color");
+                        await LocalInteraction.UploadExcel(ColoresBrowsed_Item, service, "ProAppModule1.Color");
                 }
             }
             catch (Exception ex)
@@ -488,7 +488,7 @@ namespace ProAppModule1
             }
         }
 
-        private void UploadCarbono()
+        private async void UploadCarbono()
         {
             var service = String.Format("{0}/11", _serviceURL);
             try
@@ -496,9 +496,9 @@ namespace ProAppModule1
                 if (CarbonoBrowsed_Item != null)
                 {
                     if (CarbonoBrowsed_Item.Type == "File Geodatabase Table")
-                        LocalInteraction.UploadTable(CarbonoBrowsed_Item, service, "ProAppModule1.Carbono");
+                        await LocalInteraction.UploadTable(CarbonoBrowsed_Item, service, "ProAppModule1.Carbono");
                     else
-                        LocalInteraction.UploadTable(CarbonoBrowsed_Item, service, "ProAppModule1.Carbono");
+                        await LocalInteraction.UploadExcel(CarbonoBrowsed_Item, service, "ProAppModule1.Carbono");
                 }
             }
             catch (Exception ex)
@@ -526,7 +526,7 @@ namespace ProAppModule1
             }
         }
 
-        private void UploadCobertura()
+        private async void UploadCobertura()
         {
             var service = String.Format("{0}/13", _serviceURL);
 
@@ -535,9 +535,9 @@ namespace ProAppModule1
                 if (CoberturaBrowsed_Item != null)
                 {
                     if (CoberturaBrowsed_Item.Type == "File Geodatabase Table")
-                        LocalInteraction.UploadTable(CoberturaBrowsed_Item, service, "ProAppModule1.Cobertura");
+                        await LocalInteraction.UploadTable(CoberturaBrowsed_Item, service, "ProAppModule1.Cobertura");
                     else
-                        LocalInteraction.UploadTable(CoberturaBrowsed_Item, service, "ProAppModule1.Cobertura");
+                        await LocalInteraction.UploadExcel(CoberturaBrowsed_Item, service, "ProAppModule1.Cobertura");
                 }
             }
             catch (Exception ex)
@@ -565,7 +565,7 @@ namespace ProAppModule1
             }
         }
 
-        private void UploadImplementacion()
+        private async void UploadImplementacion()
         {
             var service = String.Format("{0}/8", _serviceURL);
 
@@ -574,9 +574,9 @@ namespace ProAppModule1
                 if (ImplementacionBrowsed_Item != null)
                 {
                     if (ImplementacionBrowsed_Item.Type == "File Geodatabase Table")
-                        LocalInteraction.UploadTable(ImplementacionBrowsed_Item, service, "ProAppModule1.Implementacion");
+                        await LocalInteraction.UploadTable(ImplementacionBrowsed_Item, service, "ProAppModule1.Implementacion");
                     else
-                        LocalInteraction.UploadTable(ImplementacionBrowsed_Item, service, "ProAppModule1.Implementacion");
+                        await LocalInteraction.UploadExcel(ImplementacionBrowsed_Item, service, "ProAppModule1.Implementacion");
                 }
             }
             catch (Exception ex)
@@ -604,7 +604,7 @@ namespace ProAppModule1
             }
         }
 
-        private void UploadPredio()
+        private async void UploadPredio()
         {
             var service = String.Format("{0}/1", _serviceURL);
             try
@@ -612,9 +612,9 @@ namespace ProAppModule1
                 if (Region_File != null)
                 {
                     if (RegionBrowsed_Item.Type == "Shapefile")
-                        LocalInteraction.UploadShapefile(RegionBrowsed_Item, service, "ProAppModule1.Predio");
+                        await LocalInteraction.UploadShapefile(RegionBrowsed_Item, service, "ProAppModule1.Predio");
                     else
-                        LocalInteraction.UploadFeatureClass(RegionBrowsed_Item, service, "ProAppModule1.Predio");
+                        await LocalInteraction.UploadFeatureClass(RegionBrowsed_Item, service, "ProAppModule1.Predio");
                 }
             }
             catch (Exception ex)
@@ -642,7 +642,7 @@ namespace ProAppModule1
             }
         }
 
-        private void UploadContribuciones()
+        private async void UploadContribuciones()
         {
             var service = String.Format("{0}/9", _serviceURL);
 
@@ -651,9 +651,9 @@ namespace ProAppModule1
                 if (ContribucionesBrowsed_Item != null)
                 {
                     if (ContribucionesBrowsed_Item.Type == "File Geodatabase Table")
-                        LocalInteraction.UploadTable(ContribucionesBrowsed_Item, service, "ProAppModule1.Contribucion");
+                        await LocalInteraction.UploadTable(ContribucionesBrowsed_Item, service, "ProAppModule1.Contribucion");
                     else
-                        LocalInteraction.UploadTable(ContribucionesBrowsed_Item, service, "ProAppModule1.Contribucion");
+                        await LocalInteraction.UploadExcel(ContribucionesBrowsed_Item, service, "ProAppModule1.Contribucion");
                 }
             }
             catch (Exception ex)
@@ -681,7 +681,7 @@ namespace ProAppModule1
             }
         }
 
-        private void UploadParticipantes()
+        private async void UploadParticipantes()
         {
             var service = String.Format("{0}/5", _serviceURL);
 
@@ -690,9 +690,9 @@ namespace ProAppModule1
                 if (ParticipantesBrowsed_Item != null)
                 {
                     if (ParticipantesBrowsed_Item.Type == "File Geodatabase Table")
-                        LocalInteraction.UploadTable(ParticipantesBrowsed_Item, service, "ProAppModule1.Participante");
+                        await LocalInteraction.UploadTable(ParticipantesBrowsed_Item, service, "ProAppModule1.Participante");
                     else
-                        LocalInteraction.UploadTable(ParticipantesBrowsed_Item, service, "ProAppModule1.Participante");
+                        await LocalInteraction.UploadExcel(ParticipantesBrowsed_Item, service, "ProAppModule1.Participante");
                 }
             }
             catch (Exception ex)
@@ -720,7 +720,7 @@ namespace ProAppModule1
             }
         }
 
-        private void UploadAliados()
+        private async void UploadAliados()
         {
             var service = String.Format("{0}/7", _serviceURL);
 
@@ -729,12 +729,9 @@ namespace ProAppModule1
                 if (AliadosBrowsed_Item != null)
                 {
                     if (AliadosBrowsed_Item.Type == "File Geodatabase Table")
-                        LocalInteraction.UploadTable(AliadosBrowsed_Item, service, "ProAppModule1.Aliado");
+                        await LocalInteraction.UploadTable(AliadosBrowsed_Item, service, "ProAppModule1.Aliado");
                     else
-                    {
-                        LocalInteraction.UploadExcel(AliadosBrowsed_Item, service, "ProAppModule1.Aliado");
-
-                    }
+                        await LocalInteraction.UploadExcel(AliadosBrowsed_Item, service, "ProAppModule1.Aliado");
                 }
             }
             catch (Exception ex)
@@ -762,7 +759,7 @@ namespace ProAppModule1
             }
         }
 
-        private void UploadMetas()
+        private async void UploadMetas()
         {
             var service = String.Format("{0}/6", _serviceURL);
             try
@@ -770,11 +767,9 @@ namespace ProAppModule1
                 if (MetasBrowsed_Item != null)
                 {
                     if (MetasBrowsed_Item.Type == "File Geodatabase Table")
-                        LocalInteraction.UploadTable(MetasBrowsed_Item, service, "ProAppModule1.Meta");
+                        await LocalInteraction.UploadTable(MetasBrowsed_Item, service, "ProAppModule1.Meta");
                     else
-                    {
-                        LocalInteraction.UploadExcel(MetasBrowsed_Item, service, "ProAppModule1.Meta");
-                    }
+                        await LocalInteraction.UploadExcel(MetasBrowsed_Item, service, "ProAppModule1.Meta");
                 }
             }
             catch (Exception ex)
@@ -802,7 +797,7 @@ namespace ProAppModule1
             }
         }
 
-        public void UploadRegion()
+        public async void UploadRegion()
         {
             var service = String.Format("{0}/0", _serviceURL);
             try
@@ -810,9 +805,9 @@ namespace ProAppModule1
                 if (RegionBrowsed_Item != null)
                 {
                     if (RegionBrowsed_Item.Type == "Shapefile")
-                        LocalInteraction.UploadShapefile(RegionBrowsed_Item, service, "ProAppModule1.Region");
+                        await LocalInteraction.UploadShapefile(RegionBrowsed_Item, service, "ProAppModule1.Region");
                     else
-                        LocalInteraction.UploadFeatureClass(RegionBrowsed_Item, service, "ProAppModule1.Region");
+                        await LocalInteraction.UploadFeatureClass(RegionBrowsed_Item, service, "ProAppModule1.Region");
                 }
             } catch (Exception ex)
             {
@@ -840,7 +835,7 @@ namespace ProAppModule1
             }
         }
 
-        public void UploadEstrategia() {
+        public async void UploadEstrategia() {
 
             var service = String.Format("{0}/3", _serviceURL);
 
@@ -849,12 +844,11 @@ namespace ProAppModule1
                 if (SelectedItem_Estrategia != null)
                 {
                     if (SelectedItem_Estrategia.Type == "File Geodatabase Table")
-                        LocalInteraction.UploadTable(SelectedItem_Estrategia, service, "ProAppModule1.Estrategia");
+                        await LocalInteraction.UploadTable(SelectedItem_Estrategia, service, "ProAppModule1.Estrategia");
                     else
-                        LocalInteraction.UploadExcel(SelectedItem_Estrategia, service, "ProAppModule1.Estrategia");
-
-                    LoadData();
+                        await LocalInteraction.UploadExcel(SelectedItem_Estrategia, service, "ProAppModule1.Estrategia");
                 }
+                LoadData();
             } catch (Exception ex)
             {
                 MessageBox.Show(string.Format("Error al Cargar los datos de Estrategia {0}", ex.ToString()));
@@ -879,7 +873,7 @@ namespace ProAppModule1
             }
         }
 
-        public void UploadProyecto()
+        public async void UploadProyecto()
         {
             var service = String.Format("{0}/4", _serviceURL);
             try
@@ -887,9 +881,11 @@ namespace ProAppModule1
                 if (SelectedItem_Proyecto != null)
                 {
                     if (SelectedItem_Proyecto.Type == "File Geodatabase Table")
-                        LocalInteraction.UploadTable(SelectedItem_Proyecto, service, "ProAppModule1.Proyecto");
+                        await LocalInteraction.UploadTable(SelectedItem_Proyecto, service, "ProAppModule1.Proyecto");
                     else
-                        LocalInteraction.UploadExcel(SelectedItem_Proyecto, service, "ProAppModule1.Proyecto");
+                        await LocalInteraction.UploadExcel(SelectedItem_Proyecto, service, "ProAppModule1.Proyecto");
+
+                    LoadData_pry();
 
                 }
             } catch (Exception ex)

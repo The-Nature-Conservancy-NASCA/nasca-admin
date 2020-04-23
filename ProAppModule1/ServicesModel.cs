@@ -97,7 +97,7 @@ namespace ProAppModule1
         private double _fecha_seguimiento1;
         private double _fecha_seguimiento2;
         private double _fecha_cierre;
-        private string _id_attachment = "";
+        //private string _id_attachment = "";
 
         public string ID_proyecto { get => _ID_proyecto; set { _ID_proyecto = value; } }
         public string ID_estrategia { get => _ID_estrategia; set { _ID_estrategia = value; } }
@@ -117,7 +117,7 @@ namespace ProAppModule1
         public double fecha_seguimiento1 { get => _fecha_seguimiento1; set { _fecha_seguimiento1 = value; } }
         public double fecha_seguimiento2 { get => _fecha_seguimiento2; set { _fecha_seguimiento2 = value; } }
         public double fecha_cierre { get => _fecha_cierre; set { _fecha_cierre = value; } }
-        public string id_attachment { get => _id_attachment; set { _id_attachment = value; } }
+        //public string id_attachment { get => _id_attachment; set { _id_attachment = value; } }
 
 
         public Proyecto(Row row)
