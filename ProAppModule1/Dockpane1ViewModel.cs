@@ -421,7 +421,7 @@ namespace ProAppModule1
                 if (BiodiversidadBrowsed_Item != null)
                 {
                     if (BiodiversidadBrowsed_Item.Type == "Shapefile")
-                        await LocalInteraction.UploadShapefile(BiodiversidadBrowsed_Item, service, "ProAppModule1.Biodiversidad");
+                        await LocalInteraction.UploadShapefile(BiodiversidadBrowsed_Item, service, "ProAppModule1.Biodiversidad2");
                     else
                         await LocalInteraction.UploadFeatureClass(BiodiversidadBrowsed_Item, service, "ProAppModule1.Biodiversidad");
                 }
@@ -613,7 +613,7 @@ namespace ProAppModule1
                 if (Region_File != null)
                 {
                     if (RegionBrowsed_Item.Type == "Shapefile")
-                        await LocalInteraction.UploadShapefile(RegionBrowsed_Item, service, "ProAppModule1.Predio");
+                        await LocalInteraction.UploadShapefile(RegionBrowsed_Item, service, "ProAppModule1.Predio2");
                     else
                         await LocalInteraction.UploadFeatureClass(RegionBrowsed_Item, service, "ProAppModule1.Predio");
                 }
@@ -806,7 +806,7 @@ namespace ProAppModule1
                 if (RegionBrowsed_Item != null)
                 {
                     if (RegionBrowsed_Item.Type == "Shapefile")
-                        await LocalInteraction.UploadShapefile(RegionBrowsed_Item, service, "ProAppModule1.Region");
+                        await LocalInteraction.UploadShapefile(RegionBrowsed_Item, service, "ProAppModule1.Region2");
                     else
                         await LocalInteraction.UploadFeatureClass(RegionBrowsed_Item, service, "ProAppModule1.Region");
                 }

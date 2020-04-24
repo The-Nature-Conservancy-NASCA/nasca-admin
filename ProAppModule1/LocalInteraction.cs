@@ -36,13 +36,17 @@ namespace ProAppModule1
             return true;
         }
 
-        public static bool ValidateFieldsShapefile(Object item, TableDefinition table_def)
+        public static bool ValidateFieldsShapefile(Object item, TableDefinition fc_def)
         {
             PropertyInfo[] properties = item.GetType().GetProperties();
             foreach (PropertyInfo property in properties)
             {
-                var name = property.Name.Substring(0,10);
-                int index = table_def.FindField(name);
+                string name;
+                if (property.Name.Length > 10)
+                    name = property.Name.Substring(0, 10);
+                else
+                    name = property.Name;
+                int index = fc_def.FindField(name);
                 if (index < 0)
                 {
                     MessageBox.Show($"El campo {name} no fue encontrado en el elemento seleccionado.", "Validación de campos", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -78,7 +82,7 @@ namespace ProAppModule1
         }
 
 
-        public static async Task UploadFeatureClass(ArcGIS.Desktop.Core.Item SelectedItem, string service, string ClassName) {
+        public static async Task UploadFeatureClass2(ArcGIS.Desktop.Core.Item SelectedItem, string service, string ClassName) {
 
             var progressDlg = new ProgressDialog("Leyendo datos del Feature class seleccionado", "Cancelar", false);
             progressDlg.Show();
@@ -131,6 +135,90 @@ namespace ProAppModule1
             else
                 MessageBox.Show("No se cargó ningún registro", "Resultado de cargue", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
+
+
+        public static async Task UploadFeatureClass(ArcGIS.Desktop.Core.Item SelectedItem, string service, string ClassName)
+        {
+
+            var progressDlg = new ProgressDialog("Leyendo datos del Feature class seleccionado", "Cancelar", false);
+            progressDlg.Show();
+            var progressSrc = new CancelableProgressorSource(progressDlg);
+
+            await QueuedTask.Run(() =>
+            {
+                Uri path = new System.Uri(SelectedItem.Path);
+                Uri directory = new Uri(path, ".");
+
+                var gdbPath = directory.AbsolutePath.Remove(directory.AbsolutePath.Length - 1);
+                Uri gdb = new Uri(gdbPath);
+                var geodatabase = new Geodatabase(new FileGeodatabaseConnectionPath(gdb));
+                FeatureClass featureclass = geodatabase.OpenDataset<FeatureClass>(SelectedItem.Title);
+
+                // validate fields
+                Type t = Type.GetType(ClassName);
+                var item = Activator.CreateInstance(t);
+                FeatureClassDefinition fc_def = featureclass.GetDefinition();
+                var schema = ValidateFields(item, fc_def);
+                if (schema != true)
+                {
+                    progressDlg.Hide();
+                    return;
+                }
+            });
+
+            var conversionProcess = await QueuedTask.Run(() => {
+
+                string outPath = Project.Current.HomeFolderPath;
+                string toolPath = "conversion.FeatureClassToShapefile";
+                var parameters = Geoprocessing.MakeValueArray(SelectedItem.Path, outPath);
+                var environments = Geoprocessing.MakeEnvironmentArray(overwriteoutput: true);
+                var result = Geoprocessing.ExecuteToolAsync(toolPath, parameters, environments, new CancelableProgressorSource(progressDlg).Progressor, GPExecuteToolFlags.Default);
+                return result;
+
+            });
+            progressDlg.Hide();
+
+            int n = 0;
+            await QueuedTask.Run(() =>
+            {
+                Uri shp_path = new System.Uri(conversionProcess.Values[0]);
+
+                var shapefilePath = new FileSystemConnectionPath(shp_path, FileSystemDatastoreType.Shapefile);
+                var shapefile = new FileSystemDatastore(shapefilePath);
+                var table = shapefile.OpenDataset<Table>(SelectedItem.Title);
+
+                using (RowCursor rowCursor = table.Search())
+                {
+                    while (rowCursor.MoveNext())
+                    {
+                        using (Row row = rowCursor.Current)
+                        {
+                            Feature feature = row as Feature;
+                            Geometry shape = feature.GetShape();
+
+                            Type t = Type.GetType(ClassName);
+                            var _attributes = Activator.CreateInstance(t, row);
+                            var _rings = GetRings(shape);
+
+                            var serializer = new JavaScriptSerializer();
+                            var geom = serializer.Deserialize<Rings>(_rings);
+
+                            WebInteraction.AddFeatures(service, _attributes, geom);
+                            n += 1;
+                        }
+                    }
+                }
+            });
+
+            progressDlg.Hide();
+
+            if (n > 0)
+                MessageBox.Show(string.Format("Registros cargados: {0}", n), "Resultado de cargue", MessageBoxButton.OK, MessageBoxImage.Information);
+            else
+                MessageBox.Show("No se cargó ningún registro", "Resultado de cargue", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+        }
+
 
 
         public static async Task UploadShapefile(ArcGIS.Desktop.Core.Item SelectedItem, string service, string ClassName)

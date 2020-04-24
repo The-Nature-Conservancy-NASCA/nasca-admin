@@ -20,20 +20,20 @@ namespace ProAppModule1
         private string _ID_proyecto = "";
         private string _ID_region = "";
         private string _nombre = "";
-        private double _fecha;
+        //private double _fecha;
         //private double _area;
 
         public string ID_proyecto { get => _ID_proyecto; set { _ID_proyecto = value; } }
         public string ID_region { get => _ID_region; set { _ID_region = value; } }
         public string nombre { get => _nombre; set { _nombre = value; } }
-        public double fecha { get => _fecha; set { _fecha = value; } }
+        //public double fecha { get => _fecha; set { _fecha = value; } }
         //public double area { get => _area; set { _area = value; } }
 
 
         public Region(Row row)
         {
 
-            _ID_proyecto = Convert.ToString(row["ID_proyecto"]);
+            _ID_proyecto = Convert.ToString(row["ID_proyect"]);
             _ID_region = Convert.ToString(row["ID_region"]);
             _nombre = Convert.ToString(row["nombre"]);
             //_fecha = (TimeZoneInfo.ConvertTimeToUtc(Convert.ToDateTime(row["fecha"])) - new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalMilliseconds; 
@@ -44,6 +44,35 @@ namespace ProAppModule1
         public Region() { }
     }
 
+    public class Region2
+    {
+
+        private string _ID_proyecto = "";
+        private string _ID_region = "";
+        private string _nombre = "";
+        //private double _fecha;
+        //private double _area;
+
+        public string ID_proyecto { get => _ID_proyecto; set { _ID_proyecto = value; } }
+        public string ID_region { get => _ID_region; set { _ID_region = value; } }
+        public string nombre { get => _nombre; set { _nombre = value; } }
+        //public double fecha { get => _fecha; set { _fecha = value; } }
+        //public double area { get => _area; set { _area = value; } }
+
+
+        public Region2(Row row)
+        {
+
+            _ID_proyecto = Convert.ToString(row["ID_proyect"]);
+            _ID_region = Convert.ToString(row["ID_region"]);
+            _nombre = Convert.ToString(row["nombre"]);
+            //_fecha = (TimeZoneInfo.ConvertTimeToUtc(Convert.ToDateTime(row["fecha"])) - new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalMilliseconds; 
+            //_area = Convert.ToDouble(row["area"]);
+
+        }
+
+        public Region2() { }
+    }
 
     public class Estrategia
     {
@@ -337,6 +366,59 @@ namespace ProAppModule1
 
     }
 
+    public class Predio2
+    {
+        private string _ID_proyecto = "";
+        private string _ID_region = "";
+        private string _ID_predio = "";
+        private string _nombre = "";
+        private string _nombre_propietario = "";
+        private string _tipo_dominio = "";
+        private string _departamento = "";
+        private string _municipio = "";
+        private string _vereda = "";
+        private double _AreaHa;
+        private double _stok_carbono;
+        private double _captura_carbono;
+        //private double _fecha;
+
+        public string ID_predio { get => _ID_predio; set { _ID_predio = value; } }
+        public string ID_proyecto { get => _ID_proyecto; set { _ID_proyecto = value; } }
+        public string ID_region { get => _ID_region; set { _ID_region = value; } }
+        public string nombre { get => _nombre; set { _nombre = value; } }
+        public string departamento { get => _departamento; set { _departamento = value; } }
+        public string municipio { get => _municipio; set { _municipio = value; } }
+        public string vereda { get => _vereda; set { _vereda = value; } }
+        public string nombre_propietario { get => _nombre_propietario; set { _nombre_propietario = value; } }
+        public string tipo_dominio { get => _tipo_dominio; set { _tipo_dominio = value; } }
+        public double AreaHa { get => _AreaHa; set { _AreaHa = value; } }
+        public double stock_carbono { get => _stok_carbono; set { _stok_carbono = value; } }
+        public double captura_carbono { get => _captura_carbono; set { _captura_carbono = value; } }
+        //public double fecha { get => _fecha; set { _fecha = value; } }
+
+        public Predio2(Row row)
+        {
+
+            _ID_predio = Convert.ToString(row["ID_predio"]);
+            _ID_proyecto = Convert.ToString(row["ID_proyect"]);
+            _ID_region = Convert.ToString(row["ID_region"]);
+            _nombre = Convert.ToString(row["nombre"]);
+            _departamento = Convert.ToString(row["departamen"]);
+            _municipio = Convert.ToString(row["municipio"]);
+            _vereda = Convert.ToString(row["vereda"]);
+            _nombre_propietario = Convert.ToString(row["nombre_pro"]);
+            _tipo_dominio = Convert.ToString(row["tipo_domin"]);
+            _AreaHa = Convert.ToDouble(row["AreaHa"]);
+            _stok_carbono = Convert.ToDouble(row["stock_carb"]);
+            _captura_carbono = Convert.ToDouble(row["captura_ca"]);
+            //_fecha = (TimeZoneInfo.ConvertTimeToUtc(Convert.ToDateTime(row["fecha"])) - new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalMilliseconds;
+
+        }
+
+        public Predio2() { }
+
+    }
+
     public class Implementacion {
 
         private string _ID_predio = "";
@@ -614,6 +696,7 @@ namespace ProAppModule1
         public string nombre_comun { get => _nombre_comun; set { _nombre_comun = value; } }
         //public double fecha { get => _fecha; set { _fecha = value; } }
         public string especie { get => _especie; set { _especie = value; } }
+        public string autoria { get => _autoria; set { _autoria = value; } }
         public string ID_cobertura { get => _ID_cobertura; set { _ID_cobertura = value; } }
         public string momento { get => _momento; set { _momento = value; } }
 
@@ -621,14 +704,14 @@ namespace ProAppModule1
         {
 
             _ID_region = Convert.ToString(row["ID_region"]);
-            _ID_proyecto = Convert.ToString(row["ID_proyecto"]);
+            _ID_proyecto = Convert.ToString(row["ID_proyect"]);
             _grupo_tnc = Convert.ToString(row["grupo_tnc"]);
             _cobertura = Convert.ToString(row["cobertura"]);
-            _fecha_identificacion = (TimeZoneInfo.ConvertTimeToUtc(Convert.ToDateTime(row["fecha_identificacion"])) - new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalMilliseconds;
-            _numero_individuos = Convert.ToInt32(row["numero_individuos"]);
-            _institucion = Convert.ToString(row["institucion"]);
+            _fecha_identificacion = (TimeZoneInfo.ConvertTimeToUtc(Convert.ToDateTime(row["fecha_iden"])) - new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalMilliseconds;
+            _numero_individuos = Convert.ToInt32(row["numero_ind"]);
+            _institucion = Convert.ToString(row["institucio"]);
             _observador = Convert.ToString(row["observador"]);
-            _metodo_observacion = Convert.ToString(row["metodo_observacion"]);
+            _metodo_observacion = Convert.ToString(row["metodo_obs"]);
             _reino = Convert.ToString(row["reino"]);
             _filo = Convert.ToString(row["filo"]);
             _clase = Convert.ToString(row["clase"]);
@@ -638,15 +721,102 @@ namespace ProAppModule1
             _subgenero = Convert.ToString(row["subgenero"]);
             _epiteto = Convert.ToString(row["epiteto"]);
             _sexo = Convert.ToString(row["sexo"]);
-            _nombre_comun = Convert.ToString(row["nombre_comun"]);
+            _nombre_comun = Convert.ToString(row["nombre_com"]);
             //_fecha = (TimeZoneInfo.ConvertTimeToUtc(Convert.ToDateTime(row["fecha"])) - new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalMilliseconds;
             _especie = Convert.ToString(row["especie"]);
-            _ID_cobertura = Convert.ToString(row["ID_cobertura"]);
+            _autoria = Convert.ToString(row["autoria"]);
+            _ID_cobertura = Convert.ToString(row["ID_cobertu"]);
             _momento = Convert.ToString(row["momento"]);
 
         }
 
         public Biodiversidad() { }
+    }
+
+    public class Biodiversidad2
+    {
+
+        private string _ID_region = "";
+        private string _ID_proyecto = "";
+        private string _ID_cobertura = "";
+        private string _grupo_tnc;
+        private string _cobertura = "";
+        private double _fecha_identificacion;
+        private int _numero_individuos;
+        private string _institucion = "";
+        private string _observador = "";
+        private string _metodo_observacion = "";
+        private string _reino = "";
+        private string _filo = "";
+        private string _clase = "";
+        private string _orden = "";
+        private string _familia = "";
+        private string _genero = "";
+        private string _subgenero = "";
+        private string _epiteto = "";
+        private string _especie = "";
+        private string _autoria = "";
+        private string _nombre_comun = "";
+        private string _sexo = "";
+        private string _momento = "";
+        //private double _fecha;
+
+        public string ID_region { get => _ID_region; set { _ID_region = value; } }
+        public string ID_proyecto { get => _ID_proyecto; set { _ID_proyecto = value; } }
+        public string grupo_tnc { get => _grupo_tnc; set { _grupo_tnc = value; } }
+        public string cobertura { get => _cobertura; set { _cobertura = value; } }
+        public double fecha_identificacion { get => _fecha_identificacion; set { _fecha_identificacion = value; } }
+        public int numero_individuos { get => _numero_individuos; set { _numero_individuos = value; } }
+        public string institucion { get => _institucion; set { _institucion = value; } }
+        public string observador { get => _observador; set { _observador = value; } }
+        public string metodo_observacion { get => _metodo_observacion; set { _metodo_observacion = value; } }
+        public string reino { get => _reino; set { _reino = value; } }
+        public string filo { get => _filo; set { _filo = value; } }
+        public string clase { get => _clase; set { _clase = value; } }
+        public string orden { get => _orden; set { _orden = value; } }
+        public string familia { get => _familia; set { _familia = value; } }
+        public string genero { get => _genero; set { _genero = value; } }
+        public string subgenero { get => _subgenero; set { _subgenero = value; } }
+        public string epiteto { get => _epiteto; set { _epiteto = value; } }
+        public string sexo { get => _sexo; set { _sexo = value; } }
+        public string nombre_comun { get => _nombre_comun; set { _nombre_comun = value; } }
+        //public double fecha { get => _fecha; set { _fecha = value; } }
+        public string especie { get => _especie; set { _especie = value; } }
+        public string autoria { get => _autoria; set { _autoria = value; } }
+        public string ID_cobertura { get => _ID_cobertura; set { _ID_cobertura = value; } }
+        public string momento { get => _momento; set { _momento = value; } }
+
+        public Biodiversidad2(Row row)
+        {
+
+            _ID_region = Convert.ToString(row["ID_region"]);
+            _ID_proyecto = Convert.ToString(row["ID_proyect"]);
+            _grupo_tnc = Convert.ToString(row["grupo_tnc"]);
+            _cobertura = Convert.ToString(row["cobertura"]);
+            _fecha_identificacion = (TimeZoneInfo.ConvertTimeToUtc(Convert.ToDateTime(row["fecha_iden"])) - new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalMilliseconds;
+            _numero_individuos = Convert.ToInt32(row["numero_ind"]);
+            _institucion = Convert.ToString(row["institucio"]);
+            _observador = Convert.ToString(row["observador"]);
+            _metodo_observacion = Convert.ToString(row["metodo_obs"]);
+            _reino = Convert.ToString(row["reino"]);
+            _filo = Convert.ToString(row["filo"]);
+            _clase = Convert.ToString(row["clase"]);
+            _orden = Convert.ToString(row["orden"]);
+            _familia = Convert.ToString(row["familia"]);
+            _genero = Convert.ToString(row["genero"]);
+            _subgenero = Convert.ToString(row["subgenero"]);
+            _epiteto = Convert.ToString(row["epiteto"]);
+            _sexo = Convert.ToString(row["sexo"]);
+            _nombre_comun = Convert.ToString(row["nombre_com"]);
+            //_fecha = (TimeZoneInfo.ConvertTimeToUtc(Convert.ToDateTime(row["fecha"])) - new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalMilliseconds;
+            _especie = Convert.ToString(row["especie"]);
+            _autoria = Convert.ToString(row["autoria"]);
+            _ID_cobertura = Convert.ToString(row["ID_cobertu"]);
+            _momento = Convert.ToString(row["momento"]);
+
+        }
+
+        public Biodiversidad2() { }
     }
 
     public class Carrusel
