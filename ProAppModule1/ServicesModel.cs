@@ -332,7 +332,7 @@ namespace ProAppModule1
         public string ID_predio { get => _ID_predio; set { _ID_predio = value; } }
         public string ID_proyecto { get => _ID_proyecto; set { _ID_proyecto = value; } }
         public string ID_region { get => _ID_region; set { _ID_region = value; } }
-        public string nombre { get => _nombre; set { _nombre = value; } }
+        public string nombre_predio { get => _nombre; set { _nombre = value; } }
         public string departamento { get => _departamento; set { _departamento = value; } }
         public string municipio { get => _municipio; set { _municipio = value; } }
         public string vereda { get => _vereda; set { _vereda = value; } }
@@ -347,17 +347,17 @@ namespace ProAppModule1
         {
 
             _ID_predio = Convert.ToString(row["ID_predio"]);
-            _ID_proyecto = Convert.ToString(row["ID_proyecto"]);
+            _ID_proyecto = Convert.ToString(row["ID_proyect"]);
             _ID_region = Convert.ToString(row["ID_region"]);
-            _nombre = Convert.ToString(row["nombre"]);
-            _departamento = Convert.ToString(row["departamento"]);
+            _nombre = Convert.ToString(row["nombre_pre"]);
+            _departamento = Convert.ToString(row["departamen"]);
             _municipio = Convert.ToString(row["municipio"]);
             _vereda = Convert.ToString(row["vereda"]);
-            _nombre_propietario = Convert.ToString(row["nombre_propietario"]);
-            _tipo_dominio = Convert.ToString(row["tipo_dominio"]);
+            _nombre_propietario = Convert.ToString(row["nombre_pro"]);
+            _tipo_dominio = Convert.ToString(row["tipo_domin"]);
             _AreaHa = Convert.ToDouble(row["AreaHa"]);
-            _stok_carbono = Convert.ToDouble(row["stock_carbono"]);
-            _captura_carbono = Convert.ToDouble(row["captura_carbono"]);
+            _stok_carbono = Convert.ToDouble(row["stock_carb"]);
+            _captura_carbono = Convert.ToDouble(row["captura_ca"]);
             //_fecha = (TimeZoneInfo.ConvertTimeToUtc(Convert.ToDateTime(row["fecha"])) - new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalMilliseconds;
 
         }
@@ -385,7 +385,7 @@ namespace ProAppModule1
         public string ID_predio { get => _ID_predio; set { _ID_predio = value; } }
         public string ID_proyecto { get => _ID_proyecto; set { _ID_proyecto = value; } }
         public string ID_region { get => _ID_region; set { _ID_region = value; } }
-        public string nombre { get => _nombre; set { _nombre = value; } }
+        public string nombre_predio { get => _nombre; set { _nombre = value; } }
         public string departamento { get => _departamento; set { _departamento = value; } }
         public string municipio { get => _municipio; set { _municipio = value; } }
         public string vereda { get => _vereda; set { _vereda = value; } }
@@ -402,7 +402,7 @@ namespace ProAppModule1
             _ID_predio = Convert.ToString(row["ID_predio"]);
             _ID_proyecto = Convert.ToString(row["ID_proyect"]);
             _ID_region = Convert.ToString(row["ID_region"]);
-            _nombre = Convert.ToString(row["nombre"]);
+            _nombre = Convert.ToString(row["nombre_pre"]);
             _departamento = Convert.ToString(row["departamen"]);
             _municipio = Convert.ToString(row["municipio"]);
             _vereda = Convert.ToString(row["vereda"]);

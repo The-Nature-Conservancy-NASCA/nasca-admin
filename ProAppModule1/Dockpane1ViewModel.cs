@@ -610,12 +610,12 @@ namespace ProAppModule1
             var service = String.Format("{0}/1", _serviceURL);
             try
             {
-                if (Region_File != null)
+                if (Predio_File != null)
                 {
-                    if (RegionBrowsed_Item.Type == "Shapefile")
-                        await LocalInteraction.UploadShapefile(RegionBrowsed_Item, service, "ProAppModule1.Predio2");
+                    if (PredioBrowsed_Item.Type == "Shapefile")
+                        await LocalInteraction.UploadShapefile(PredioBrowsed_Item, service, "ProAppModule1.Predio2");
                     else
-                        await LocalInteraction.UploadFeatureClass(RegionBrowsed_Item, service, "ProAppModule1.Predio");
+                        await LocalInteraction.UploadFeatureClass(PredioBrowsed_Item, service, "ProAppModule1.Predio");
                 }
             }
             catch (Exception ex)

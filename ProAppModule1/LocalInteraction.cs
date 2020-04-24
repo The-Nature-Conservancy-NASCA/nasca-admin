@@ -18,10 +18,7 @@ namespace ProAppModule1
     class LocalInteraction
 
     {
-       
-
         public static bool ValidateFields(Object item, TableDefinition table_def) {
-
             PropertyInfo[] properties = item.GetType().GetProperties();
             foreach (PropertyInfo property in properties)
             {
@@ -36,7 +33,7 @@ namespace ProAppModule1
             return true;
         }
 
-        public static bool ValidateFieldsShapefile(Object item, TableDefinition fc_def)
+        public static bool ValidateFieldsShapefile(Object item, TableDefinition table_def)
         {
             PropertyInfo[] properties = item.GetType().GetProperties();
             foreach (PropertyInfo property in properties)
@@ -46,7 +43,7 @@ namespace ProAppModule1
                     name = property.Name.Substring(0, 10);
                 else
                     name = property.Name;
-                int index = fc_def.FindField(name);
+                int index = table_def.FindField(name);
                 if (index < 0)
                 {
                     MessageBox.Show($"El campo {name} no fue encontrado en el elemento seleccionado.", "Validación de campos", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -81,62 +78,6 @@ namespace ProAppModule1
             return rings;
         }
 
-
-        public static async Task UploadFeatureClass2(ArcGIS.Desktop.Core.Item SelectedItem, string service, string ClassName) {
-
-            var progressDlg = new ProgressDialog("Leyendo datos del Feature class seleccionado", "Cancelar", false);
-            progressDlg.Show();
-            var progressSrc = new CancelableProgressorSource(progressDlg);
-
-            int n = 0;
-            await QueuedTask.Run(() =>
-            {
-                Uri path = new System.Uri(SelectedItem.Path);
-                Uri directory = new Uri(path, ".");
-
-                var gdbPath = directory.AbsolutePath.Remove(directory.AbsolutePath.Length - 1);
-                Uri gdb = new Uri(gdbPath);
-                var geodatabase = new Geodatabase(new FileGeodatabaseConnectionPath(gdb));
-                FeatureClass featureclass = geodatabase.OpenDataset<FeatureClass>(SelectedItem.Title);
-
-                // validate fields
-                Type t = Type.GetType(ClassName);
-                var item = Activator.CreateInstance(t);
-                FeatureClassDefinition fc_def = featureclass.GetDefinition();
-                var schema = ValidateFields(item, fc_def);
-                if (schema != true)
-                {
-                    progressDlg.Hide();
-                    return;
-                }
-                   
-                using (RowCursor rowCursor = featureclass.Search())
-                {
-                    while (rowCursor.MoveNext())
-                    {
-                        using (Row row = rowCursor.Current)
-                        {
-                            Feature feature = row as Feature;
-                            Geometry shape = feature.GetShape();
-                            var _attributes = Activator.CreateInstance(t, row);
-                            var _rings = GetRings(shape);
-                            var serializer = new JavaScriptSerializer();
-                            var geom = serializer.Deserialize<Rings>(_rings);
-                            WebInteraction.AddFeatures(service, _attributes, geom);
-                            n += 1;
-                        }
-                    }
-                }
-            });
-            progressDlg.Hide();
-
-            if (n > 0)
-                MessageBox.Show(string.Format("Registros cargados: {0}", n), "Resultado de cargue", MessageBoxButton.OK, MessageBoxImage.Information);
-            else
-                MessageBox.Show("No se cargó ningún registro", "Resultado de cargue", MessageBoxButton.OK, MessageBoxImage.Warning);
-        }
-
-
         public static async Task UploadFeatureClass(ArcGIS.Desktop.Core.Item SelectedItem, string service, string ClassName)
         {
 
@@ -169,6 +110,7 @@ namespace ProAppModule1
             var conversionProcess = await QueuedTask.Run(() => {
 
                 string outPath = Project.Current.HomeFolderPath;
+                //string outPath = "in_memory";
                 string toolPath = "conversion.FeatureClassToShapefile";
                 var parameters = Geoprocessing.MakeValueArray(SelectedItem.Path, outPath);
                 var environments = Geoprocessing.MakeEnvironmentArray(overwriteoutput: true);
