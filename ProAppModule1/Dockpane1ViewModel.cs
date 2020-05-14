@@ -409,7 +409,7 @@ namespace ProAppModule1
             {
                 CarruselBrowsed_Item = openFeatureClass.Items.First();
                 _carrusel_file = CarruselBrowsed_Item.Path;
-                NotifyPropertyChanged(() => _carrusel_file);
+                NotifyPropertyChanged(() => Carrusel_File);
             }
         }
 
@@ -447,7 +447,7 @@ namespace ProAppModule1
             {
                 BiodiversidadBrowsed_Item = openFeatureClass.Items.First();
                 _biodiversidad_file = BiodiversidadBrowsed_Item.Path;
-                NotifyPropertyChanged(() => _biodiversidad_file);
+                NotifyPropertyChanged(() => Biodiversidad_File);
             }
         }
 

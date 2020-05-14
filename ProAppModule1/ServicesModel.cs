@@ -703,30 +703,30 @@ namespace ProAppModule1
         public Biodiversidad(Row row)
         {
 
-            _ID_region = Convert.ToString(row["ID_region"]);
-            _ID_proyecto = Convert.ToString(row["ID_proyect"]);
-            _grupo_tnc = Convert.ToString(row["grupo_tnc"]);
-            _cobertura = Convert.ToString(row["cobertura"]);
-            _fecha_identificacion = (TimeZoneInfo.ConvertTimeToUtc(Convert.ToDateTime(row["fecha_iden"])) - new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalMilliseconds;
-            _numero_individuos = Convert.ToInt32(row["numero_ind"]);
-            _institucion = Convert.ToString(row["institucio"]);
-            _observador = Convert.ToString(row["observador"]);
-            _metodo_observacion = Convert.ToString(row["metodo_obs"]);
-            _reino = Convert.ToString(row["reino"]);
-            _filo = Convert.ToString(row["filo"]);
-            _clase = Convert.ToString(row["clase"]);
-            _orden = Convert.ToString(row["orden"]);
-            _familia = Convert.ToString(row["familia"]);
-            _genero = Convert.ToString(row["genero"]);
-            _subgenero = Convert.ToString(row["subgenero"]);
-            _epiteto = Convert.ToString(row["epiteto"]);
-            _sexo = Convert.ToString(row["sexo"]);
-            _nombre_comun = Convert.ToString(row["nombre_com"]);
-            //_fecha = (TimeZoneInfo.ConvertTimeToUtc(Convert.ToDateTime(row["fecha"])) - new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalMilliseconds;
-            _especie = Convert.ToString(row["especie"]);
-            _autoria = Convert.ToString(row["autoria"]);
-            _ID_cobertura = Convert.ToString(row["ID_cobertu"]);
-            _momento = Convert.ToString(row["momento"]);
+            //_ID_region = Convert.ToString(row["ID_region"]);
+            //_ID_proyecto = Convert.ToString(row["ID_proyect"]);
+            //_grupo_tnc = Convert.ToString(row["grupo_tnc"]);
+            //_cobertura = Convert.ToString(row["cobertura"]);
+            //_fecha_identificacion = (TimeZoneInfo.ConvertTimeToUtc(Convert.ToDateTime(row["fecha_iden"])) - new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalMilliseconds;
+            //_numero_individuos = Convert.ToInt32(row["numero_ind"]);
+            //_institucion = Convert.ToString(row["institucio"]);
+            //_observador = Convert.ToString(row["observador"]);
+            //_metodo_observacion = Convert.ToString(row["metodo_obs"]);
+            //_reino = Convert.ToString(row["reino"]);
+            //_filo = Convert.ToString(row["filo"]);
+            //_clase = Convert.ToString(row["clase"]);
+            //_orden = Convert.ToString(row["orden"]);
+            //_familia = Convert.ToString(row["familia"]);
+            //_genero = Convert.ToString(row["genero"]);
+            //_subgenero = Convert.ToString(row["subgenero"]);
+            //_epiteto = Convert.ToString(row["epiteto"]);
+            //_sexo = Convert.ToString(row["sexo"]);
+            //_nombre_comun = Convert.ToString(row["nombre_com"]);
+            //////_fecha = (TimeZoneInfo.ConvertTimeToUtc(Convert.ToDateTime(row["fecha"])) - new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalMilliseconds;
+            //_especie = Convert.ToString(row["especie"]);
+            //_autoria = Convert.ToString(row["autoria"]);
+            //_ID_cobertura = Convert.ToString(row["ID_cobertu"]);
+            //_momento = Convert.ToString(row["momento"]);
 
         }
 

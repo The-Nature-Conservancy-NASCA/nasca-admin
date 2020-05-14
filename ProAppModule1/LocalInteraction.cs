@@ -97,14 +97,15 @@ namespace ProAppModule1
 
                 // validate fields
                 Type t = Type.GetType(ClassName);
-                var item = Activator.CreateInstance(t);
-                FeatureClassDefinition fc_def = featureclass.GetDefinition();
-                var schema = ValidateFields(item, fc_def);
-                if (schema != true)
-                {
-                    progressDlg.Hide();
-                    return;
-                }
+                //var item = Activator.CreateInstance(t);
+                //FeatureClassDefinition fc_def = featureclass.GetDefinition();
+                //var _fc_geom = fc_def.GetShapeType();
+                //var schema = ValidateFields(item, fc_def);
+                //if (schema != true)
+                //{
+                //    progressDlg.Hide();
+                //    return;
+                //}
             });
 
             var conversionProcess = await QueuedTask.Run(() => {
@@ -127,7 +128,21 @@ namespace ProAppModule1
 
                 var shapefilePath = new FileSystemConnectionPath(shp_path, FileSystemDatastoreType.Shapefile);
                 var shapefile = new FileSystemDatastore(shapefilePath);
+
                 var table = shapefile.OpenDataset<Table>(SelectedItem.Title);
+
+                ///Review this
+                Uri path = new System.Uri(SelectedItem.Path);
+                Uri directory = new Uri(path, ".");
+
+                var gdbPath = directory.AbsolutePath.Remove(directory.AbsolutePath.Length - 1);
+                Uri gdb = new Uri(gdbPath);
+                var geodatabase = new Geodatabase(new FileGeodatabaseConnectionPath(gdb));
+                FeatureClass featureclass = geodatabase.OpenDataset<FeatureClass>(SelectedItem.Title);
+                FeatureClassDefinition fc_def = featureclass.GetDefinition();
+                GeometryType fc_geom = fc_def.GetShapeType();
+                ///
+
 
                 using (RowCursor rowCursor = table.Search())
                 {
@@ -140,10 +155,15 @@ namespace ProAppModule1
 
                             Type t = Type.GetType(ClassName);
                             var _attributes = Activator.CreateInstance(t, row);
-                            var _rings = GetRings(shape);
+                            string _rings;
+                            if (fc_geom == GeometryType.Polygon)
+                                _rings = GetRings(shape);
+                            else
+                                _rings = GetRings(shape);
 
                             var serializer = new JavaScriptSerializer();
-                            var geom = serializer.Deserialize<Rings>(_rings);
+                            //var geom = serializer.Deserialize<Rings>(_rings);
+                            var geom = serializer.Deserialize<Point>(_rings);
 
                             WebInteraction.AddFeatures(service, _attributes, geom);
                             n += 1;
@@ -205,6 +225,7 @@ namespace ProAppModule1
 
                             var serializer = new JavaScriptSerializer();
                             var geom = serializer.Deserialize<Rings>(_rings);
+                            
 
                             WebInteraction.AddFeatures(service, _attributes, geom);
                             n += 1;
