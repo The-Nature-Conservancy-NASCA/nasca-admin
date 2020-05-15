@@ -534,4 +534,16 @@ namespace ProAppModule1
         public double[][][] curveRings { get; set; }
 
     }
+
+    public class WebFeature
+    {
+        private object _attributes;
+        private object _geometry;
+
+        public WebFeature(Object attributes, Object geometry) {
+            _attributes = attributes;
+            _geometry = geometry;
+        }
+
+    }
 }

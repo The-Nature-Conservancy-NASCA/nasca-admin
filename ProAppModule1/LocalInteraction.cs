@@ -92,6 +92,7 @@ namespace ProAppModule1
 
                 var gdbPath = directory.AbsolutePath.Remove(directory.AbsolutePath.Length - 1);
                 Uri gdb = new Uri(gdbPath);
+
                 var geodatabase = new Geodatabase(new FileGeodatabaseConnectionPath(gdb));
                 FeatureClass featureclass = geodatabase.OpenDataset<FeatureClass>(SelectedItem.Title);
 

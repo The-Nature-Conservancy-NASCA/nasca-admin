@@ -359,7 +359,9 @@ namespace ProAppModule1
 
             // Set up commands biodiversidad
             _biodiversidad_browseCommand = new RelayCommand(() => BrowseBiodiversidad(), () => true);
-            _biodiversidad_uploadCommand = new RelayCommand(() => UploadBiodiversidad(), () => true);
+            //_biodiversidad_uploadCommand = new RelayCommand(() => UploadBiodiversidad(), () => true);
+            var bio = new Biodiversidad2(new DataUploader(new FieldValidator(), new Geoprocessor()));
+            _biodiversidad_uploadCommand = new RelayCommand(() => bio.UploadData(BiodiversidadBrowsed_Item, "ProAppModule1.Biodiversidad2"), () => true);
 
             // Set up commands carrusel
             _carrusel_browseCommand = new RelayCommand(() => BrowseCarrusel(), () => true);
@@ -409,29 +411,14 @@ namespace ProAppModule1
             {
                 CarruselBrowsed_Item = openFeatureClass.Items.First();
                 _carrusel_file = CarruselBrowsed_Item.Path;
-                NotifyPropertyChanged(() => Carrusel_File);
+                NotifyPropertyChanged(() => _carrusel_file);
             }
         }
 
         private async void UploadBiodiversidad()
         {
-            var service = String.Format("{0}/2", _serviceURL);
-            try
-            {
-                if (BiodiversidadBrowsed_Item != null)
-                {
-                    if (BiodiversidadBrowsed_Item.Type == "Shapefile")
-                        await LocalInteraction.UploadShapefile(BiodiversidadBrowsed_Item, service, "ProAppModule1.Biodiversidad2");
-                    else
-                        await LocalInteraction.UploadFeatureClass(BiodiversidadBrowsed_Item, service, "ProAppModule1.Biodiversidad");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(string.Format("Error al Cargar los datos de Biodiversidad {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            return;
+            
+
         }
 
         private void BrowseBiodiversidad()
@@ -942,7 +929,7 @@ namespace ProAppModule1
 
             if (SelectedIndex >= 0)
             {
-                var answer = MessageBox.Show("¿Desea eliminar el registro seleccionado?", "Borrar registro", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes);
+                var answer = MessageBox.Show("¿Desea eliminar el elemento seleccionado y sus registros relacionados?", "Borrar registro", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes);
 
                 if (answer == MessageBoxResult.Yes) {
                     var row = EstrategiasDataTable.Rows[SelectedIndex];

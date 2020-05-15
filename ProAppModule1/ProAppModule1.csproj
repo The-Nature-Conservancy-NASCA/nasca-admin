@@ -155,9 +155,11 @@
     <AddInContent Include="DarkImages\AddInDesktop32.png" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Geoprocessor.cs" />
     <Compile Include="CrearProyecto.xaml.cs">
       <DependentUpon>CrearProyecto.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataUploader.cs" />
     <Compile Include="Dockpane1.xaml.cs">
       <DependentUpon>Dockpane1.xaml</DependentUpon>
     </Compile>
@@ -165,6 +167,8 @@
     <Compile Include="EditarProyecto.xaml.cs">
       <DependentUpon>EditarProyecto.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FieldValidator.cs" />
+    <Compile Include="IUploader.cs" />
     <Compile Include="LocalInteraction.cs" />
     <Compile Include="Module1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
