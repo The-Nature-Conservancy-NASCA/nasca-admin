@@ -294,6 +294,9 @@ namespace ProAppModule1
         protected Dockpane1ViewModel()
 
         {
+
+            var loader = new DataUploader(new FieldValidator());
+
             // Set up commands estrategia
             _estrategiasSelectionCommand = new RelayCommand(() => OnEstrategiaSelecionada(), () => true);
             _loadDataCommand = new RelayCommand(() => LoadData(), () => true);
@@ -303,8 +306,10 @@ namespace ProAppModule1
             _eliminateSelectedRow = new RelayCommand(() => EliminateRow(), () => true);
             _updateSelectedRowCommand = new RelayCommand(() => UpdateSelectedRow(), () => true);
             _unselectRowCommand = new RelayCommand(() => UnselectRow(), () => true);
-            _uploadEstrategiaCommand = new RelayCommand(() => UploadEstrategia(), () => true);
+
             _browseFileEstrategiaCommand = new RelayCommand(() => BrowseFileEstrategia(), () => true);
+            //_uploadEstrategiaCommand = new RelayCommand(() => UploadEstrategia(), () => true);
+            _uploadEstrategiaCommand = new RelayCommand(() => loader.UploadData(new Estrategia(SelectedItem_Estrategia)), () => true);
             //_attachmentEstrategiaCommand = new RelayCommand(() => AttachmentEstrategia(), () => true);
 
             // Set up commands proyecto
@@ -318,8 +323,10 @@ namespace ProAppModule1
             _browseFileProyectoCommand = new RelayCommand(() => BrowseFileProyecto(), () => true);
 
             // Set up commands region
+
             _region_browseCommand = new RelayCommand(() => BrowseRegion(), () => true);
-            _region_uploadCommand = new RelayCommand(() => UploadRegion(), () => true);
+            //_region_uploadCommand = new RelayCommand(() => UploadRegion(), () => true);
+            _region_uploadCommand = new RelayCommand(() => loader.UploadData(new Region(RegionBrowsed_Item)), () => true);
 
             // Set up commands aliados
             _aliados_browseCommand = new RelayCommand(() => BrowseAliados(), () => true);
@@ -339,7 +346,8 @@ namespace ProAppModule1
 
             // Set up commands predios
             _predio_browseCommand = new RelayCommand(() => BrowsePredio(), () => true);
-            _predio_uploadCommand = new RelayCommand(() => UploadPredio(), () => true);
+            _predio_uploadCommand = new RelayCommand(() => loader.UploadData(new Predio(PredioBrowsed_Item)), () => true);
+            //_predio_uploadCommand = new RelayCommand(() => UploadPredio(), () => true);
 
             // Set up commands implementaciones
             _implementacion_browseCommand = new RelayCommand(() => BrowseImplementacion(), () => true);
@@ -358,10 +366,10 @@ namespace ProAppModule1
             _colores_uploadCommand = new RelayCommand(() => UploadColores(), () => true);
 
             // Set up commands biodiversidad
+            //var biodiversidad = new Biodiversidad(new DataUploader(new FieldValidator()));
             _biodiversidad_browseCommand = new RelayCommand(() => BrowseBiodiversidad(), () => true);
-            //_biodiversidad_uploadCommand = new RelayCommand(() => UploadBiodiversidad(), () => true);
-            var bio = new Biodiversidad2(new DataUploader(new FieldValidator(), new Geoprocessor()));
-            _biodiversidad_uploadCommand = new RelayCommand(() => bio.UploadData(BiodiversidadBrowsed_Item, "ProAppModule1.Biodiversidad2"), () => true);
+            //_biodiversidad_uploadCommand = new RelayCommand(() => biodiversidad.UploadData(BiodiversidadBrowsed_Item, "ProAppModule1.Biodiversidad2"), () => true);
+            _biodiversidad_uploadCommand = new RelayCommand(() => loader.UploadData(new Biodiversidad(BiodiversidadBrowsed_Item)), () => true);
 
             // Set up commands carrusel
             _carrusel_browseCommand = new RelayCommand(() => BrowseCarrusel(), () => true);

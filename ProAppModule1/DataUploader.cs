@@ -15,41 +15,26 @@ using System.Net;
 namespace ProAppModule1
 {
 
-    public class DataUploader : IUploader
+    public class GenericUpLoader
+    {
+    }
 
+    public class DataUploader : IUploader
     {
         private Uri _gdb;
-        private string token = WebInteraction.GenerateToken("GeoTNCDev", "GeoTNC123");
+        private readonly string token = WebInteraction.GenerateToken("GeoTNCDev", "GeoTNC123");
+        private SpatialReference webMercator = SpatialReferenceBuilder.CreateSpatialReference(102100);
+
 
         private readonly FieldValidator  _fieldValidator;
-        private readonly Geoprocessor _geoprocessor;
-
-        public DataUploader(FieldValidator fieldValidator, Geoprocessor geoprocessor) {
+        public DataUploader(FieldValidator fieldValidator) {
             _fieldValidator = fieldValidator;
-            _geoprocessor = geoprocessor;
         }
 
-        private async Task<FeatureClassDefinition> GetDefinition(Item item) {
-            var path = new Uri(item.Path);
-            var directory = new Uri(path, ".");
-            var gdbPath = directory.AbsolutePath.Remove(directory.AbsolutePath.Length - 1);
-            _gdb = new Uri(gdbPath);
-
-
-            FeatureClassDefinition definition = await QueuedTask.Run(()=> {
-                var geodatabase = new Geodatabase(new FileGeodatabaseConnectionPath(_gdb));
-                var featureclass = geodatabase.OpenDataset<FeatureClass>(item.Title);
-                var _definition = featureclass.GetDefinition();
-                return _definition;
-            });
-
-            return definition;
-        }
-
-        private int AddFeatures(List<Object> features, string service) {
+        private int AddFeatures(List<Object> features, Element element) {
 
             // Create a request for the URL.          
-            var url = $"{service}/addFeatures";
+            var url = $"{element.service}/addFeatures";
 
             // Serialize the objects to json
             var serializer = new JavaScriptSerializer();
@@ -68,24 +53,18 @@ namespace ProAppModule1
 
             // Get the response.  
             WebResponse response = request.GetResponse();
-            // Display the status.  
             //Debug.WriteLine(((HttpWebResponse)response).StatusDescription);
 
             // Get the stream containing content returned by the server. 
-            // The using block ensures the stream is automatically closed. 
             using (dataStream = response.GetResponseStream())
             {
                 // Open the stream using a StreamReader for easy access.  
                 StreamReader reader = new StreamReader(dataStream);
-                // Read the content.  
                 string responseFromServer = reader.ReadToEnd();
-
-                // Display the content.  
                 //Debug.WriteLine(responseFromServer);
 
-                // Desealize content
+                // Deserialize content
                 var result = serializer.Deserialize<AddResults>(responseFromServer);
-
                 var addResult = result.addResults[0];
 
                 if (addResult.success != null)
@@ -99,55 +78,45 @@ namespace ProAppModule1
             return 0;
         }
 
-        private Task<FeatureClass> GetFeatureClass(FeatureClassDefinition def, Item item) {
-
-            var featureClass = QueuedTask.Run(()=> {
-                var fc_geom = def.GetShapeType();
-                var geodatabase = new Geodatabase(new FileGeodatabaseConnectionPath(_gdb));
-                var _featureClass = geodatabase.OpenDataset<FeatureClass>(item.Title);
-                return _featureClass;
-            });
-
-            return featureClass;
-
-        }
-
-       private Task LoadData(FeatureClass featureclass, string class_name, string service, CancelableProgressorSource status, int chunksize) {
+       private Task LoadToService(Element element, CancelableProgressorSource status, int chunksize) {
 
             return QueuedTask.Run(() => {
 
                 var featuresList = new List<Object>();
-                var webMercator = SpatialReferenceBuilder.CreateSpatialReference(102100);
-
-
-                using (RowCursor rowCursor = featureclass.Search())
+                using (RowCursor rowCursor = element.cursor)
                 {
                     while (rowCursor.MoveNext())
                     {
                         using (Row row = rowCursor.Current)
                         {
-                            Feature feature = row as Feature;
-                            Geometry shape = feature.GetShape();
 
-                            Type type = Type.GetType(class_name);
-                            var _attributes = Activator.CreateInstance(type, row);
+                            Object feat;
 
-                            Geometry poly = GeometryEngine.Instance.Project(shape, webMercator);
-                            var json_poly = GeometryEngine.Instance.ExportToJSON(JSONExportFlags.jsonExportSkipCRS, poly);
+                            // Read attributes
+                            var _attributes = element.FormatAttributes(row);
 
-                            var serializer = new JavaScriptSerializer();
-                            Point geom;
-                            //if (fc_geom == GeometryType.Polygon)
-                            //    { }
-                            //else
-                            geom = serializer.Deserialize<Point>(json_poly);
+                            // Read and convert geometry
+                            if (element.item.Type == "File Geodatabase Feature Class" || element.item.Type == "Shapefile")
+                            {
+                                var feature = row as Feature;
+                                var shape = feature.GetShape();
+                                var shape_prj = GeometryEngine.Instance.Project(shape, webMercator);
+                                var json_geom = GeometryEngine.Instance.ExportToJSON(JSONExportFlags.jsonExportSkipCRS, shape_prj);
+                                var geom = element.Serialize(json_geom);
+                                feat = new { attributes = _attributes, geometry = geom };
+                            }
+                            else if (element.item.Type == "File Geodatabase Table")
+                                feat = new {attributes = _attributes};
+                            else
+                                feat = new { }; // Maybe Throw a exception?
 
-                            var feat = new { attributes = _attributes, geometry = geom };
+                            // Add feature
                             featuresList.Add(feat);
 
+                            // Evaluate size
                             if (featuresList.Count == chunksize)
                             {
-                                var _result = AddFeatures(featuresList, service);
+                                var _result = AddFeatures(featuresList, element);
                                 featuresList.Clear();
                                 status.Progressor.Value += 1;
                                 //status.Progressor.Status = (status.Progressor.Value * 100 / status.Progressor.Max) + @" % Completed";
@@ -158,46 +127,51 @@ namespace ProAppModule1
                 }
 
                 if (featuresList.Count > 0)
-                    AddFeatures(featuresList, service);
+                {
+                    AddFeatures(featuresList, element);
+                    status.Progressor.Value += 1;
+                    status.Progressor.Message = String.Format("Registros cargados {0}", status.Progressor.Value * chunksize);
+                }
             }, status.Progressor);
-
-
         }
 
 
-        public async void UploadData(Item item, string class_name, string service)
+        public async void UploadData(Element element)
         {
             // Defensive programmming
-            if (item == null)
+            if (element.item == null)
                 throw new NullReferenceException();
 
+            element.Initialization(element.index);
+
             // Get definition and shapetype
-            var def = await GetDefinition(item);
+            await element.GetProperties();
 
             // Validating fields
-            var schema = await _fieldValidator.ValidateFields(class_name, def);
-            if (schema != true)
-            {
-                //MessageBox.Show("Invalid data schema");
-                //return;
-            }
+            //var schema = await _fieldValidator.ValidateFields(class_name, def);
+            //if (schema != true)
+            //{
+            //    //MessageBox.Show("Invalid data schema");
+            //    //return;
+            //}
 
             // Loading data
-            //var path = new Uri(item.Path);
-            //var steps =  await _geoprocessor.GetCount(path);
-            var chunksize = 500;
-            var featureClass = await GetFeatureClass(def, item);
-            var count = await QueuedTask.Run(() => { return featureClass.GetCount(); });
-            var steps = (uint) (count / chunksize + 1);
+            int chunksize;
+            if (element.count > 100)
+                chunksize = 500;
+            else
+            {
+                chunksize = 10;
+            }
 
-            using (var progress = new ProgressDialog("Showing Progress", "Canceled", steps, false))
+            var steps = (uint) (element.count / chunksize + 1);
+
+            using (var progress = new ProgressDialog("Cargando datos", "Canceled", steps, false))
             {
                 var status = new CancelableProgressorSource(progress);
                 progress.Show();
-                
                 status.Max = steps;
-                await LoadData(featureClass, class_name, service, status, chunksize);
-
+                await LoadToService(element, status, chunksize);
                 progress.Hide();
             }
         }

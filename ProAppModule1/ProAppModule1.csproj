@@ -155,6 +155,9 @@
     <AddInContent Include="DarkImages\AddInDesktop32.png" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Biodiversidad.cs" />
+    <Compile Include="Element.cs" />
+    <Compile Include="Estrategia.cs" />
     <Compile Include="Geoprocessor.cs" />
     <Compile Include="CrearProyecto.xaml.cs">
       <DependentUpon>CrearProyecto.xaml</DependentUpon>
@@ -171,10 +174,12 @@
     <Compile Include="IUploader.cs" />
     <Compile Include="LocalInteraction.cs" />
     <Compile Include="Module1.cs" />
+    <Compile Include="Predio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProWindow1.xaml.cs">
       <DependentUpon>ProWindow1.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Region.cs" />
     <Compile Include="ServicesModel.cs" />
     <Compile Include="ShowCrearProyecto.cs" />
     <Compile Include="ShowEditarProyecto.cs" />

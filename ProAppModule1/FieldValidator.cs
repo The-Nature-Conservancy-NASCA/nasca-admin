@@ -10,6 +10,7 @@ using System.Windows;
 
 namespace ProAppModule1
 {
+
     public class FieldValidator
     {
 
@@ -31,6 +32,12 @@ namespace ProAppModule1
             }
             return true;
         }
+    }
+
+    public class FeatureClassFieldValidator: FieldValidator
+    {
+
 
     }
+
 }
