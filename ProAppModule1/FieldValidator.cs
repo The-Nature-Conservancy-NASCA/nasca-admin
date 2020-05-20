@@ -1,12 +1,8 @@
 ﻿using MessageBox = ArcGIS.Desktop.Framework.Dialogs.MessageBox;
 using ArcGIS.Desktop.Framework.Threading.Tasks;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace ProAppModule1
 {
@@ -33,11 +29,4 @@ namespace ProAppModule1
             return true;
         }
     }
-
-    public class FeatureClassFieldValidator: FieldValidator
-    {
-
-
-    }
-
 }

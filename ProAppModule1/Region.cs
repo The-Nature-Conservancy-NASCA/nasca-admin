@@ -23,8 +23,7 @@ namespace ProAppModule1
 
         public override object Serialize(string json_geom)
         {
-            Rings rings;
-            rings = serializer.Deserialize<Rings>(json_geom);
+            var rings = serializer.Deserialize<Rings>(json_geom);
             return rings;
         }
     }

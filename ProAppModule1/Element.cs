@@ -145,7 +145,7 @@ namespace ProAppModule1
             return new_value;
         }
 
-        public double ToDouble(Row row, string field_name)
+        public double ToDate(Row row, string field_name)
         {
             double new_value;
             try
@@ -156,6 +156,21 @@ namespace ProAppModule1
             {
                 new_value = 0; ////review this value !!!!!!!!!!!
             }
+            return new_value;
+        }
+
+        public double ToDouble(Row row, string field_name)
+        {
+            double new_value;
+            try
+            {
+                new_value = Convert.ToDouble(row[field_name]);
+            }
+            catch (Exception)
+            {
+                new_value = 0; ////review this value !!!!!!!!!!!
+            }
+
             return new_value;
         }
 

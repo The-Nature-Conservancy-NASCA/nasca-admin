@@ -1,5 +1,4 @@
-﻿using System;
-using ArcGIS.Core.Data;
+﻿using ArcGIS.Core.Data;
 using ArcGIS.Desktop.Core;
 
 namespace ProAppModule1
@@ -25,18 +24,16 @@ namespace ProAppModule1
             var stok_carbono = ToDouble(row, "stock_carb");
             var captura_carbono = ToDouble(row, "captura_ca");
 
-            Object _attributes = new
+            var _attributes = new
             {
-                ID_predio, ID_proyecto, ID_region, nombre, departamento, municipio, vereda, nombre_propietario, tipo_dominio, AreaHa, stok_carbono, captura_carbono
+                ID_predio, ID_proyecto, ID_region, nombre, departamento, municipio, vereda, nombre_propietario, tipo_dominio, AreaHa, stok_carbono, captura_carbono };
 
-            };
             return _attributes;
 
         }
         public override object Serialize(string json_geom)
         {
-            Rings rings;
-            rings = serializer.Deserialize<Rings>(json_geom);
+            var rings = serializer.Deserialize<Rings>(json_geom);
             return rings;
         }
     }

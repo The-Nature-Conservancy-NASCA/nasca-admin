@@ -4,21 +4,15 @@ using System.Text;
 using System.Threading.Tasks;
 using ArcGIS.Core.Data;
 using ArcGIS.Core.Geometry;
-using ArcGIS.Desktop.Core;
 using ArcGIS.Desktop.Framework.Threading.Tasks;
 using MessageBox = ArcGIS.Desktop.Framework.Dialogs.MessageBox;
 using System.Web.Script.Serialization;
-using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Windows;
 
 namespace ProAppModule1
 {
-
-    public class GenericUpLoader
-    {
-    }
-
     public class DataUploader : IUploader
     {
         private Uri _gdb;
@@ -138,42 +132,59 @@ namespace ProAppModule1
 
         public async void UploadData(Element element)
         {
-            // Defensive programmming
-            if (element.item == null)
-                throw new NullReferenceException();
-
-            element.Initialization(element.index);
-
-            // Get definition and shapetype
-            await element.GetProperties();
-
-            // Validating fields
-            //var schema = await _fieldValidator.ValidateFields(class_name, def);
-            //if (schema != true)
-            //{
-            //    //MessageBox.Show("Invalid data schema");
-            //    //return;
-            //}
-
-            // Loading data
-            int chunksize;
-            if (element.count > 100)
-                chunksize = 500;
-            else
+            try
             {
-                chunksize = 10;
+                // Defensive programmming
+                if (element.item == null)
+                    throw new NullReferenceException();
+
+                element.Initialization(element.index);
+
+                // Get definition and shapetype
+                await element.GetProperties();
+
+                // Validating fields
+                //var schema = await _fieldValidator.ValidateFields(class_name, def);
+                //if (schema != true)
+                //{
+                //    //MessageBox.Show("Invalid data schema");
+                //    //return;
+                //}
+
+                // Loading data
+                int chunksize;
+                if (element.count > 100)
+                    chunksize = 500;
+                else
+                {
+                    chunksize = 10;
+                }
+
+                var steps = (uint)(element.count / chunksize + 1);
+
+                using (var progress = new ProgressDialog("Cargando datos", "Canceled", steps, false))
+                {
+                    var status = new CancelableProgressorSource(progress);
+                    progress.Show();
+                    status.Max = steps;
+                    await LoadToService(element, status, chunksize);
+                    progress.Hide();
+                }
+
+                var n = element.count; // Review the real number of loaded records
+
+                if (n > 0)
+                    MessageBox.Show(string.Format("Registros cargados: {0}", n), "Resultado de cargue", MessageBoxButton.OK, MessageBoxImage.Information);
+                else
+                    MessageBox.Show("No se cargó ningún registro", "Resultado de cargue", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(String.Format("Error al Cargar los datos de Proyecto {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
             }
 
-            var steps = (uint) (element.count / chunksize + 1);
-
-            using (var progress = new ProgressDialog("Cargando datos", "Canceled", steps, false))
-            {
-                var status = new CancelableProgressorSource(progress);
-                progress.Show();
-                status.Max = steps;
-                await LoadToService(element, status, chunksize);
-                progress.Hide();
-            }
         }
     }
 }

@@ -155,7 +155,13 @@
     <AddInContent Include="DarkImages\AddInDesktop32.png" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Aliado.cs" />
     <Compile Include="Biodiversidad.cs" />
+    <Compile Include="Carbono.cs" />
+    <Compile Include="Carrusel.cs" />
+    <Compile Include="Cobertura.cs" />
+    <Compile Include="Color.cs" />
+    <Compile Include="Contribucion.cs" />
     <Compile Include="Element.cs" />
     <Compile Include="Estrategia.cs" />
     <Compile Include="Geoprocessor.cs" />
@@ -171,16 +177,18 @@
       <DependentUpon>EditarProyecto.xaml</DependentUpon>
     </Compile>
     <Compile Include="FieldValidator.cs" />
+    <Compile Include="Implementacion.cs" />
     <Compile Include="IUploader.cs" />
-    <Compile Include="LocalInteraction.cs" />
+    <Compile Include="Meta.cs" />
     <Compile Include="Module1.cs" />
+    <Compile Include="Participante.cs" />
     <Compile Include="Predio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProWindow1.xaml.cs">
       <DependentUpon>ProWindow1.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Proyecto.cs" />
     <Compile Include="Region.cs" />
-    <Compile Include="ServicesModel.cs" />
     <Compile Include="ShowCrearProyecto.cs" />
     <Compile Include="ShowEditarProyecto.cs" />
     <Compile Include="ShowProWindow1.cs" />

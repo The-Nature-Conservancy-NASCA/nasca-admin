@@ -49,7 +49,6 @@ namespace ProAppModule1
         public Item SelectedItem_Estrategia { get { return _selectedItem_estrategia; } set { _selectedItem_estrategia = value; NotifyPropertyChanged(() => SelectedItem_Estrategia); } }
         public DataTable EstrategiasDataTable { get { return _estrategiasDataTable; } set { SetProperty(ref _estrategiasDataTable, value, () => EstrategiasDataTable); } }
 
-        private readonly ICommand _testCommand;
         private readonly ICommand _estrategiasSelectionCommand;
         private readonly ICommand _loadDataCommand;
         private readonly ICommand _showProWindow;
@@ -60,9 +59,7 @@ namespace ProAppModule1
         private readonly ICommand _unselectRowCommand;
         private readonly ICommand _uploadEstrategiaCommand;
         private readonly ICommand _browseFileEstrategiaCommand;
-        //public readonly ICommand _attachmentEstrategiaCommand;
 
-        public ICommand TestCommand => _testCommand;
         public ICommand EstrategiasSelectionCommand => _estrategiasSelectionCommand;
         public ICommand LoadDataCommand => _loadDataCommand;
         public ICommand ShowProWindow => _showProWindow;
@@ -294,7 +291,6 @@ namespace ProAppModule1
         protected Dockpane1ViewModel()
 
         {
-
             var loader = new DataUploader(new FieldValidator());
 
             // Set up commands estrategia
@@ -310,7 +306,6 @@ namespace ProAppModule1
             _browseFileEstrategiaCommand = new RelayCommand(() => BrowseFileEstrategia(), () => true);
             //_uploadEstrategiaCommand = new RelayCommand(() => UploadEstrategia(), () => true);
             _uploadEstrategiaCommand = new RelayCommand(() => loader.UploadData(new Estrategia(SelectedItem_Estrategia)), () => true);
-            //_attachmentEstrategiaCommand = new RelayCommand(() => AttachmentEstrategia(), () => true);
 
             // Set up commands proyecto
             _loadDataCommand_pry = new RelayCommand(() => LoadData_pry(), () => true);
@@ -319,7 +314,8 @@ namespace ProAppModule1
             _addNewRowCommand_pry = new RelayCommand(() => AddNewRow_pry(), () => true);
             _eliminateSelectedRow_pry = new RelayCommand(() => EliminateRow_pry(), () => true);
             _updateSelectedRowCommand_pry = new RelayCommand(() => UpdateSelectedRow_pry(), () => true);
-            _uploadProyectoCommand = new RelayCommand(() => UploadProyecto(), () => true);
+            //_uploadProyectoCommand = new RelayCommand(() => UploadProyecto(), () => true);
+            _uploadProyectoCommand = new RelayCommand(() => loader.UploadData(new Proyecto(SelectedItem_Proyecto)), () => true);
             _browseFileProyectoCommand = new RelayCommand(() => BrowseFileProyecto(), () => true);
 
             // Set up commands region
@@ -330,19 +326,23 @@ namespace ProAppModule1
 
             // Set up commands aliados
             _aliados_browseCommand = new RelayCommand(() => BrowseAliados(), () => true);
-            _aliados_uploadCommand = new RelayCommand(() => UploadAliados(), () => true);
+            //_aliados_uploadCommand = new RelayCommand(() => UploadAliados(), () => true);
+            _aliados_uploadCommand = new RelayCommand(() => loader.UploadData(new Aliado(AliadosBrowsed_Item)), () => true);
 
             // Set up commands metas
             _metas_browseCommand = new RelayCommand(() => BrowseMetas(), () => true);
-            _metas_uploadCommand = new RelayCommand(() => UploadMetas(), () => true);
+            //_metas_uploadCommand = new RelayCommand(() => UploadMetas(), () => true);
+            _metas_uploadCommand = new RelayCommand(() => loader.UploadData(new Meta(MetasBrowsed_Item)), () => true);
 
             // Set up commands participantes
             _participantes_browseCommand = new RelayCommand(() => BrowseParticipantes(), () => true);
-            _participantes_uploadCommand = new RelayCommand(() => UploadParticipantes(), () => true);
+            //_participantes_uploadCommand = new RelayCommand(() => UploadParticipantes(), () => true);
+            _participantes_uploadCommand = new RelayCommand(() => loader.UploadData(new Participante(ParticipantesBrowsed_Item)), () => true);
 
             // Set up commands contribuciones
             _contribuciones_browseCommand = new RelayCommand(() => BrowseContribuciones(), () => true);
-            _contribuciones_uploadCommand = new RelayCommand(() => UploadContribuciones(), () => true);
+            //_contribuciones_uploadCommand = new RelayCommand(() => UploadContribuciones(), () => true);
+            _contribuciones_uploadCommand = new RelayCommand(() => loader.UploadData(new Contribucion(ContribucionesBrowsed_Item)), () => true);
 
             // Set up commands predios
             _predio_browseCommand = new RelayCommand(() => BrowsePredio(), () => true);
@@ -351,30 +351,33 @@ namespace ProAppModule1
 
             // Set up commands implementaciones
             _implementacion_browseCommand = new RelayCommand(() => BrowseImplementacion(), () => true);
-            _implementacion_uploadCommand = new RelayCommand(() => UploadImplementacion(), () => true);
+            //_implementacion_uploadCommand = new RelayCommand(() => UploadImplementacion(), () => true);
+            _implementacion_uploadCommand = new RelayCommand(() => loader.UploadData(new Implementacion(ImplementacionBrowsed_Item)), () => true);
 
             // Set up commands coberturas
             _cobertura_browseCommand = new RelayCommand(() => BrowseCobertura(), () => true);
-            _cobertura_uploadCommand = new RelayCommand(() => UploadCobertura(), () => true);
+            //_cobertura_uploadCommand = new RelayCommand(() => UploadCobertura(), () => true);
+            _cobertura_uploadCommand = new RelayCommand(() => loader.UploadData(new Cobertura(CoberturaBrowsed_Item)), () => true);
 
             // Set up commands carbono
             _carbono_browseCommand = new RelayCommand(() => BrowseCarbono(), () => true);
-            _carbono_uploadCommand = new RelayCommand(() => UploadCarbono(), () => true);
+            //_carbono_uploadCommand = new RelayCommand(() => UploadCarbono(), () => true);
+            _carbono_uploadCommand = new RelayCommand(() => loader.UploadData(new Carbono(CarbonoBrowsed_Item)), () => true);
 
             // Set up commands colores
             _colores_browseCommand = new RelayCommand(() => BrowseColores(), () => true);
-            _colores_uploadCommand = new RelayCommand(() => UploadColores(), () => true);
+            //_colores_uploadCommand = new RelayCommand(() => UploadColores(), () => true);
+            _colores_uploadCommand = new RelayCommand(() => loader.UploadData(new Color(ColoresBrowsed_Item)), () => true);
 
             // Set up commands biodiversidad
-            //var biodiversidad = new Biodiversidad(new DataUploader(new FieldValidator()));
             _biodiversidad_browseCommand = new RelayCommand(() => BrowseBiodiversidad(), () => true);
             //_biodiversidad_uploadCommand = new RelayCommand(() => biodiversidad.UploadData(BiodiversidadBrowsed_Item, "ProAppModule1.Biodiversidad2"), () => true);
             _biodiversidad_uploadCommand = new RelayCommand(() => loader.UploadData(new Biodiversidad(BiodiversidadBrowsed_Item)), () => true);
 
             // Set up commands carrusel
             _carrusel_browseCommand = new RelayCommand(() => BrowseCarrusel(), () => true);
-            _carrusel_uploadCommand = new RelayCommand(() => UploadCarrusel(), () => true);
-
+            //_carrusel_uploadCommand = new RelayCommand(() => UploadCarrusel(), () => true);
+            _carrusel_uploadCommand = new RelayCommand(() => loader.UploadData(new Carrusel(CarruselBrowsed_Item)), () => true);
 
             // Load data 
             LoadData();
@@ -383,27 +386,6 @@ namespace ProAppModule1
             // Startup properties
             SelectedIndex = -1;
             SelectedIndex_pry = -1;
-        }
-
-        private async void UploadCarrusel()
-        {
-            var service = String.Format("{0}/10", _serviceURL);
-            try
-            {
-                if (CarruselBrowsed_Item != null)
-                {
-                    if (CarruselBrowsed_Item.Type == "File Geodatabase Table")
-                        await LocalInteraction.UploadTable(CarruselBrowsed_Item, service, "ProAppModule1.Carrusel");
-                    else
-                        await LocalInteraction.UploadExcel(CarruselBrowsed_Item, service, "ProAppModule1.Carrusel");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(string.Format("Error al Cargar los datos de Carrusel {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            return;
         }
 
         private void BrowseCarrusel()
@@ -423,12 +405,6 @@ namespace ProAppModule1
             }
         }
 
-        private async void UploadBiodiversidad()
-        {
-            
-
-        }
-
         private void BrowseBiodiversidad()
         {
             var openFeatureClass = new OpenItemDialog()
@@ -444,27 +420,6 @@ namespace ProAppModule1
                 _biodiversidad_file = BiodiversidadBrowsed_Item.Path;
                 NotifyPropertyChanged(() => Biodiversidad_File);
             }
-        }
-
-        private async void UploadColores()
-        {
-            var service = String.Format("{0}/12", _serviceURL);
-            try
-            {
-                if (ColoresBrowsed_Item != null)
-                {
-                    if (ColoresBrowsed_Item.Type == "File Geodatabase Table")
-                        await LocalInteraction.UploadTable(ColoresBrowsed_Item, service, "ProAppModule1.Color");
-                    else
-                        await LocalInteraction.UploadExcel(ColoresBrowsed_Item, service, "ProAppModule1.Color");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(string.Format("Error al Cargar los datos de Colores {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            return;
         }
 
         private void BrowseColores()
@@ -484,27 +439,6 @@ namespace ProAppModule1
             }
         }
 
-        private async void UploadCarbono()
-        {
-            var service = String.Format("{0}/11", _serviceURL);
-            try
-            {
-                if (CarbonoBrowsed_Item != null)
-                {
-                    if (CarbonoBrowsed_Item.Type == "File Geodatabase Table")
-                        await LocalInteraction.UploadTable(CarbonoBrowsed_Item, service, "ProAppModule1.Carbono");
-                    else
-                        await LocalInteraction.UploadExcel(CarbonoBrowsed_Item, service, "ProAppModule1.Carbono");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(string.Format("Error al Cargar los datos de Carbono {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            return;
-        }
-
         private void BrowseCarbono()
         {
             var openFeatureClass = new OpenItemDialog()
@@ -520,28 +454,6 @@ namespace ProAppModule1
                 _carbono_file = CarbonoBrowsed_Item.Path;
                 NotifyPropertyChanged(() => Carbono_File);
             }
-        }
-
-        private async void UploadCobertura()
-        {
-            var service = String.Format("{0}/13", _serviceURL);
-
-            try
-            {
-                if (CoberturaBrowsed_Item != null)
-                {
-                    if (CoberturaBrowsed_Item.Type == "File Geodatabase Table")
-                        await LocalInteraction.UploadTable(CoberturaBrowsed_Item, service, "ProAppModule1.Cobertura");
-                    else
-                        await LocalInteraction.UploadExcel(CoberturaBrowsed_Item, service, "ProAppModule1.Cobertura");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(string.Format("Error al Cargar los datos de Cobertura {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            return;
         }
 
         private void BrowseCobertura()
@@ -561,28 +473,6 @@ namespace ProAppModule1
             }
         }
 
-        private async void UploadImplementacion()
-        {
-            var service = String.Format("{0}/8", _serviceURL);
-
-            try
-            {
-                if (ImplementacionBrowsed_Item != null)
-                {
-                    if (ImplementacionBrowsed_Item.Type == "File Geodatabase Table")
-                        await LocalInteraction.UploadTable(ImplementacionBrowsed_Item, service, "ProAppModule1.Implementacion");
-                    else
-                        await LocalInteraction.UploadExcel(ImplementacionBrowsed_Item, service, "ProAppModule1.Implementacion");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(string.Format("Error al Cargar los datos de Implementación {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            return;
-        }
-
         private void BrowseImplementacion()
         {
             var openFeatureClass = new OpenItemDialog()
@@ -598,27 +488,6 @@ namespace ProAppModule1
                 _implementacion_file = ImplementacionBrowsed_Item.Path;
                 NotifyPropertyChanged(() => Implementacion_File);
             }
-        }
-
-        private async void UploadPredio()
-        {
-            var service = String.Format("{0}/1", _serviceURL);
-            try
-            {
-                if (Predio_File != null)
-                {
-                    if (PredioBrowsed_Item.Type == "Shapefile")
-                        await LocalInteraction.UploadShapefile(PredioBrowsed_Item, service, "ProAppModule1.Predio2");
-                    else
-                        await LocalInteraction.UploadFeatureClass(PredioBrowsed_Item, service, "ProAppModule1.Predio");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(string.Format("Error al Cargar los datos de Predio {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            return;
         }
 
         private void BrowsePredio()
@@ -638,28 +507,6 @@ namespace ProAppModule1
             }
         }
 
-        private async void UploadContribuciones()
-        {
-            var service = String.Format("{0}/9", _serviceURL);
-
-            try
-            {
-                if (ContribucionesBrowsed_Item != null)
-                {
-                    if (ContribucionesBrowsed_Item.Type == "File Geodatabase Table")
-                        await LocalInteraction.UploadTable(ContribucionesBrowsed_Item, service, "ProAppModule1.Contribucion");
-                    else
-                        await LocalInteraction.UploadExcel(ContribucionesBrowsed_Item, service, "ProAppModule1.Contribucion");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(string.Format("Error al Cargar los datos de Contribución {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            return;
-        }
-
         private void BrowseContribuciones()
         {
             var openFeatureClass = new OpenItemDialog()
@@ -675,28 +522,6 @@ namespace ProAppModule1
                 _contribuciones_file = ContribucionesBrowsed_Item.Path;
                 NotifyPropertyChanged(() => Contribuciones_File);
             }
-        }
-
-        private async void UploadParticipantes()
-        {
-            var service = String.Format("{0}/5", _serviceURL);
-
-            try
-            {
-                if (ParticipantesBrowsed_Item != null)
-                {
-                    if (ParticipantesBrowsed_Item.Type == "File Geodatabase Table")
-                        await LocalInteraction.UploadTable(ParticipantesBrowsed_Item, service, "ProAppModule1.Participante");
-                    else
-                        await LocalInteraction.UploadExcel(ParticipantesBrowsed_Item, service, "ProAppModule1.Participante");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(string.Format("Error al Cargar los datos de Participantes {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            return;
         }
 
         private void BrowseParticipantes()
@@ -716,27 +541,6 @@ namespace ProAppModule1
             }
         }
 
-        private async void UploadAliados()
-        {
-            var service = String.Format("{0}/7", _serviceURL);
-
-            try
-            {
-                if (AliadosBrowsed_Item != null)
-                {
-                    if (AliadosBrowsed_Item.Type == "File Geodatabase Table")
-                        await LocalInteraction.UploadTable(AliadosBrowsed_Item, service, "ProAppModule1.Aliado");
-                    else
-                        await LocalInteraction.UploadExcel(AliadosBrowsed_Item, service, "ProAppModule1.Aliado");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(string.Format("Error al Cargar los datos de Aliados {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            return;
-        }
 
         private void BrowseAliados()
         {
@@ -755,27 +559,6 @@ namespace ProAppModule1
             }
         }
 
-        private async void UploadMetas()
-        {
-            var service = String.Format("{0}/6", _serviceURL);
-            try
-            {
-                if (MetasBrowsed_Item != null)
-                {
-                    if (MetasBrowsed_Item.Type == "File Geodatabase Table")
-                        await LocalInteraction.UploadTable(MetasBrowsed_Item, service, "ProAppModule1.Meta");
-                    else
-                        await LocalInteraction.UploadExcel(MetasBrowsed_Item, service, "ProAppModule1.Meta");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(string.Format("Error al Cargar los datos de Metas {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            return;
-        }
-
         private void BrowseMetas()
         {
             var openFeatureClass = new OpenItemDialog()
@@ -791,26 +574,6 @@ namespace ProAppModule1
                 _metas_file = MetasBrowsed_Item.Path;
                 NotifyPropertyChanged(() => Metas_File);
             }
-        }
-
-        public async void UploadRegion()
-        {
-            var service = String.Format("{0}/0", _serviceURL);
-            try
-            {
-                if (RegionBrowsed_Item != null)
-                {
-                    if (RegionBrowsed_Item.Type == "Shapefile")
-                        await LocalInteraction.UploadShapefile(RegionBrowsed_Item, service, "ProAppModule1.Region2");
-                    else
-                        await LocalInteraction.UploadFeatureClass(RegionBrowsed_Item, service, "ProAppModule1.Region");
-                }
-            } catch (Exception ex)
-            {
-                MessageBox.Show(string.Format("Error al Cargar los datos de Regiones {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            return;
         }
 
         public void BrowseRegion()
@@ -831,28 +594,6 @@ namespace ProAppModule1
             }
         }
 
-        public async void UploadEstrategia() {
-
-            var service = String.Format("{0}/3", _serviceURL);
-
-            try
-            {
-                if (SelectedItem_Estrategia != null)
-                {
-                    if (SelectedItem_Estrategia.Type == "File Geodatabase Table")
-                        await LocalInteraction.UploadTable(SelectedItem_Estrategia, service, "ProAppModule1.Estrategia");
-                    else
-                        await LocalInteraction.UploadExcel(SelectedItem_Estrategia, service, "ProAppModule1.Estrategia");
-                }
-                LoadData();
-            } catch (Exception ex)
-            {
-                MessageBox.Show(string.Format("Error al Cargar los datos de Estrategia {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            return;
-        }
-
         public void BrowseFileEstrategia() {
 
             var openTable = new OpenItemDialog()
@@ -867,29 +608,6 @@ namespace ProAppModule1
                 _estrategia_file = SelectedItem_Estrategia.Path;
                 NotifyPropertyChanged(() => Estrategia_File);
             }
-        }
-
-        public async void UploadProyecto()
-        {
-            var service = String.Format("{0}/4", _serviceURL);
-            try
-            {
-                if (SelectedItem_Proyecto != null)
-                {
-                    if (SelectedItem_Proyecto.Type == "File Geodatabase Table")
-                        await LocalInteraction.UploadTable(SelectedItem_Proyecto, service, "ProAppModule1.Proyecto");
-                    else
-                        await LocalInteraction.UploadExcel(SelectedItem_Proyecto, service, "ProAppModule1.Proyecto");
-
-                    LoadData_pry();
-
-                }
-            } catch (Exception ex)
-            {
-                MessageBox.Show(string.Format("Error al Cargar los datos de Proyecto {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            return;
         }
 
         public void BrowseFileProyecto()
@@ -1268,7 +986,6 @@ namespace ProAppModule1
 
 
         }
-
 
         // Method to show the Pro Window
         private CrearProyecto _prowindow1_pry = null;
