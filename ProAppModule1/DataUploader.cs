@@ -115,7 +115,7 @@ namespace ProAppModule1
                                 var _result = AddFeatures(featuresList, element);
                                 featuresList.Clear();
                                 status.Progressor.Value += 1;
-                                //status.Progressor.Status = (status.Progressor.Value * 100 / status.Progressor.Max) + @" % Completed";
+                                status.Progressor.Status = String.Format("{0} de {1}", status.Progressor.Value * chunksize, element.count);
                                 status.Progressor.Message = String.Format("Registros cargados {0}", status.Progressor.Value*chunksize) ;
                             }
                         }

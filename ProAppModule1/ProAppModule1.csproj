@@ -177,6 +177,7 @@
       <DependentUpon>EditarProyecto.xaml</DependentUpon>
     </Compile>
     <Compile Include="FieldValidator.cs" />
+    <Compile Include="IconosBiodiversidad.cs" />
     <Compile Include="Implementacion.cs" />
     <Compile Include="IUploader.cs" />
     <Compile Include="Meta.cs" />
@@ -193,6 +194,7 @@
     <Compile Include="ShowEditarProyecto.cs" />
     <Compile Include="ShowProWindow1.cs" />
     <Compile Include="ShowUpdate.cs" />
+    <Compile Include="Textos.cs" />
     <Compile Include="Update.xaml.cs">
       <DependentUpon>Update.xaml</DependentUpon>
     </Compile>

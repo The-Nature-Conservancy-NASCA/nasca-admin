@@ -19,6 +19,10 @@
     <TabControl>
         <TabItem Header="General">
             <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="63*"/>
+                    <ColumnDefinition Width="134*"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
@@ -29,10 +33,10 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                     <RowDefinition Height="Auto"/>
-                 </Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-                <DockPanel Name="dockPanel"  LastChildFill="true" KeyboardNavigation.TabNavigation="Local" Height="30">
+                <DockPanel Name="dockPanel"  LastChildFill="true" KeyboardNavigation.TabNavigation="Local" Height="30" Grid.ColumnSpan="2" Margin="0,0,0.4,0.4">
 
                     <StackPanel  Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button  ToolTip="Limpiar selección" Margin="5" Command="{Binding UnselectRowCommand}">
@@ -42,8 +46,8 @@
 
                 </DockPanel>
 
-                <TextBlock Grid.Row="0" Text="Estrategias" HorizontalAlignment="Left" Margin="5"  Style="{DynamicResource Esri_TextBlockH2}"></TextBlock>
-                <Grid Grid.Row="1" Margin="5">
+                <TextBlock Grid.Row="0" Text="Estrategias" HorizontalAlignment="Left" Margin="5,5,0,4.4"  Style="{DynamicResource Esri_TextBlockH2}"></TextBlock>
+                <Grid Grid.Row="1" Margin="5,4.6,5.4,4.6" Grid.ColumnSpan="2">
                     <DataGrid Name ="dataGrid" Margin="5" Style="{DynamicResource Esri_DataGrid}" AutoGenerateColumns="True" ItemsSource="{Binding Path=EstrategiasDataTable, Mode=TwoWay}" SelectedIndex="{Binding SelectedIndex}">
                         <DataGrid.Columns>
                             <!--<DataGridCheckBoxColumn></DataGridCheckBoxColumn>-->
@@ -55,7 +59,7 @@
                         </i:Interaction.Triggers>
                     </DataGrid>
                 </Grid>
-                <Grid Grid.Row="2" Margin="5">
+                <Grid Grid.Row="2" Margin="5,5.4,5.4,5.2" Grid.ColumnSpan="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -87,15 +91,15 @@
 
                 </Grid>
 
-                <TextBlock Grid.Row="3" Text="Proyectos"  HorizontalAlignment="Left" Margin="5"  Style="{DynamicResource Esri_TextBlockH2}"></TextBlock>
-                <Grid Grid.Row="4" Margin="5">
+                <TextBlock Grid.Row="3" Text="Proyectos"  HorizontalAlignment="Left" Margin="5,4.8,0,4.8"  Style="{DynamicResource Esri_TextBlockH2}"></TextBlock>
+                <Grid Grid.Row="4" Margin="5,5.2,5.4,5" Grid.ColumnSpan="2">
                     <DataGrid Name ="proyectoGrid" Margin="5" Style="{DynamicResource Esri_DataGrid}" AutoGenerateColumns="True" ItemsSource="{Binding Path=ProyectosDataTable, Mode=TwoWay}" SelectedIndex="{Binding SelectedIndex_pry}">
                         <DataGrid.Columns>
                             <!--<DataGridCheckBoxColumn></DataGridCheckBoxColumn>-->
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
-                <Grid Grid.Row="5" Margin="5">
+                <Grid Grid.Row="5" Margin="5,5,5.4,4.6" Grid.ColumnSpan="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -126,8 +130,8 @@
                     </Button>
                 </Grid>
 
-                <TextBlock Grid.Row="6" Text="Regiones"  HorizontalAlignment="Left" Margin="5"  Style="{DynamicResource Esri_TextBlockH2}"></TextBlock>
-                <Grid  Grid.Row="7" Margin="5">
+                <TextBlock Grid.Row="6" Text="Regiones"  HorizontalAlignment="Left" Margin="5,5.4,0,4.2"  Style="{DynamicResource Esri_TextBlockH2}"></TextBlock>
+                <Grid  Grid.Row="7" Margin="5,4.8,5.4,4.8" Grid.ColumnSpan="2">
                     <Grid.RowDefinitions>
                         <RowDefinition ></RowDefinition>
                         <RowDefinition ></RowDefinition>
@@ -146,8 +150,8 @@
                     </Button>
                 </Grid>
 
-                <TextBlock Grid.Row="8" Text="Predios"  HorizontalAlignment="Left" Margin="5"  Style="{DynamicResource Esri_TextBlockH2}"></TextBlock>
-                <Grid Grid.Row="9" Margin="5">
+                <TextBlock Grid.Row="8" Text="Predios"  HorizontalAlignment="Left" Margin="5,5.2,0,4.4"  Style="{DynamicResource Esri_TextBlockH2}"></TextBlock>
+                <Grid Grid.Row="9" Margin="5,4.6,5.4,5" Grid.ColumnSpan="2">
                     <Grid.RowDefinitions>
                         <RowDefinition ></RowDefinition>
                         <RowDefinition ></RowDefinition>
@@ -167,7 +171,7 @@
                 </Grid>
 
             </Grid>
-            
+
         </TabItem>
         <TabItem Header="Componentes">
             <Grid>
@@ -266,6 +270,10 @@
         <TabItem Header="Otros">
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -396,6 +404,46 @@
                     </Button>
                     <TextBox Grid.Row="0" Grid.Column="0"  Text="{Binding Carrusel_File , Mode=TwoWay}" Margin="2"  ></TextBox>
                     <Button Grid.Row="0" Grid.Column="1" ToolTip="Elegir archivo" Command="{Binding Carrusel_BrowseCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/FolderConnectionAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                    </Button>
+                </Grid>
+                
+                <TextBlock Grid.Row="12" Text="Íconos Biodiversidad"  HorizontalAlignment="Left" Margin="5"  Style="{DynamicResource Esri_TextBlockH2}"></TextBlock>
+                <Grid Grid.Row="13" Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition ></RowDefinition>
+                        <RowDefinition ></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Row="0" Grid.Column="2" ToolTip="Subir" Command="{Binding Icono_UploadCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/VersionPost-32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                    </Button>
+                    <TextBox Grid.Row="0" Grid.Column="0"  Text="{Binding Icono_File , Mode=TwoWay}" Margin="2"  ></TextBox>
+                    <Button Grid.Row="0" Grid.Column="1" ToolTip="Elegir archivo" Command="{Binding Icono_BrowseCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/FolderConnectionAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                    </Button>
+                </Grid>
+
+                <TextBlock Grid.Row="14" Text="Textos Generales"  HorizontalAlignment="Left" Margin="5"  Style="{DynamicResource Esri_TextBlockH2}"></TextBlock>
+                <Grid Grid.Row="15" Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition ></RowDefinition>
+                        <RowDefinition ></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Row="0" Grid.Column="2" ToolTip="Subir" Command="{Binding Texto_UploadCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/VersionPost-32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                    </Button>
+                    <TextBox Grid.Row="0" Grid.Column="0"  Text="{Binding Texto_File , Mode=TwoWay}" Margin="2"  ></TextBox>
+                    <Button Grid.Row="0" Grid.Column="1" ToolTip="Elegir archivo" Command="{Binding Texto_BrowseCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
                         <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/FolderConnectionAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
                     </Button>
                 </Grid>

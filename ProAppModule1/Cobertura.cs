@@ -18,15 +18,16 @@ namespace ProAppModule1
             var corine3 = ToString(row, "corine3");
             var cobertura_comun = ToString(row, "cobertura_comun");
             var cobertura_proyecto = ToString(row, "cobertura_proyecto");
+            var subcobertura_proyecto = ToString(row, "subcobertura_proyecto");
             var uso = ToString(row, "uso");
             var verificacion = ToString(row, "verificacion");
-            var edad = ToInt(row, "edad");
+            var fecha_establecimiento = ToDate(row, "fecha_establecimiento");
             var fecha_visita = ToDate(row, "fecha_visita");
-            var subcobertura_proyecto = ToString(row, "subcobertura_proyecto");
-            var area = ToDouble(row, "area");
+            var edad = ToInt(row, "edad");
+            var area_ha = ToDouble(row, "area_ha");
             var momento = ToString(row, "momento");
 
-            var _attributes = new { ID_predio, corine1, corine2, corine3, cobertura_comun, cobertura_proyecto, uso, verificacion, edad, fecha_visita, subcobertura_proyecto, area, momento };
+            var _attributes = new { ID_predio, corine1, corine2, corine3, cobertura_comun, cobertura_proyecto, uso, verificacion, fecha_establecimiento ,edad, fecha_visita, subcobertura_proyecto, area_ha, momento };
             return _attributes;
 
         }

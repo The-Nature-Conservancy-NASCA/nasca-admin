@@ -12,7 +12,11 @@ namespace ProAppModule1
 
         public override object FormatAttributes(Row row)
         {
+            var ID_region = ToString(row, "ID_region");
             var cobertura = ToString(row, "cobertura");
+            var compartimiento = ToString(row, "compartimiento");
+            var sub_compartimiento = ToString(row, "sub_compartimiento");
+            var SNC = ToString(row, "SNC");
             var T1 = ToDouble(row, "T1");
             var T2 = ToDouble(row, "T2");
             var T3 = ToDouble(row,"T3");
@@ -33,16 +37,11 @@ namespace ProAppModule1
             var T18 = ToDouble(row,"T18");
             var T19 = ToDouble(row,"T19");
             var T20 = ToDouble(row,"T20");
-            var ID_region = ToString(row, "ID_region");
-            var fecha = ToDate(row, "fecha");
-            var snc = ToString(row, "SNC");
-            var compartimiento = ToString(row, "compartimiento");
-            var sub_compartimiento =ToString(row, "sub_compartimiento");
 
             var _attributes = new
             {
-                cobertura, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, ID_region, fecha,
-                snc, compartimiento, sub_compartimiento
+                cobertura, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, ID_region,
+                SNC, compartimiento, sub_compartimiento
 
             };
             return _attributes;

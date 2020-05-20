@@ -148,7 +148,7 @@ namespace ProAppModule1
 
             var outTable = System.IO.Path.Combine(outPath, outName);
             var parameters = Geoprocessing.MakeValueArray(inputPath, outTable, sheetName);
-            var result = await Geoprocessing.ExecuteToolAsync("conversion.ExcelToTable", parameters, null, new CancelableProgressorSource(progressDlg).Progressor, GPExecuteToolFlags.Default);
+            var result = await Geoprocessing.ExecuteToolAsync("conversion.ExcelToTable", parameters, null, new CancelableProgressorSource(progressDlg).Progressor, GPExecuteToolFlags.None);
             var _outTable = result.Values[0];
 
             var table = await QueuedTask.Run(() =>
@@ -170,7 +170,7 @@ namespace ProAppModule1
             progressDlg.Show();
 
             var parameters = Geoprocessing.MakeValueArray(inputPath, outPath, outName);
-            var result = await Geoprocessing.ExecuteToolAsync("conversion.TableToTable", parameters, null, new CancelableProgressorSource(progressDlg).Progressor, GPExecuteToolFlags.Default);
+            var result = await Geoprocessing.ExecuteToolAsync("conversion.TableToTable", parameters, null, new CancelableProgressorSource(progressDlg).Progressor, GPExecuteToolFlags.None);
             var _outTable = result.Values[0];
 
             var table = await QueuedTask.Run(() =>

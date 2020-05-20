@@ -16,7 +16,8 @@ namespace ProAppModule1
             var ID_proyecto = ToString(row, "ID_proyecto");
             var ID_region = ToString(row, "ID_region");
             var nombre = ToString(row, "nombre");
-            var _attributes = new { ID_proyecto, ID_region, nombre };
+            var fecha = ToDate(row, "fecha");
+            var _attributes = new { ID_proyecto, ID_region, nombre, fecha };
             return _attributes;
 
         }

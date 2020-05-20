@@ -27,6 +27,7 @@ namespace ProAppModule1
             var color = ToString(row, "color");
             var fondo = ToString(row, "fondo");
             var icono = ToString(row, "icono");
+            var fecha_linea_base = ToDate(row, "fecha_linea_base");
             var fecha_seguimiento1 = ToDate(row, "fecha_seguimiento1");
             var fecha_seguimiento2 = ToDate(row, "fecha_seguimiento2");
             var fecha_cierre = ToDate(row, "fecha_cierre");
@@ -34,7 +35,7 @@ namespace ProAppModule1
             var _attributes = new
             {
                 ID_estrategia, ID_proyecto, nombre, descripcion, descripcion_carbono, descripcion_coberturas, descripcion_biodiversidad, descripcion_implementaciones,
-                descripcion_aliados, descripcion_contribuciones, descripcion_metas, descripcion_participantes, color, fondo, icono, fecha_seguimiento1, fecha_seguimiento2, fecha_cierre
+                descripcion_aliados, descripcion_contribuciones, descripcion_metas, descripcion_participantes, color, fondo, icono, fecha_linea_base, fecha_seguimiento1, fecha_seguimiento2, fecha_cierre
             };
             return _attributes;
         }

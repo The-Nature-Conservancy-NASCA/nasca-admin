@@ -11,22 +11,22 @@ namespace ProAppModule1
         }
         public override object FormatAttributes(Row row)
         {
-            var ID_predio = ToString(row, "ID_predio");
-            var ID_proyecto = ToString(row, "ID_proyect");
+            var ID_proyecto = ToString(row, "ID_proyecto");
             var ID_region = ToString(row, "ID_region");
-            var nombre = ToString(row, "nombre_pre");
-            var departamento = ToString(row, "departamen");
+            var ID_predio = ToString(row, "ID_predio");
+            var nombre_predio = ToString(row, "nombre_predio");
+            var nombre_propietario = ToString(row, "nombre_propietario");
+            var tipo_dominio = ToString(row, "tipo_dominio");
+            var departamento = ToString(row, "departamento");
             var municipio = ToString(row, "municipio");
             var vereda = ToString(row ,"vereda");
-            var nombre_propietario = ToString(row, "nombre_pro");
-            var tipo_dominio = ToString(row, "tipo_domin");
-            var AreaHa = ToDouble(row, "AreaHa");
-            var stok_carbono = ToDouble(row, "stock_carb");
-            var captura_carbono = ToDouble(row, "captura_ca");
+            var area_ha = ToDouble(row, "area_ha");
+            var stok_carbono = ToDouble(row, "stok_carbono");
+            var captura_carbono = ToDouble(row, "captura_carbono");
 
             var _attributes = new
             {
-                ID_predio, ID_proyecto, ID_region, nombre, departamento, municipio, vereda, nombre_propietario, tipo_dominio, AreaHa, stok_carbono, captura_carbono };
+                ID_predio, ID_proyecto, ID_region, nombre_predio, departamento, municipio, vereda, nombre_propietario, tipo_dominio, area_ha, stok_carbono, captura_carbono };
 
             return _attributes;
 
