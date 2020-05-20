@@ -21,8 +21,10 @@ namespace ProAppModule1
 
 
         private readonly FieldValidator  _fieldValidator;
-        public DataUploader(FieldValidator fieldValidator) {
+        private readonly Geoprocessor _geoprocessor;
+        public DataUploader(FieldValidator fieldValidator, Geoprocessor geoprocessor) {
             _fieldValidator = fieldValidator;
+            _geoprocessor = geoprocessor;
         }
 
         private int AddFeatures(List<Object> features, Element element) {
@@ -99,7 +101,7 @@ namespace ProAppModule1
                                 var geom = element.Serialize(json_geom);
                                 feat = new { attributes = _attributes, geometry = geom };
                             }
-                            else if (element.item.Type == "File Geodatabase Table")
+                            else if (element.item.Type == "File Geodatabase Table" || element.item.Type == "Excel Table" || element.item.Type == "Text File")
                                 feat = new {attributes = _attributes};
                             else
                                 feat = new { }; // Maybe Throw a exception?

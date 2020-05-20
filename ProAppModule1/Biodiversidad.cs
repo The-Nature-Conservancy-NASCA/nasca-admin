@@ -1,5 +1,9 @@
 ﻿using ArcGIS.Core.Data;
 using ArcGIS.Desktop.Core;
+using ArcGIS.Desktop.Core.Geoprocessing;
+using ArcGIS.Desktop.Framework.Threading.Tasks;
+using System;
+using System.Threading.Tasks;
 
 namespace ProAppModule1
 {
@@ -49,6 +53,42 @@ namespace ProAppModule1
         {
             var point = serializer.Deserialize<Point>(json_geom);
             return point;
+        }
+
+        public override async Task<Table> ConvertCSVToTable(string inputPath, string outPath, string outName)
+
+        {
+            ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Override for Biodiversidad has been done");
+            var progressDlg = new ProgressDialog("Leyendo datos del archivo CSV seleccionado", "Cancelar", false);
+            progressDlg.Show();
+
+            var parameters_totable = Geoprocessing.MakeValueArray(inputPath, outPath, outName);
+            var result_totable = await Geoprocessing.ExecuteToolAsync("conversion.TableToTable", parameters_totable, null, new CancelableProgressorSource(progressDlg).Progressor, GPExecuteToolFlags.Default);
+
+            var parameters_toxylayer = Geoprocessing.MakeValueArray(inputPath, "longitud", "latitud", "bioxy" + outName);
+            var environments_xy = Geoprocessing.MakeEnvironmentArray(overwriteoutput: true, workspace:outPath);
+            var result_toxylayer = await Geoprocessing.ExecuteToolAsync("management.MakeXYEventLayer", parameters_toxylayer, environments_xy, new CancelableProgressorSource(progressDlg).Progressor, GPExecuteToolFlags.Default);
+            var layer = result_toxylayer.Values[0];
+
+            var fc_name = "bio" + outName;
+            var parameters_tofc = Geoprocessing.MakeValueArray(layer, outPath, fc_name);
+            var environments_tofc = Geoprocessing.MakeEnvironmentArray(overwriteoutput: true, workspace:outPath);
+            var result_tofc = await Geoprocessing.ExecuteToolAsync("conversion.FeatureClassToFeatureClass", parameters_tofc, environments_tofc, new CancelableProgressorSource(progressDlg).Progressor, GPExecuteToolFlags.Default);
+
+
+
+            var table = await QueuedTask.Run(() =>
+            {
+                var geodatabase = new Geodatabase(new FileGeodatabaseConnectionPath(new Uri(outPath)));
+                Table tbl = geodatabase.OpenDataset<FeatureClass>(fc_name);
+                return tbl;
+            });
+
+            type = "File Geodatabase Feature Class";
+
+            progressDlg.Hide();
+            return table;
+
         }
     }
 }

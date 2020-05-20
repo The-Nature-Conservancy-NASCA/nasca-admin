@@ -7,57 +7,37 @@ using MessageBox = ArcGIS.Desktop.Framework.Dialogs.MessageBox;
 using ArcGIS.Desktop.Framework.Threading.Tasks;
 using ArcGIS.Desktop.Core;
 using ArcGIS.Desktop.Core.Geoprocessing;
+using ArcGIS.Desktop.Internal.Mapping.Symbology;
+using ArcGIS.Core.Data;
 
 namespace ProAppModule1
 {
     public class Geoprocessor
     {
 
-        public async Task<Uri> ConvertToShapefile(Item item) {
+        private async Task<Table> ConvertExcelToTable(string inputPath, string sheetName, string outPath, string outName)
 
-            var progressDlg = new ProgressDialog("Leyendo datos del Feature class seleccionado", "Cancelar", false);
+        {
+            var progressDlg = new ProgressDialog("Leyendo datos del archivo Excel seleccionado", "Cancelar", false);
             progressDlg.Show();
-            var progressSrc = new CancelableProgressorSource(progressDlg);
 
-            var conversionProcess = await QueuedTask.Run(() => {
+            var outTable = System.IO.Path.Combine(outPath, outName);
+            var parameters = Geoprocessing.MakeValueArray(inputPath, outTable, sheetName);
+            var result = await Geoprocessing.ExecuteToolAsync("conversion.ExcelToTable", parameters, null, new CancelableProgressorSource(progressDlg).Progressor, GPExecuteToolFlags.Default);
+            var _outTable = result.Values[0];
 
-                string outPath = Project.Current.HomeFolderPath;
-                //string outPath = "in_memory";
-                string toolPath = "conversion.FeatureClassToShapefile";
-                var parameters = Geoprocessing.MakeValueArray(item.Path, outPath);
-                var environments = Geoprocessing.MakeEnvironmentArray(overwriteoutput: true);
-                var result = Geoprocessing.ExecuteToolAsync(toolPath, parameters, environments, new CancelableProgressorSource(progressDlg).Progressor, GPExecuteToolFlags.Default);
-                return result;
+            var table = await QueuedTask.Run(() =>
+            {
+                var geodatabase = new Geodatabase(new FileGeodatabaseConnectionPath(new Uri(outPath)));
+                var tbl = geodatabase.OpenDataset<Table>(outName);
+                return tbl;
             });
 
-            Uri shp_path = new System.Uri(conversionProcess.Values[0]);
-
             progressDlg.Hide();
-            return shp_path;
-
+            return table;
 
         }
 
-        public async Task<uint> GetCount(Uri path) {
-
-            var progressDlg = new ProgressDialog("Contando número de registros", "Cancelar", false);
-            progressDlg.Show();
-            var progressSrc = new CancelableProgressorSource(progressDlg);
-
-            var countProcess= await QueuedTask.Run(() => {
-                string toolPath = "management.GetCount";
-                var parameters = Geoprocessing.MakeValueArray(path);
-                var environments = Geoprocessing.MakeEnvironmentArray(overwriteoutput: true);
-                var result = Geoprocessing.ExecuteToolAsync(toolPath, parameters, environments, new CancelableProgressorSource(progressDlg).Progressor, GPExecuteToolFlags.Default);
-                return result;
-            });
-
-            var count = Convert.ToUInt32(countProcess.Values[0]);
-
-            progressDlg.Hide();
-            return count;
-
-        }
 
     }
 }

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using ArcGIS.Core.Data;
 using ArcGIS.Desktop.Core;
+using ArcGIS.Desktop.Core.Geoprocessing;
 using ArcGIS.Desktop.Framework.Threading.Tasks;
 
 namespace ProAppModule1
@@ -29,6 +30,7 @@ namespace ProAppModule1
         public FeatureClass featureclas { get => _featureclass; }
         public int count { get => _count; }
         public int index { get => _index; set { _index = value; } }
+        public string type { get => _type; set { _type = value; } }
         public RowCursor cursor { get => _cursor;}
 
         public Element(Item item) {
@@ -43,7 +45,7 @@ namespace ProAppModule1
             _service = string.Format("{0}/{1}", serviceURL, index);
             
         }
-
+        
         public async Task<int> GetProperties()
         {
 
@@ -68,12 +70,6 @@ namespace ProAppModule1
                     return table;
                 });
 
-                //_cursor = await QueuedTask.Run(() =>
-                //{
-                //    var cur = _featureclass.Search();
-                //    return cur;
-                //});
-                
             }
             else if (_type == "Shapefile")
             {
@@ -103,6 +99,27 @@ namespace ProAppModule1
 
             }
 
+            else if (_type == "Excel Table")
+            {
+                var outPath = Project.Current.DefaultGeodatabasePath;
+                var outName = string.Format("Tabla_{0}", DateTime.Now.ToString("yyyyMMddHHmmssfff"));
+                var xlsFile = item.PhysicalPath;
+                var sheetName = item.Name.Remove(item.Name.Length-1);
+                //var outTable = "memory\\table";
+
+                _table = await ConvertExcelToTable(xlsFile, sheetName, outPath, outName);
+          
+            }
+
+            else if (_type == "Text File")
+            {
+                var outPath = Project.Current.DefaultGeodatabasePath;
+                var outName = string.Format("Tabla_{0}", DateTime.Now.ToString("yyyyMMddHHmmssfff"));
+                var csvFile = item.Path;
+
+                _table = await ConvertCSVToTable(csvFile, outPath, outName);
+            }
+
             _definition = await QueuedTask.Run(() =>
             {
                 var def = _table.GetDefinition();
@@ -123,6 +140,50 @@ namespace ProAppModule1
             return 0;
         }
 
+        private async Task<Table> ConvertExcelToTable(string inputPath, string sheetName, string outPath, string outName)
+
+        {
+            var progressDlg = new ProgressDialog("Leyendo datos del archivo Excel seleccionado", "Cancelar", false);
+            progressDlg.Show();
+
+            var outTable = System.IO.Path.Combine(outPath, outName);
+            var parameters = Geoprocessing.MakeValueArray(inputPath, outTable, sheetName);
+            var result = await Geoprocessing.ExecuteToolAsync("conversion.ExcelToTable", parameters, null, new CancelableProgressorSource(progressDlg).Progressor, GPExecuteToolFlags.Default);
+            var _outTable = result.Values[0];
+
+            var table = await QueuedTask.Run(() =>
+            {
+                var geodatabase = new Geodatabase(new FileGeodatabaseConnectionPath(new Uri(outPath)));
+                var tbl = geodatabase.OpenDataset<Table>(outName);
+                return tbl;
+            });
+
+            progressDlg.Hide();
+            return table;
+
+        }
+
+        public virtual async Task<Table> ConvertCSVToTable(string inputPath, string outPath, string outName)
+
+        {
+            var progressDlg = new ProgressDialog("Leyendo datos del archivo CSV seleccionado", "Cancelar", false);
+            progressDlg.Show();
+
+            var parameters = Geoprocessing.MakeValueArray(inputPath, outPath, outName);
+            var result = await Geoprocessing.ExecuteToolAsync("conversion.TableToTable", parameters, null, new CancelableProgressorSource(progressDlg).Progressor, GPExecuteToolFlags.Default);
+            var _outTable = result.Values[0];
+
+            var table = await QueuedTask.Run(() =>
+            {
+                var geodatabase = new Geodatabase(new FileGeodatabaseConnectionPath(new Uri(outPath)));
+                var tbl = geodatabase.OpenDataset<Table>(outName);
+                return tbl;
+            });
+
+            progressDlg.Hide();
+            return table;
+
+        }
 
         public virtual object Serialize(string json_geom)
         {

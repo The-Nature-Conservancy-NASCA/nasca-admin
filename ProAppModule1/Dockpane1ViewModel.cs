@@ -291,7 +291,7 @@ namespace ProAppModule1
         protected Dockpane1ViewModel()
 
         {
-            var loader = new DataUploader(new FieldValidator());
+            var loader = new DataUploader(new FieldValidator(), new Geoprocessor());
 
             // Set up commands estrategia
             _estrategiasSelectionCommand = new RelayCommand(() => OnEstrategiaSelecionada(), () => true);
@@ -410,7 +410,7 @@ namespace ProAppModule1
             var openFeatureClass = new OpenItemDialog()
             {
                 Title = "Seleccione el shape file o el feature class de puntos con los datos de Biodiversidad",
-                Filter = ItemFilters.featureClasses_all
+                Filter = ItemFilters.composite_addToMap
             };
 
             Nullable<bool> result = openFeatureClass.ShowDialog();
