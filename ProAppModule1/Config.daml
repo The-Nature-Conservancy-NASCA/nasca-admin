@@ -3,8 +3,8 @@
     <Name>TNC</Name>
     <Description>Administración TNC</Description>
     <Image>Images\AddinDesktop32.png</Image>
-    <Author>jescudero</Author>
-    <Company>Acme</Company>
+    <Author>Dreamgis</Author>
+    <Company>TNC</Company>
     <Date>1/9/2020 5:40:59 PM, 2020</Date>
     <Subject>Framework</Subject>
     <!-- Note subject can be one or more of these topics:

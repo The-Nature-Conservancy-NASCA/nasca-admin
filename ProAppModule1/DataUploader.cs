@@ -173,6 +173,7 @@ namespace ProAppModule1
                     progress.Hide();
                 }
 
+
                 var n = element.count; // Review the real number of loaded records
 
                 if (n > 0)

@@ -31,11 +31,14 @@ namespace ProAppModule1
             var fecha_seguimiento1 = ToDate(row, "fecha_seguimiento1");
             var fecha_seguimiento2 = ToDate(row, "fecha_seguimiento2");
             var fecha_cierre = ToDate(row, "fecha_cierre");
+            var cierre = ToInt(row, "cierre");
 
             var _attributes = new
             {
                 ID_estrategia, ID_proyecto, nombre, descripcion, descripcion_carbono, descripcion_coberturas, descripcion_biodiversidad, descripcion_implementaciones,
-                descripcion_aliados, descripcion_contribuciones, descripcion_metas, descripcion_participantes, color, fondo, icono, fecha_linea_base, fecha_seguimiento1, fecha_seguimiento2, fecha_cierre
+                descripcion_aliados, descripcion_contribuciones, descripcion_metas, descripcion_participantes, color, fondo, icono, fecha_linea_base, fecha_seguimiento1,
+                fecha_seguimiento2, fecha_cierre, cierre
+
             };
             return _attributes;
         }
