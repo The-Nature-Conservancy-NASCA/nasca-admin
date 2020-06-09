@@ -7,7 +7,7 @@ namespace ProAppModule1
     {
         public Textos(Item item) : base(item)
         {
-            index = -1;
+            index = 15;
         }
 
         public override object FormatAttributes(Row row)

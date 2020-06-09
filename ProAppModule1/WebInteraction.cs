@@ -5,6 +5,8 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Web.Script.Serialization;
+using ArcGIS.Desktop.Core;
+
 
 namespace ProAppModule1
 
@@ -12,8 +14,17 @@ namespace ProAppModule1
     class WebInteraction
     {
 
-        static string token = GenerateToken("GeoTNCDev", "GeoTNC123");
- 
+        //static string token = GenerateToken("GeoTNCDev", "GeoTNC123");
+        static string token = GenerateToken();
+
+        public static string GenerateToken()
+        {
+            var active_portal = ArcGISPortalManager.Current.GetActivePortal();
+            string token = active_portal.GetToken();
+            return token;
+        }
+
+
         public static string GenerateToken(string user, string pass)
         {
 

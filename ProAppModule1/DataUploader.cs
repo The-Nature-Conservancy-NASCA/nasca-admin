@@ -16,7 +16,8 @@ namespace ProAppModule1
     public class DataUploader : IUploader
     {
         private Uri _gdb;
-        private readonly string token = WebInteraction.GenerateToken("GeoTNCDev", "GeoTNC123");
+        //private readonly string token = WebInteraction.GenerateToken("GeoTNCDev", "GeoTNC123");
+        private readonly string token = WebInteraction.GenerateToken();
         private SpatialReference webMercator = SpatialReferenceBuilder.CreateSpatialReference(102100);
 
 

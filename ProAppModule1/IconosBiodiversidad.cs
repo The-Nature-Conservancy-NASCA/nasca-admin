@@ -7,7 +7,7 @@ namespace ProAppModule1
     {
         public IconosBiodiversidad(Item item) : base(item)
         {
-            index = -1;
+            index = 14;
         }
 
         public override object FormatAttributes(Row row)
