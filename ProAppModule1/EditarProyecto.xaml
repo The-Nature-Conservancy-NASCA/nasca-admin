@@ -45,8 +45,8 @@
             <Label Grid.Row="1" Grid.Column="0" Content="Descripción" Margin="5" Height="28"></Label>
             <TextBox Grid.Row="1" Grid.Column="1" Text = "{Binding Description, Mode=TwoWay}"  Margin="5" ></TextBox>
             <Label Grid.Row="2" Grid.Column="0" Content="ID Estrategia" Margin="5" Height="28"></Label>
-            <TextBox Grid.Row="2" Grid.Column="1" Text = "{Binding Estrategia.Id, Mode=TwoWay}"  Margin="5" IsEnabled="False" IsReadOnly="True"  Background="LightGray"></TextBox>
-            <!--TextBox Grid.Row="2" Grid.Column="1" Text = "{Binding id_estra_pry, Mode=TwoWay}"  Margin="5" IsEnabled="False" IsReadOnly="True"  Background="LightGray"></-->
+            <TextBox Grid.Row="2" Grid.Column="1" Text = "{Binding Estrategia.Id, Mode=TwoWay}"  Margin="5"></TextBox>
+            <!--TextBox Grid.Row="2" Grid.Column="1" Text = "{Binding Estrategia.Id, Mode=TwoWay}"  Margin="5" IsEnabled="False" IsReadOnly="True"  Background="LightGray"></-->
             <Label Grid.Row="3" Grid.Column="0" Content="ID Proyecto" Margin="5" Height="28"></Label>
             <TextBox Grid.Row="3" Grid.Column="1" Text = "{Binding Id, Mode=TwoWay}"  Margin="5" ></TextBox>
         </Grid>
