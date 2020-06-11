@@ -19,8 +19,8 @@ namespace ProAppModule1
         private const string _dockPaneID = "ProAppModule1_Dockpane1";
 
         // Constants
-        //private const string _serviceURL = "https://services.arcgis.com/F7DSX1DSNSiWmOqh/arcgis/rest/services/GeodatabaseTNC/FeatureServer"; // Production
-        private const string _serviceURL = "https://services.arcgis.com/F7DSX1DSNSiWmOqh/arcgis/rest/services/GeodatabaseTNC_Pruebas/FeatureServer"; // Testing
+        private const string _serviceURL = "https://services.arcgis.com/F7DSX1DSNSiWmOqh/arcgis/rest/services/GeodatabaseTNC/FeatureServer"; // Production
+        //private const string _serviceURL = "https://services.arcgis.com/F7DSX1DSNSiWmOqh/arcgis/rest/services/GeodatabaseTNC_Pruebas/FeatureServer"; // Testing
 
         //Estrategia
         private int _selectedIndex_pry;
@@ -286,6 +286,8 @@ namespace ProAppModule1
         protected Dockpane1ViewModel()
 
         {
+
+
             var loader = new DataUploader(new FieldValidator(), new Geoprocessor());
 
             // Set up commands estrategia
@@ -345,11 +347,11 @@ namespace ProAppModule1
             _carrusel_browseCommand = new RelayCommand(() => BrowseCarrusel(), () => true);
             _carrusel_uploadCommand = new RelayCommand(() => loader.UploadData(new Carrusel(CarruselBrowsed_Item)), () => true);
             // Icono
-            _icono_browseCommand = new RelayCommand(() => NotAvailable(), () => true);
-            _icono_uploadCommand = new RelayCommand(() => NotAvailable(), () => true);
+            _icono_browseCommand = new RelayCommand(() => BrowseIcono(), () => true);
+            _icono_uploadCommand = new RelayCommand(() => loader.UploadData(new IconosBiodiversidad(IconoBrowsed_Item)), () => true);
             // Texto
-            _texto_browseCommand = new RelayCommand(() => NotAvailable(), () => true);
-            _texto_uploadCommand = new RelayCommand(() => NotAvailable(), () => true);
+            _texto_browseCommand = new RelayCommand(() => BrowseTexto(), () => true);
+            _texto_uploadCommand = new RelayCommand(() => loader.UploadData(new Textos(TextoBrowsed_Item)), () => true);
 
             // Load data 
             LoadData();
@@ -358,6 +360,40 @@ namespace ProAppModule1
             // Startup properties
             SelectedIndex = -1;
             SelectedIndex_pry = -1;
+        }
+
+        private void BrowseTexto()
+        {
+            var openFeatureClass = new OpenItemDialog()
+            {
+                Title = "Seleccione la hoja de excel o la tabla de geodatabase con los datos de Textos Generales",
+                Filter = ItemFilters.tables_all
+            };
+
+            Nullable<bool> result = openFeatureClass.ShowDialog();
+            if (result == true)
+            {
+                TextoBrowsed_Item = openFeatureClass.Items.First();
+                _texto_file = TextoBrowsed_Item.Path;
+                NotifyPropertyChanged(() => TextoBrowsed_Item);
+            }
+        }
+
+        private void BrowseIcono()
+        {
+            var openFeatureClass = new OpenItemDialog()
+            {
+                Title = "Seleccione la hoja de excel o la tabla de geodatabase con los datos de Iconos Biodiversidad",
+                Filter = ItemFilters.tables_all
+            };
+
+            Nullable<bool> result = openFeatureClass.ShowDialog();
+            if (result == true)
+            {
+                IconoBrowsed_Item = openFeatureClass.Items.First();
+                _icono_file = IconoBrowsed_Item.Path;
+                NotifyPropertyChanged(() => IconoBrowsed_Item);
+            }
         }
 
         private void BrowseCarrusel()
@@ -373,7 +409,7 @@ namespace ProAppModule1
             {
                 CarruselBrowsed_Item = openFeatureClass.Items.First();
                 _carrusel_file = CarruselBrowsed_Item.Path;
-                NotifyPropertyChanged(() => _carrusel_file);
+                NotifyPropertyChanged(() => CarruselBrowsed_Item);
             }
         }
 
@@ -847,6 +883,15 @@ namespace ProAppModule1
             pane.Activate();
         }
 
+        // Show the DockPane.
+        internal static void Hide()
+        {
+            DockPane pane = FrameworkApplication.DockPaneManager.Find(_dockPaneID);
+            if (pane == null)
+                return;
+            pane.Hide();
+        }
+
         // Method to show the Pro Window
         private ProWindow1 _prowindow1 = null;
         public void ShowWindow() {
@@ -1041,6 +1086,13 @@ namespace ProAppModule1
     {
         protected override void OnClick()
         {
+            var active_portal = ArcGISPortalManager.Current.GetActivePortal();
+            string token = active_portal.GetToken();
+            if (token == "")
+            {
+                MessageBox.Show("Por favor ingrese su usuario y constraseña en ArcGIS Pro antes de continuar");
+                return;
+            }
             Dockpane1ViewModel.Show();
         }
     }

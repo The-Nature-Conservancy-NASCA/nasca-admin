@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using System.Web.Script.Serialization;
 using ArcGIS.Desktop.Core;
+using ArcGIS.Desktop.Framework.Dialogs;
 
 
 namespace ProAppModule1
@@ -21,7 +22,12 @@ namespace ProAppModule1
         {
             var active_portal = ArcGISPortalManager.Current.GetActivePortal();
             string token = active_portal.GetToken();
-            return token;
+            if (token == "")
+            {
+                MessageBox.Show("Por favor ingrese su usuario y constraseña en ArcGIS Pro antes de continuar");
+            }
+
+            return null;
         }
 
 
@@ -78,6 +84,9 @@ namespace ProAppModule1
         public static Object Query(string service, string where, string outFields)
 
         {
+            if (token == null)
+                throw new System.ApplicationException("Ingrese sus credenciales en ArcGIS Pro antes de continuar");
+
             Object features;
             var operation = "query";
             // Create a request for the URL.          
