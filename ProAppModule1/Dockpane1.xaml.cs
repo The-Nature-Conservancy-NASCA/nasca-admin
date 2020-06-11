@@ -14,10 +14,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-
-
-
-
 namespace ProAppModule1
 {
     /// <summary>
@@ -26,15 +22,19 @@ namespace ProAppModule1
     public partial class Dockpane1View : UserControl
     {
 
-        //private DataTable data = new DataTable();
-
 
         public Dockpane1View()
         {
+            Dockpane1ViewModel.Hide();
+
             InitializeComponent();
             //DataContext = data;
         }
 
+        public static void ReinitializeComponent()
+        {
+            //new Dockpane1View();
+        }
 
     }
 }

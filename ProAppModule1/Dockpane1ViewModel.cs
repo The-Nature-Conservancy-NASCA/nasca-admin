@@ -9,6 +9,7 @@ using MessageBox = ArcGIS.Desktop.Framework.Dialogs.MessageBox;
 using System.Data;
 using System.Windows.Input;
 using System.Windows;
+using System.Windows.Media;
 
 namespace ProAppModule1
 {
@@ -21,6 +22,7 @@ namespace ProAppModule1
         // Constants
         private const string _serviceURL = "https://services.arcgis.com/F7DSX1DSNSiWmOqh/arcgis/rest/services/GeodatabaseTNC/FeatureServer"; // Production
         //private const string _serviceURL = "https://services.arcgis.com/F7DSX1DSNSiWmOqh/arcgis/rest/services/GeodatabaseTNC_Pruebas/FeatureServer"; // Testing
+
 
         //Estrategia
         private int _selectedIndex_pry;
@@ -287,7 +289,6 @@ namespace ProAppModule1
 
         {
 
-
             var loader = new DataUploader(new FieldValidator(), new Geoprocessor());
 
             // Set up commands estrategia
@@ -354,8 +355,12 @@ namespace ProAppModule1
             _texto_uploadCommand = new RelayCommand(() => loader.UploadData(new Textos(TextoBrowsed_Item)), () => true);
 
             // Load data 
-            LoadData();
-            LoadData_pry();
+            if (token != "")
+            {
+                LoadData();
+                LoadData_pry();
+            }
+
 
             // Startup properties
             SelectedIndex = -1;
@@ -874,12 +879,60 @@ namespace ProAppModule1
 
         }
 
+        public static DataTable LoadData2()
+        {
+
+            var _resultTable = new DataTable();
+            _resultTable.Columns.Add(new DataColumn("OBJECTID"));
+            _resultTable.Columns.Add(new DataColumn("Nombre"));
+            _resultTable.Columns.Add(new DataColumn("Descripcion"));
+            _resultTable.Columns.Add(new DataColumn("ID_estrategia"));
+            _resultTable.Columns.Add(new DataColumn("Color"));
+            _resultTable.Columns.Add(new DataColumn("Fondo"));
+            _resultTable.Columns.Add(new DataColumn("Icono"));
+
+            var service = String.Format("{0}/3", _serviceURL);
+
+            var where = "1=1";
+            var outFields = "*";
+            var features = WebInteraction.Query(service, where, outFields);
+
+            foreach (var feature in (System.Collections.ArrayList)features)
+            {
+                var feat = (Dictionary<string, object>)feature;
+                var atts = (Dictionary<string, object>)feat["attributes"];
+
+                var addRow = _resultTable.NewRow();
+                addRow["OBJECTID"] = atts["OBJECTID"];
+                addRow["ID_estrategia"] = atts["ID_estrategia"];
+                addRow["Nombre"] = atts["nombre"];
+                addRow["Descripcion"] = atts["descripcion"];
+                addRow["Color"] = atts["color"];
+                addRow["Fondo"] = atts["fondo"];
+                addRow["Icono"] = atts["icono"];
+
+                _resultTable.Rows.Add(addRow);
+            }
+
+            return _resultTable;
+        }
+
+        internal static string token
+        {
+            get
+            {
+                var active_portal = ArcGISPortalManager.Current.GetActivePortal();
+                return active_portal.GetToken(); ;
+            }
+        }
+
         // Show the DockPane.
         internal static void Show()
         {
             DockPane pane = FrameworkApplication.DockPaneManager.Find(_dockPaneID);
             if (pane == null)
                 return;
+            
             pane.Activate();
         }
 
@@ -891,6 +944,7 @@ namespace ProAppModule1
                 return;
             pane.Hide();
         }
+
 
         // Method to show the Pro Window
         private ProWindow1 _prowindow1 = null;
@@ -1086,14 +1140,17 @@ namespace ProAppModule1
     {
         protected override void OnClick()
         {
-            var active_portal = ArcGISPortalManager.Current.GetActivePortal();
-            string token = active_portal.GetToken();
-            if (token == "")
+            if (Dockpane1ViewModel.token != "")
             {
-                MessageBox.Show("Por favor ingrese su usuario y constraseña en ArcGIS Pro antes de continuar");
-                return;
+                Dockpane1View.ReinitializeComponent();
+                Dockpane1ViewModel.Show();
             }
-            Dockpane1ViewModel.Show();
+
+            else
+            {
+                MessageBox.Show("Debe iniciar sesión en ArcGIS Pro para acceder al administrador");
+                
+            }
         }
     }
 }

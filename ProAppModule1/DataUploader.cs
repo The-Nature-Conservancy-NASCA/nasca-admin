@@ -17,7 +17,6 @@ namespace ProAppModule1
     {
         private Uri _gdb;
         //private readonly string token = WebInteraction.GenerateToken("GeoTNCDev", "GeoTNC123");
-        private readonly string token = WebInteraction.GenerateToken();
         private SpatialReference webMercator = SpatialReferenceBuilder.CreateSpatialReference(102100);
 
 
@@ -29,6 +28,13 @@ namespace ProAppModule1
         }
 
         private int AddFeatures(List<Object> features, Element element) {
+
+            var token = Dockpane1ViewModel.token;
+            if (token == "")
+            {
+                Dockpane1ViewModel.Hide();
+                return 0;
+            }
 
             // Create a request for the URL.          
             var url = $"{element.service}/addFeatures";

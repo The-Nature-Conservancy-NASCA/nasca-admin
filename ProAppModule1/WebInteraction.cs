@@ -15,77 +15,15 @@ namespace ProAppModule1
     class WebInteraction
     {
 
-        //static string token = GenerateToken("GeoTNCDev", "GeoTNC123");
-        static string token = GenerateToken();
-
-        public static string GenerateToken()
-        {
-            var active_portal = ArcGISPortalManager.Current.GetActivePortal();
-            string token = active_portal.GetToken();
-            if (token == "")
-            {
-                MessageBox.Show("Por favor ingrese su usuario y constraseña en ArcGIS Pro antes de continuar");
-            }
-
-            return null;
-        }
-
-
-        public static string GenerateToken(string user, string pass)
-        {
-
-            string token = null;
-            var serializer = new JavaScriptSerializer();
-
-            // Create a request for the URL.          
-            var url = "https://arcgis.com/sharing/rest/generateToken";
-            WebRequest request = WebRequest.Create(url);
-            request.Method = "POST";
-
-            var postData = $"username={user}&password={pass}&referer=https://www.arcgis.com&f=json";
-            byte[] byteArray = Encoding.UTF8.GetBytes(postData);
-
-            request.ContentType = "application/x-www-form-urlencoded";
-            request.ContentLength = byteArray.Length;   
-
-            Stream dataStream = request.GetRequestStream();
-            dataStream.Write(byteArray, 0, byteArray.Length);
-            dataStream.Close();
-
-            // Get the response.  
-            WebResponse response = request.GetResponse();
-            // Display the status.  
-            Debug.WriteLine(((HttpWebResponse)response).StatusDescription);
-
-            // Get the stream containing content returned by the server. 
-            // The using block ensures the stream is automatically closed. 
-            using (dataStream = response.GetResponseStream())
-            {
-                // Open the stream using a StreamReader for easy access.  
-                StreamReader reader = new StreamReader(dataStream);
-                // Read the content.  
-                string responseFromServer = reader.ReadToEnd();
-
-                // Display the content.  
-                Debug.WriteLine(responseFromServer);
-
-                // Desealize content
-                var result = serializer.Deserialize<TokenResult>(responseFromServer);
-
-                token = result.token;
-
-            }
-
-            // Close the response.  
-            response.Close();
-            return token;
-        }
-
         public static Object Query(string service, string where, string outFields)
 
         {
-            if (token == null)
-                throw new System.ApplicationException("Ingrese sus credenciales en ArcGIS Pro antes de continuar");
+            var token = Dockpane1ViewModel.token;
+            if (token == "")
+            {
+                Dockpane1ViewModel.Hide();
+                return null;
+            }
 
             Object features;
             var operation = "query";
@@ -127,6 +65,12 @@ namespace ProAppModule1
         public static void DeleteFeatures(string service, int objectid)
 
         {
+            var token = Dockpane1ViewModel.token;
+            if (token == "")
+            {
+                Dockpane1ViewModel.Hide();
+                return;
+            }
 
             // Create a request for the URL.    
             var operation = "deleteFeatures";
@@ -172,6 +116,12 @@ namespace ProAppModule1
         public static int AddFeatures(string service, Object _attributes)
 
         {
+            var token = Dockpane1ViewModel.token;
+            if (token == "")
+            {
+                Dockpane1ViewModel.Hide();
+                return 0;
+            }
 
             int objectid = 0;
             var operation = "addFeatures";
@@ -237,6 +187,13 @@ namespace ProAppModule1
         public static int UpdateFeatures(string service, int objectid, Object _attributes)
 
         {
+
+            var token = Dockpane1ViewModel.token;
+            if (token == "")
+            {
+                Dockpane1ViewModel.Hide();
+                return 0;
+            }
 
             // Create a request for the URL.          
             var operation = "updateFeatures";
