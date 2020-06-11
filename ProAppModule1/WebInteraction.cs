@@ -4,9 +4,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using ArcGIS.Desktop.Core;
-using ArcGIS.Desktop.Framework.Dialogs;
+using ArcGIS.Desktop.Framework.Threading.Tasks;
 
 
 namespace ProAppModule1
@@ -14,6 +15,8 @@ namespace ProAppModule1
 {
     class WebInteraction
     {
+
+
 
         public static Object Query(string service, string where, string outFields)
 
@@ -71,6 +74,7 @@ namespace ProAppModule1
                 Dockpane1ViewModel.Hide();
                 return;
             }
+
 
             // Create a request for the URL.    
             var operation = "deleteFeatures";
@@ -187,13 +191,13 @@ namespace ProAppModule1
         public static int UpdateFeatures(string service, int objectid, Object _attributes)
 
         {
-
             var token = Dockpane1ViewModel.token;
             if (token == "")
             {
                 Dockpane1ViewModel.Hide();
                 return 0;
             }
+
 
             // Create a request for the URL.          
             var operation = "updateFeatures";

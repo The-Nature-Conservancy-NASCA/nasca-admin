@@ -1,13 +1,18 @@
 ﻿using ArcGIS.Core.Data;
+using ArcGIS.Desktop.Catalog;
 using ArcGIS.Desktop.Core;
 
 namespace ProAppModule1
 {
     public class Meta : Element
     {
-        public Meta(Item item) : base(item)
+        public Meta() : base()
         {
-            index = 6;
+            Index = 6;
+            Service = $"{serviceURL}/{Index}";
+            ElementName = "Meta";
+            ElementType = "la hoja de excel o la tabla de geodatabase";
+            FilterType = ItemFilters.tables_all;
         }
 
         public override object FormatAttributes(Row row)

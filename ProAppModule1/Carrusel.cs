@@ -1,14 +1,19 @@
 ﻿using ArcGIS.Core.CIM;
 using ArcGIS.Core.Data;
+using ArcGIS.Desktop.Catalog;
 using ArcGIS.Desktop.Core;
 
 namespace ProAppModule1
 {
     public class Carrusel:Element
     {
-        public Carrusel(Item item) : base(item)
+        public Carrusel() : base()
         {
-            index = 10;
+            Index = 10;
+            Service = $"{serviceURL}/{Index}";
+            ElementName = "Imagenes Carrusel";
+            ElementType = "la hoja de excel o la tabla de geodatabase";
+            FilterType = ItemFilters.tables_all;
         }
 
         public override object FormatAttributes(Row row)

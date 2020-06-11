@@ -1,13 +1,18 @@
 ﻿using ArcGIS.Core.Data;
+using ArcGIS.Desktop.Catalog;
 using ArcGIS.Desktop.Core;
 
 namespace ProAppModule1
 {
     public class Predio: Element
     {
-        public Predio(Item item) : base(item)
+        public Predio() : base()
         {
-            index = 1;
+            Index = 1;
+            Service = $"{serviceURL}/{Index}";
+            ElementName = "Predios";
+            ElementType = "el shape file o el feature class de polígonos";
+            FilterType = ItemFilters.featureClasses_all;
         }
         public override object FormatAttributes(Row row)
         {

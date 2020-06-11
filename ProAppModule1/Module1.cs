@@ -21,23 +21,6 @@ namespace ProAppModule1
 {
     internal class Module1 : Module
     {
-
-        //private static readonly string tokenState = "tokenState";
-
-        //internal static void ToogleState()
-
-        //{
-        //    if (FrameworkApplication.State.Contains(tokenState))
-        //    {
-        //        FrameworkApplication.State.Deactivate(tokenState);
-        //    }
-        //    else
-        //    {
-        //        FrameworkApplication.State.Activate(tokenState);
-        //    }
-
-        //}
-
         private static Module1 _this = null;
 
         /// <summary>
@@ -60,14 +43,6 @@ namespace ProAppModule1
         {
             //TODO - add your business logic
             //return false to ~cancel~ Application close
-            return true;
-        }
-
-
-
-        protected override bool Initialize()
-        {
-           
             return true;
         }
 

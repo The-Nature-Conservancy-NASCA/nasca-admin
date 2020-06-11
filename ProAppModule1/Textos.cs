@@ -1,13 +1,18 @@
 ﻿using ArcGIS.Core.Data;
+using ArcGIS.Desktop.Catalog;
 using ArcGIS.Desktop.Core;
 
 namespace ProAppModule1
 {
     public class Textos : Element
     {
-        public Textos(Item item) : base(item)
+        public Textos() : base()
         {
-            index = 15;
+            Index = 15;
+            Service = $"{serviceURL}/{Index}";
+            ElementName = "Textos Generales";
+            ElementType = "la hoja de excel o la tabla de geodatabase";
+            FilterType = ItemFilters.tables_all;
         }
 
         public override object FormatAttributes(Row row)

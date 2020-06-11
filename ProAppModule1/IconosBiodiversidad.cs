@@ -1,13 +1,18 @@
 ﻿using ArcGIS.Core.Data;
+using ArcGIS.Desktop.Catalog;
 using ArcGIS.Desktop.Core;
 
 namespace ProAppModule1
 {
     public class IconosBiodiversidad : Element
     {
-        public IconosBiodiversidad(Item item) : base(item)
+        public IconosBiodiversidad() : base()
         {
-            index = 14;
+            Index = 14;
+            Service = $"{serviceURL}/{Index}";
+            ElementName = "Iconos Biodiversidad";
+            ElementType = "la hoja de excel o la tabla de geodatabase";
+            FilterType = ItemFilters.tables_all;
         }
 
         public override object FormatAttributes(Row row)

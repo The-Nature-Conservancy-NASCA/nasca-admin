@@ -4,14 +4,19 @@ using ArcGIS.Desktop.Core.Geoprocessing;
 using ArcGIS.Desktop.Framework.Threading.Tasks;
 using System;
 using System.Threading.Tasks;
+using ArcGIS.Desktop.Catalog;
 
 namespace ProAppModule1
 {
     public class Biodiversidad : Element
     {
-        public Biodiversidad(Item item) : base(item)
+        public Biodiversidad() : base()
         {
-            index = 2;
+            Index = 2;
+            Service = $"{serviceURL}/{Index}";
+            ElementName = "Biodiversidad";
+            ElementType = "el shape file o el feature class de puntos";
+            FilterType = ItemFilters.composite_addToMap;
         }
 
         public override object FormatAttributes(Row row)
@@ -84,7 +89,7 @@ namespace ProAppModule1
                 return tbl;
             });
 
-            type = "File Geodatabase Feature Class";
+            Type = "File Geodatabase Feature Class";
 
             progressDlg.Hide();
             return table;

@@ -1,13 +1,18 @@
 ﻿using ArcGIS.Core.Data;
+using ArcGIS.Desktop.Catalog;
 using ArcGIS.Desktop.Core;
 
 namespace ProAppModule1
 {
     public class Aliado : Element
     {
-        public Aliado(Item item) : base(item)
+        public Aliado() : base()
         {
-            index = 7;
+            Index = 7;
+            Service = $"{serviceURL}/{Index}";
+            ElementName = "Aliado";
+            ElementType = "la hoja de excel o la tabla de geodatabase";
+            FilterType = ItemFilters.tables_all;
         }
 
         public override object FormatAttributes(Row row)

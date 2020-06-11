@@ -1,13 +1,19 @@
 ﻿using ArcGIS.Core.Data;
+using ArcGIS.Core.Geometry;
+using ArcGIS.Desktop.Catalog;
 using ArcGIS.Desktop.Core;
 
 namespace ProAppModule1
 {
     public class Cobertura:Element
     {
-        public Cobertura(Item item) : base(item)
+        public Cobertura() : base()
         {
-            index = 13;
+            Index = 13;
+            Service = $"{serviceURL}/{Index}";
+            ElementName = "Cobertura";
+            ElementType = "la hoja de excel o la tabla de geodatabase";
+            FilterType = ItemFilters.tables_all;
         }
 
         public override object FormatAttributes(Row row)
@@ -24,10 +30,10 @@ namespace ProAppModule1
             var fecha_establecimiento = ToDate(row, "fecha_establecimiento");
             var fecha_visita = ToDate(row, "fecha_visita");
             var edad = ToInt(row, "edad");
-            var area_ha = ToDouble(row, "area_ha");
+            var area = ToDouble(row, "area");
             var momento = ToString(row, "momento");
 
-            var _attributes = new { ID_predio, corine1, corine2, corine3, cobertura_comun, cobertura_proyecto, uso, verificacion, fecha_establecimiento ,edad, fecha_visita, subcobertura_proyecto, area_ha, momento };
+            var _attributes = new { ID_predio, corine1, corine2, corine3, cobertura_comun, cobertura_proyecto, uso, verificacion, fecha_establecimiento ,edad, fecha_visita, subcobertura_proyecto, area, momento };
             return _attributes;
 
         }

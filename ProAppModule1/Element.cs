@@ -1,81 +1,165 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
+using System.Windows;
+using System.Windows.Input;
 using ArcGIS.Core.Data;
+using ArcGIS.Desktop.Catalog;
 using ArcGIS.Desktop.Core;
 using ArcGIS.Desktop.Core.Geoprocessing;
+using ArcGIS.Desktop.Framework;
+using ArcGIS.Desktop.Framework.Contracts;
+using ArcGIS.Desktop.Framework.Dialogs;
 using ArcGIS.Desktop.Framework.Threading.Tasks;
 
 namespace ProAppModule1
 {
-    public abstract class Element {
+    public abstract class Element:PropertyChangedBase {
 
+        // Fields
         public const string serviceURL = "https://services.arcgis.com/F7DSX1DSNSiWmOqh/arcgis/rest/services/GeodatabaseTNC/FeatureServer"; // Production
         //public const string serviceURL = "https://services.arcgis.com/F7DSX1DSNSiWmOqh/arcgis/rest/services/GeodatabaseTNC_Pruebas/FeatureServer"; // Testing
-
-        private Item _item;
-        private string _service;
-        private TableDefinition _definition;
-        private FeatureClass _featureclass;
-        private RowCursor _cursor;
-        private Table _table;
-        private Uri _gdb;
-        private int _count;
-        private int _index;
-        private string _type;
         public JavaScriptSerializer serializer = new JavaScriptSerializer();
+        public string ElementName = "Elemento";
+        public string ElementType = "Tipo de elemento";
+        public string FilterType = ItemFilters.tables_all;
+        public string OidField = "OBJECTID";
+        public List<string> Columns;
 
-        public Item item { get => _item; }
-        public string service { get => _service; }
-        public TableDefinition definition { get => _definition; }
-        public FeatureClass featureclas { get => _featureclass; }
-        public int count { get => _count; }
-        public int index { get => _index; set { _index = value; } }
-        public string type { get => _type; set { _type = value; } }
-        public RowCursor cursor { get => _cursor;}
+        // Contructor
+        protected Element()
+        {
+            Service = $"{serviceURL}/{Index}";
 
-        public Element(Item item) {
+            var loader = new DataUploader(new FieldValidator(), new Geoprocessor());
+            BrowseFileCommand = new RelayCommand(() => BrowseFile(), () => true);
+            UploadCommand = new RelayCommand(() => { loader.UploadData(this); LoadData();}, () => true);
 
-            _item = item;
-            _type = _item.Type;
         }
 
+        public ICommand BrowseFileCommand { get; }
+        public ICommand UploadCommand { get; }
 
-        public void Initialization(int index) {
+        // Properties
+        private Item item;
+        public Item Item { get => item; set { item = value; NotifyPropertyChanged(() => item); } }
 
-            _service = string.Format("{0}/{1}", serviceURL, index);
-            
+        private string file;
+        public string File { get => file; set { file = value; NotifyPropertyChanged(() => file); } }
+
+        private int selectedIndex;
+        public int SelectedIndex {get => selectedIndex; set {selectedIndex = value; NotifyPropertyChanged(() => SelectedIndex); } }
+
+        public string Service { get; set; }
+        public DataTable data { get; set; }
+        public TableDefinition Definition { get; private set; }
+        public FeatureClass Featureclass { get; private set; }
+        public Table Table { get; private set; }
+        public int Count { get; private set; }
+        public int Index { get; set; }
+        public string Type { get; set; }
+        private Uri Gdb;
+        public RowCursor Cursor { get; private set; }
+
+        // Methods
+
+        public void Initialization(int index, Item item) {
+            Item = item;
+            Type = item.Type;
         }
-        
-        public async Task<int> GetProperties()
+
+        public virtual async void LoadData()
         {
 
+        }
+
+
+        public Task FillDataTable()
+        {
+            return QueuedTask.Run(() =>
+            {
+                var _resultTable = new DataTable();
+
+                foreach (var column in Columns)
+                {
+                    _resultTable.Columns.Add(new DataColumn(column));
+                }
+
+                var features = WebInteraction.Query(Service, "1=1", "*");
+
+                foreach (var feature in (System.Collections.ArrayList)features)
+                {
+                    var feat = (Dictionary<string, object>)feature;
+                    var atts = (Dictionary<string, object>)feat["attributes"];
+
+                    var addRow = _resultTable.NewRow();
+                    foreach (var column in Columns)
+                    {
+                        addRow[column] = atts[column];
+                    }
+
+                    _resultTable.Rows.Add(addRow);
+                }
+
+                data = _resultTable;
+            });
+        }
+
+        public void BrowseFile()
+        {
+            var openTable = new OpenItemDialog()
+            {
+                Title = $"Seleccione {ElementType} que contiene los datos de {ElementName}",
+                Filter = FilterType
+            };
+            Nullable<bool> result = openTable.ShowDialog();
+            if (result == true)
+            {
+                Item = openTable.Items.First();
+                File = Item.Path;
+                NotifyPropertyChanged(() => File);
+            }
+        }
+
+
+        public virtual async void UnselectRow()
+        {
+
+        }
+
+
+        public async Task<int> GetProperties(Item _item)
+        {
             var path = new Uri(_item.Path);
             var directory = new Uri(path, ".");
 
-            if (_type == "File Geodatabase Feature Class")
+            if (Type == "File Geodatabase Feature Class")
             {
                 var gdbPath = directory.AbsolutePath.Remove(directory.AbsolutePath.Length - 1);
-                _gdb = new Uri(gdbPath);
+                Gdb = new Uri(gdbPath);
 
-                _featureclass = await QueuedTask.Run(() =>
+                Featureclass = await QueuedTask.Run(() =>
                 {
-                    var geodatabase = new Geodatabase(new FileGeodatabaseConnectionPath(_gdb));
-                    var fc = geodatabase.OpenDataset<FeatureClass>(item.Title);
+                    var geodatabase = new Geodatabase(new FileGeodatabaseConnectionPath(Gdb));
+                    var fc = geodatabase.OpenDataset<FeatureClass>(Item.Title);
                     return fc;
                 });
 
-                _table = await QueuedTask.Run(() =>
+                Table = await QueuedTask.Run(() =>
                 {
-                    Table table = _featureclass;
+                    Table table = Featureclass;
                     return table;
                 });
 
             }
-            else if (_type == "Shapefile")
+            else if (Type == "Shapefile")
             {
 
-                _table = await QueuedTask.Run(() =>
+                Table = await QueuedTask.Run(() =>
                 {
                     var shapefilePath = new FileSystemConnectionPath(directory, FileSystemDatastoreType.Shapefile);
                     var shapefile = new FileSystemDatastore(shapefilePath);
@@ -85,56 +169,56 @@ namespace ProAppModule1
 
             }
 
-            else if (_type == "File Geodatabase Table")
+            else if (Type == "File Geodatabase Table")
             {
 
                 var gdbPath = directory.AbsolutePath.Remove(directory.AbsolutePath.Length - 1);
-                _gdb = new Uri(gdbPath);
+                Gdb = new Uri(gdbPath);
 
-                _table = await QueuedTask.Run(() =>
+                Table = await QueuedTask.Run(() =>
                 {
-                    var geodatabase = new Geodatabase(new FileGeodatabaseConnectionPath(_gdb));
+                    var geodatabase = new Geodatabase(new FileGeodatabaseConnectionPath(Gdb));
                     var table = geodatabase.OpenDataset<Table>(_item.Title);
                     return table;
                 });
 
             }
 
-            else if (_type == "Excel Table")
+            else if (Type == "Excel Table")
             {
                 var outPath = Project.Current.DefaultGeodatabasePath;
-                var outName = string.Format("Tabla_{0}", DateTime.Now.ToString("yyyyMMddHHmmssfff"));
-                var xlsFile = item.PhysicalPath;
-                var sheetName = item.Name.Remove(item.Name.Length-1);
+                var outName = $"Tabla_{DateTime.Now:yyyyMMddHHmmssfff}";
+                var xlsFile = Item.PhysicalPath;
+                var sheetName = Item.Name.Remove(Item.Name.Length-1);
                 //var outTable = "memory\\table";
 
-                _table = await ConvertExcelToTable(xlsFile, sheetName, outPath, outName);
+                Table = await ConvertExcelToTable(xlsFile, sheetName, outPath, outName);
           
             }
 
-            else if (_type == "Text File")
+            else if (Type == "Text File")
             {
                 var outPath = Project.Current.DefaultGeodatabasePath;
-                var outName = string.Format("Tabla_{0}", DateTime.Now.ToString("yyyyMMddHHmmssfff"));
-                var csvFile = item.Path;
+                var outName = $"Tabla_{DateTime.Now:yyyyMMddHHmmssfff}";
+                var csvFile = Item.Path;
 
-                _table = await ConvertCSVToTable(csvFile, outPath, outName);
+                Table = await ConvertCSVToTable(csvFile, outPath, outName);
             }
 
-            _definition = await QueuedTask.Run(() =>
+            Definition = await QueuedTask.Run(() =>
             {
-                var def = _table.GetDefinition();
+                var def = Table.GetDefinition();
                 return def;
             });
 
-            _count = await QueuedTask.Run(() => {
-                var _c = _table.GetCount();
+            Count = await QueuedTask.Run(() => {
+                var _c = Table.GetCount();
                 return _c;
             });
 
-            _cursor = await QueuedTask.Run(() =>
+            Cursor = await QueuedTask.Run(() =>
             {
-                var cur = _table.Search();
+                var cur = Table.Search();
                 return cur;
             });
 
@@ -190,7 +274,6 @@ namespace ProAppModule1
         {
             return new { };
         }
-
 
         public string ToString(Row row, string field_name)
         {
@@ -250,7 +333,6 @@ namespace ProAppModule1
 
             return new_value;
         }
-
 
         public virtual void UploadData() {}
         public virtual object FormatAttributes(Row row) { return new { }; }

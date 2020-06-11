@@ -1,13 +1,18 @@
 ﻿using ArcGIS.Core.Data;
+using ArcGIS.Desktop.Catalog;
 using ArcGIS.Desktop.Core;
 
 namespace ProAppModule1
 {
     public class Carbono : Element
     {
-        public Carbono(Item item) : base(item)
+        public Carbono() : base()
         {
-            index = 11;
+            Index = 11;
+            Service = $"{serviceURL}/{Index}";
+            ElementName = "Carbono";
+            ElementType = "la hoja de excel o la tabla de geodatabase";
+            FilterType = ItemFilters.tables_all;
         }
 
         public override object FormatAttributes(Row row)

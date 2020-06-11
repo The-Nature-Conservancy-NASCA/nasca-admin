@@ -10,13 +10,17 @@ using System.Web.Script.Serialization;
 using System.IO;
 using System.Net;
 using System.Windows;
+using ArcGIS.Desktop.Core;
+using ArcGIS.Desktop.Framework.Contracts;
 
 namespace ProAppModule1
 {
-    public class DataUploader : IUploader
+    public class DataUploader : PropertyChangedBase, IUploader
     {
         private Uri _gdb;
         //private readonly string token = WebInteraction.GenerateToken("GeoTNCDev", "GeoTNC123");
+        private readonly string token = Dockpane1ViewModel.token;
+
         private SpatialReference webMercator = SpatialReferenceBuilder.CreateSpatialReference(102100);
 
 
@@ -29,15 +33,8 @@ namespace ProAppModule1
 
         private int AddFeatures(List<Object> features, Element element) {
 
-            var token = Dockpane1ViewModel.token;
-            if (token == "")
-            {
-                Dockpane1ViewModel.Hide();
-                return 0;
-            }
-
             // Create a request for the URL.          
-            var url = $"{element.service}/addFeatures";
+            var url = $"{element.Service}/addFeatures";
 
             // Serialize the objects to json
             var serializer = new JavaScriptSerializer();
@@ -86,7 +83,7 @@ namespace ProAppModule1
             return QueuedTask.Run(() => {
 
                 var featuresList = new List<Object>();
-                using (RowCursor rowCursor = element.cursor)
+                using (RowCursor rowCursor = element.Cursor)
                 {
                     while (rowCursor.MoveNext())
                     {
@@ -99,7 +96,7 @@ namespace ProAppModule1
                             var _attributes = element.FormatAttributes(row);
 
                             // Read and convert geometry
-                            if (element.item.Type == "File Geodatabase Feature Class" || element.item.Type == "Shapefile")
+                            if (element.Item.Type == "File Geodatabase Feature Class" || element.Item.Type == "Shapefile")
                             {
                                 var feature = row as Feature;
                                 var shape = feature.GetShape();
@@ -108,7 +105,7 @@ namespace ProAppModule1
                                 var geom = element.Serialize(json_geom);
                                 feat = new { attributes = _attributes, geometry = geom };
                             }
-                            else if (element.item.Type == "File Geodatabase Table" || element.item.Type == "Excel Table" || element.item.Type == "Text File")
+                            else if (element.Item.Type == "File Geodatabase Table" || element.Item.Type == "Excel Table" || element.Item.Type == "Text File")
                                 feat = new {attributes = _attributes};
                             else
                                 feat = new { }; // Maybe Throw a exception?
@@ -122,7 +119,7 @@ namespace ProAppModule1
                                 var _result = AddFeatures(featuresList, element);
                                 featuresList.Clear();
                                 status.Progressor.Value += 1;
-                                status.Progressor.Status = String.Format("{0} de {1}", status.Progressor.Value * chunksize, element.count);
+                                status.Progressor.Status = String.Format("{0} de {1}", status.Progressor.Value * chunksize, element.Count);
                                 status.Progressor.Message = String.Format("Registros cargados {0}", status.Progressor.Value*chunksize) ;
                             }
                         }
@@ -143,14 +140,15 @@ namespace ProAppModule1
         {
             try
             {
+                var item = element.Item;
                 // Defensive programmming
-                if (element.item == null)
-                    throw new NullReferenceException();
+                //if (element.item == null)
+                    //throw new NullReferenceException();
 
-                element.Initialization(element.index);
+                element.Initialization(element.Index, item);
 
                 // Get definition and shapetype
-                await element.GetProperties();
+                await element.GetProperties(item);
 
                 // Validating fields
                 //var schema = await _fieldValidator.ValidateFields(class_name, def);
@@ -162,14 +160,14 @@ namespace ProAppModule1
 
                 // Loading data
                 int chunksize;
-                if (element.count > 100)
+                if (element.Count > 100)
                     chunksize = 500;
                 else
                 {
                     chunksize = 10;
                 }
 
-                var steps = (uint)(element.count / chunksize + 1);
+                var steps = (uint)(element.Count / chunksize + 1);
 
                 using (var progress = new ProgressDialog("Cargando datos", "Canceled", steps, false))
                 {
@@ -180,8 +178,9 @@ namespace ProAppModule1
                     progress.Hide();
                 }
 
+                var n = element.Count; // Review the real number of loaded records
 
-                var n = element.count; // Review the real number of loaded records
+                element.LoadData();
 
                 if (n > 0)
                     MessageBox.Show(string.Format("Registros cargados: {0}", n), "Resultado de cargue", MessageBoxButton.OK, MessageBoxImage.Information);

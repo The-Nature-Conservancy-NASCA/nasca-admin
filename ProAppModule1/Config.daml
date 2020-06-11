@@ -49,10 +49,9 @@
           <tooltip heading="Tooltip Heading">Tooltip text<disabledText /></tooltip>
         </button>-->
       </controls>
-
       <dockPanes>
-        <dockPane id="ProAppModule1_Dockpane1" caption="Administración"  className="Dockpane1ViewModel" dock="group" dockWith="esri_core_contentsDockPane">
-          <content className="Dockpane1View"  />
+        <dockPane id="ProAppModule1_Dockpane1" caption="Administración" className="Dockpane1ViewModel" dock="group" dockWith="esri_core_contentsDockPane">
+          <content className="Dockpane1View" />
         </dockPane>
       </dockPanes>
     </insertModule>

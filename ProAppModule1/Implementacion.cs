@@ -1,13 +1,18 @@
 ﻿using ArcGIS.Core.Data;
+using ArcGIS.Desktop.Catalog;
 using ArcGIS.Desktop.Core;
 
 namespace ProAppModule1
 {
     public class Implementacion:Element
     {
-        public Implementacion(Item item) : base(item)
+        public Implementacion() : base()
         {
-            index = 8;
+            Index = 8;
+            Service = $"{serviceURL}/{Index}";
+            ElementName = "Implementación";
+            ElementType = "la hoja de excel o la tabla de geodatabase";
+            FilterType = ItemFilters.tables_all;
         }
 
         public override object FormatAttributes(Row row)

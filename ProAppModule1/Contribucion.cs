@@ -1,13 +1,18 @@
 ﻿using ArcGIS.Core.Data;
+using ArcGIS.Desktop.Catalog;
 using ArcGIS.Desktop.Core;
 
 namespace ProAppModule1
 {
     public class Contribucion : Element
     {
-        public Contribucion(Item item) : base(item)
+        public Contribucion() : base()
         {
-            index = 9;
+            Index = 9;
+            Service = $"{serviceURL}/{Index}";
+            ElementName = "Contribución";
+            ElementType = "la hoja de excel o la tabla de geodatabase";
+            FilterType = ItemFilters.tables_all;
         }
 
         public override object FormatAttributes(Row row)

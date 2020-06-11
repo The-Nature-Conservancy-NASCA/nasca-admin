@@ -1,13 +1,18 @@
 ﻿using ArcGIS.Core.Data;
+using ArcGIS.Desktop.Catalog;
 using ArcGIS.Desktop.Core;
 
 namespace ProAppModule1
 {
     public class Region : Element
     {
-        public Region(Item item) : base(item)
+        public Region() : base()
         {
-            index = 0;
+            Index = 0;
+            Service = $"{serviceURL}/{Index}";
+            ElementName = "Región";
+            ElementType = "el shape file o el feature class de polígonos";
+            FilterType = ItemFilters.featureClasses_all;
         }
 
         public override object FormatAttributes(Row row)
