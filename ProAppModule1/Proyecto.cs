@@ -230,7 +230,7 @@ namespace ProAppModule1
                     var _attributes = new
                     {
                         OBJECTID = objectid,
-                        //ID_estrategia = id_Estrategia,
+                        ID_estrategia = Id_estrategia,
                         ID_Proyecto = Id,
                         nombre = Name,
                         Descripcion = Description,
@@ -262,7 +262,7 @@ namespace ProAppModule1
         {
             var _attributes = new
             {
-                //ID_estrategia = id_estra_pry,
+                ID_estrategia = Id_estrategia,
                 ID_Proyecto = Id,
                 nombre = Name,
                 descripcion = Description,

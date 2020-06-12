@@ -237,9 +237,6 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="ProAppModule1.esriAddinX" />
-    <None Include="Toolbox.tbx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <AddInContent Include="Images\tnc.png" />
