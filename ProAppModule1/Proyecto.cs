@@ -37,7 +37,8 @@ namespace ProAppModule1
             SelectedIndex = -1;
 
             OidField = "OBJECTID";
-            Columns = new List<string> { "OBJECTID", "ID_estrategia", "ID_proyecto", "nombre", "descripcion", "color", "fondo", "icono" };
+            Columns = new List<string> { "OBJECTID", "ID_estrategia", "ID_proyecto", "nombre", "descripcion", "color", "fondo", "icono",
+                "fecha_linea_base", "fecha_seguimiento1", "fecha_seguimiento2", "fecha_cierre",  "cierre"};
 
             //Estrategia_pry = estrategia;
 
@@ -122,6 +123,12 @@ namespace ProAppModule1
                 Icon = "";
                 //Id_estrategia = id_Estrategia;
                 Id = "";
+                FechaLineaBase = DateTime.UtcNow;
+                FechaSeguimiento1 = DateTime.UtcNow;
+                FechaSeguimiento2 = DateTime.UtcNow;
+                FechaCierre = DateTime.UtcNow;
+                Cierre = 2020;
+
 
                 _prowindow1_pry.DataContext = this;
                 _prowindow1_pry.Show();
@@ -154,6 +161,12 @@ namespace ProAppModule1
                     Icon = Convert.ToString(row["Icono"]);
                     Id_estrategia = Convert.ToString(row["ID_estrategia"]);
                     Id = Convert.ToString(row["ID_proyecto"]);
+                    FechaLineaBase = UnixTimeStampToDateTime(Convert.ToString(row["fecha_linea_base"]));
+                    FechaSeguimiento1 = UnixTimeStampToDateTime(Convert.ToString(row["fecha_seguimiento1"]));
+                    FechaSeguimiento2 = UnixTimeStampToDateTime(Convert.ToString(row["fecha_seguimiento2"]));
+                    FechaCierre = UnixTimeStampToDateTime(Convert.ToString(row["fecha_cierre"]));
+                    Cierre = StringToInt(Convert.ToString(row["cierre"]));
+
                 }
                 else
                 {
@@ -223,7 +236,12 @@ namespace ProAppModule1
                         Descripcion = Description,
                         color = Color,
                         fondo = Image,
-                        icono = Icon
+                        icono = Icon,
+                        fecha_linea_base = ((DateTimeOffset)FechaLineaBase).ToUnixTimeMilliseconds(),
+                        fecha_seguimiento1 = ((DateTimeOffset)FechaSeguimiento1).ToUnixTimeMilliseconds(),
+                        fecha_seguimiento2 = ((DateTimeOffset)FechaSeguimiento2).ToUnixTimeMilliseconds(),
+                        fecha_cierre = ((DateTimeOffset)FechaCierre).ToUnixTimeMilliseconds(),
+                        cierre = Cierre
                     };
                     WebInteraction.UpdateFeatures(Service, objectid, _attributes);
                 }
@@ -250,7 +268,13 @@ namespace ProAppModule1
                 descripcion = Description,
                 color = Color,
                 fondo = Image,
-                icono = Icon
+                icono = Icon,
+                fecha_linea_base = ((DateTimeOffset)FechaLineaBase).ToUnixTimeMilliseconds(),
+                fecha_seguimiento1 = ((DateTimeOffset)FechaSeguimiento1).ToUnixTimeMilliseconds(),
+                fecha_seguimiento2 = ((DateTimeOffset)FechaSeguimiento2).ToUnixTimeMilliseconds(),
+                fecha_cierre = ((DateTimeOffset)FechaCierre).ToUnixTimeMilliseconds(),
+                cierre = Cierre
+
             };
             var objectid = WebInteraction.AddFeatures(Service, _attributes);
 
@@ -343,6 +367,62 @@ namespace ProAppModule1
                 NotifyPropertyChanged(() => Icon);
             }
         }
+
+        private DateTime fechalineabase;
+        public DateTime FechaLineaBase
+        {
+            get => fechalineabase;
+            set
+            {
+                fechalineabase = value;
+                NotifyPropertyChanged(()=> FechaLineaBase);
+            }
+        }
+
+        private DateTime fechaseguimiento1;
+        public DateTime FechaSeguimiento1
+        {
+            get => fechaseguimiento1;
+            set
+            {
+                fechaseguimiento1 = value;
+                NotifyPropertyChanged(() => FechaSeguimiento1);
+            }
+        }
+
+        private DateTime fechaseguimiento2;
+        public DateTime FechaSeguimiento2
+        {
+            get => fechaseguimiento2;
+            set
+            {
+                fechaseguimiento2 = value;
+                NotifyPropertyChanged(() => FechaSeguimiento2);
+            }
+        }
+
+        private DateTime fechacierre;
+        public DateTime FechaCierre
+        {
+            get => fechacierre;
+            set
+            {
+                fechacierre = value;
+                NotifyPropertyChanged(() => FechaCierre);
+            }
+        }
+
+        private int cierre;
+        public int Cierre
+        {
+            get => cierre;
+            set
+            {
+                cierre = value;
+                NotifyPropertyChanged(() => Cierre);
+            }
+        }
+
 
     }
 }

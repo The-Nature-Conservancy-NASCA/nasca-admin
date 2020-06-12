@@ -270,6 +270,30 @@ namespace ProAppModule1
 
         }
 
+        public static DateTime UnixTimeStampToDateTime(string strUnixTimeStamp)
+        {
+            // Unix timestamp is seconds past epoch
+            var unixTimeStamp = double.Parse(strUnixTimeStamp)/1000;
+            System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
+            return dtDateTime;
+        }
+
+        public static int StringToInt(string value)
+        {
+            int new_value;
+            try
+            {
+                new_value = Convert.ToInt32(value);
+            }
+            catch (Exception)
+            {
+                new_value = 0; ////review this value !!!!!!!!!!!
+            }
+
+            return new_value;
+        }
+
         public virtual object Serialize(string json_geom)
         {
             return new { };
