@@ -4,6 +4,8 @@ using ArcGIS.Desktop.Framework.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Dynamic;
+using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows;
 using ArcGIS.Desktop.Framework;
@@ -108,7 +110,7 @@ namespace ProAppModule1
                 _prowindow1_pry.Closed += (o, e) => { _prowindow1_pry = null; };
                 //_prowindow1.DataContext = EstrategiasDataTable; 
 
-                var id_Estrategia = "";
+                //var id_Estrategia = "";
                 //if (estrategia_pry.SelectedIndex >= 0)
                 //{
                 //    var row = estrategia_pry.data.Rows[SelectedIndex];
@@ -121,14 +123,13 @@ namespace ProAppModule1
                 Color = "";
                 Image = "";
                 Icon = "";
-                //Id_estrategia = id_Estrategia;
+                Id_estrategia = "";
                 Id = "";
-                FechaLineaBase = DateTime.UtcNow;
-                FechaSeguimiento1 = DateTime.UtcNow;
-                FechaSeguimiento2 = DateTime.UtcNow;
-                FechaCierre = DateTime.UtcNow;
+                FechaLineaBase = "";
+                FechaSeguimiento1 = "";
+                FechaSeguimiento2 = "";
+                FechaCierre = "";
                 Cierre = 2020;
-
 
                 _prowindow1_pry.DataContext = this;
                 _prowindow1_pry.Show();
@@ -161,10 +162,10 @@ namespace ProAppModule1
                     Icon = Convert.ToString(row["Icono"]);
                     Id_estrategia = Convert.ToString(row["ID_estrategia"]);
                     Id = Convert.ToString(row["ID_proyecto"]);
-                    FechaLineaBase = UnixTimeStampToDateTime(Convert.ToString(row["fecha_linea_base"]));
-                    FechaSeguimiento1 = UnixTimeStampToDateTime(Convert.ToString(row["fecha_seguimiento1"]));
-                    FechaSeguimiento2 = UnixTimeStampToDateTime(Convert.ToString(row["fecha_seguimiento2"]));
-                    FechaCierre = UnixTimeStampToDateTime(Convert.ToString(row["fecha_cierre"]));
+                    FechaLineaBase = (FechaLineaBase == null) ? null : UnixTimeStampToDateString(Convert.ToString(row["fecha_linea_base"]));
+                    FechaSeguimiento1 = (FechaSeguimiento1 == null) ? null : UnixTimeStampToDateString(Convert.ToString(row["fecha_seguimiento1"]));
+                    FechaSeguimiento2 = (FechaSeguimiento2 == null) ? null : UnixTimeStampToDateString(Convert.ToString(row["fecha_seguimiento2"]));
+                    FechaCierre = (FechaCierre == null) ? null : UnixTimeStampToDateString(Convert.ToString(row["fecha_cierre"]));
                     Cierre = StringToInt(Convert.ToString(row["cierre"]));
 
                 }
@@ -237,10 +238,10 @@ namespace ProAppModule1
                         color = Color,
                         fondo = Image,
                         icono = Icon,
-                        fecha_linea_base = ((DateTimeOffset)FechaLineaBase).ToUnixTimeMilliseconds(),
-                        fecha_seguimiento1 = ((DateTimeOffset)FechaSeguimiento1).ToUnixTimeMilliseconds(),
-                        fecha_seguimiento2 = ((DateTimeOffset)FechaSeguimiento2).ToUnixTimeMilliseconds(),
-                        fecha_cierre = ((DateTimeOffset)FechaCierre).ToUnixTimeMilliseconds(),
+                        fecha_linea_base = (FechaLineaBase == null) ? null : (double?)DateStringToUnixTimeStamp(FechaLineaBase),
+                        fecha_seguimiento1 = (FechaSeguimiento1 == null) ? null : (double?)DateStringToUnixTimeStamp(FechaSeguimiento1),
+                        fecha_seguimiento2 = (FechaSeguimiento2 == null) ? null : (double?)DateStringToUnixTimeStamp(FechaSeguimiento2),
+                        fecha_cierre = (FechaCierre == null) ? null : (double?)DateStringToUnixTimeStamp(FechaCierre),
                         cierre = Cierre
                     };
                     WebInteraction.UpdateFeatures(Service, objectid, _attributes);
@@ -260,22 +261,25 @@ namespace ProAppModule1
 
         public async void AddNewRow()
         {
-            var _attributes = new
-            {
-                ID_estrategia = Id_estrategia,
-                ID_Proyecto = Id,
-                nombre = Name,
-                descripcion = Description,
-                color = Color,
-                fondo = Image,
-                icono = Icon,
-                fecha_linea_base = ((DateTimeOffset)FechaLineaBase).ToUnixTimeMilliseconds(),
-                fecha_seguimiento1 = ((DateTimeOffset)FechaSeguimiento1).ToUnixTimeMilliseconds(),
-                fecha_seguimiento2 = ((DateTimeOffset)FechaSeguimiento2).ToUnixTimeMilliseconds(),
-                fecha_cierre = ((DateTimeOffset)FechaCierre).ToUnixTimeMilliseconds(),
-                cierre = Cierre
 
-            };
+
+        var _attributes = new
+        {
+            ID_estrategia = Id_estrategia,
+            ID_Proyecto = Id,
+            nombre = Name,
+            Descripcion = Description,
+            color = Color,
+            fondo = Image,
+            icono = Icon,
+            fecha_linea_base = (FechaLineaBase == null) ? null : (double?)DateStringToUnixTimeStamp(FechaLineaBase),
+            fecha_seguimiento1 = (FechaSeguimiento1 == null) ? null : (double?)DateStringToUnixTimeStamp(FechaSeguimiento1),
+            fecha_seguimiento2 = (FechaSeguimiento2 == null) ? null : (double?)DateStringToUnixTimeStamp(FechaSeguimiento2),
+            fecha_cierre = (FechaCierre == null) ? null : (double?)DateStringToUnixTimeStamp(FechaCierre),
+            cierre = Cierre
+        };
+
+
             var objectid = WebInteraction.AddFeatures(Service, _attributes);
 
             await FillDataTable();
@@ -368,8 +372,8 @@ namespace ProAppModule1
             }
         }
 
-        private DateTime fechalineabase;
-        public DateTime FechaLineaBase
+        private string fechalineabase;
+        public string FechaLineaBase
         {
             get => fechalineabase;
             set
@@ -379,8 +383,8 @@ namespace ProAppModule1
             }
         }
 
-        private DateTime fechaseguimiento1;
-        public DateTime FechaSeguimiento1
+        private string fechaseguimiento1;
+        public string FechaSeguimiento1
         {
             get => fechaseguimiento1;
             set
@@ -390,8 +394,8 @@ namespace ProAppModule1
             }
         }
 
-        private DateTime fechaseguimiento2;
-        public DateTime FechaSeguimiento2
+        private string fechaseguimiento2;
+        public string FechaSeguimiento2
         {
             get => fechaseguimiento2;
             set
@@ -401,8 +405,8 @@ namespace ProAppModule1
             }
         }
 
-        private DateTime fechacierre;
-        public DateTime FechaCierre
+        private string fechacierre;
+        public string FechaCierre
         {
             get => fechacierre;
             set
@@ -422,7 +426,6 @@ namespace ProAppModule1
                 NotifyPropertyChanged(() => Cierre);
             }
         }
-
 
     }
 }

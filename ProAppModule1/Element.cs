@@ -270,14 +270,25 @@ namespace ProAppModule1
 
         }
 
-        public static DateTime UnixTimeStampToDateTime(string strUnixTimeStamp)
+
+        public double DateStringToUnixTimeStamp(string dateTimeString)
         {
-            // Unix timestamp is seconds past epoch
-            var unixTimeStamp = double.Parse(strUnixTimeStamp)/1000;
-            System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-            dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
-            return dtDateTime;
+
+            var dateTime = DateTime.Parse(dateTimeString);
+            var unixTimeStamp = ((DateTimeOffset)dateTime).ToUnixTimeMilliseconds();
+            return unixTimeStamp;
+
         }
+
+        public static string UnixTimeStampToDateString(string strUnixTimeStamp)
+        {
+            var unixTimeStamp = double.Parse(strUnixTimeStamp) / 1000;
+            DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
+            return  dtDateTime.ToString("dd/MM/yyyy");
+
+        }
+
 
         public static int StringToInt(string value)
         {

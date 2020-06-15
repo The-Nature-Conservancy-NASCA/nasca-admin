@@ -190,7 +190,7 @@ namespace ProAppModule1
             }
             catch (Exception ex)
             {
-                MessageBox.Show(String.Format("Error al Cargar los datos de Proyecto {0}", ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(String.Format("Error al Cargar los datos del Elemento {0}",  ex.ToString()), "Cargue de datos", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
