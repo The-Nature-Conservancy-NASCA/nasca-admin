@@ -18,6 +18,7 @@ using ArcGIS.Desktop.Framework.Threading.Tasks;
 
 namespace ProAppModule1
 {
+
     public abstract class Element:PropertyChangedBase {
 
         // Fields
@@ -72,9 +73,10 @@ namespace ProAppModule1
             Type = item.Type;
         }
 
-        public virtual async void LoadData()
+        public async void LoadData()
         {
-
+            await FillDataTable();
+            NotifyPropertyChanged(() => data);
         }
 
 
@@ -126,9 +128,35 @@ namespace ProAppModule1
         }
 
 
+
         public virtual async void UnselectRow()
         {
 
+        }
+
+        public async void EliminateRow()
+        {
+
+            if (SelectedIndex >= 0)
+            {
+                var answer = ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("¿Desea eliminar el elemento seleccionado y sus registros relacionados?",
+                    "Borrar registro", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes);
+                if (answer == MessageBoxResult.Yes)
+                {
+                    var row = data.Rows[SelectedIndex];
+
+                    var _objectid = row[OidField];
+                    if (_objectid != null)
+                    {
+                        var objectid = Convert.ToInt32(_objectid);
+                        WebInteraction.DeleteFeatures(Service, objectid);
+                    }
+
+                    await FillDataTable();
+                    NotifyPropertyChanged(() => data);
+                }
+
+            }
         }
 
 

@@ -26,8 +26,8 @@ namespace ProAppModule1
         public Region Region { get; } = new Region();
         public Predio Predio { get; } = new Predio();
         public Biodiversidad Biodiversidad { get; } = new Biodiversidad();
-        public Estrategia Estrategia { get; } = new Estrategia();
-        public Proyecto Proyecto { get; } = new Proyecto();
+        public Estrategia Estrategia { get; set; } 
+        public Proyecto Proyecto { get; set; } 
         public Participante Participante { get; } = new Participante();
         public Meta Meta { get; } = new Meta();
         public Aliado Aliado { get; } = new Aliado();
@@ -43,6 +43,10 @@ namespace ProAppModule1
         // Dock Panel Constructor 
         protected Dockpane1ViewModel()
         {
+            Estrategia = new Estrategia();
+            Proyecto =  new Proyecto(Estrategia);
+            Estrategia.Proyecto = Proyecto;
+
             // Load data 
             if (token != "")
             {
@@ -51,7 +55,6 @@ namespace ProAppModule1
             }
 
         }
-
 
         internal static string token
         {

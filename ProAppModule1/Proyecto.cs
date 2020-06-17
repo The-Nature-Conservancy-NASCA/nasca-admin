@@ -18,34 +18,49 @@ namespace ProAppModule1
     public class Proyecto : Element
     {
 
-        //private Estrategia estrategia_pry;
-        //public Estrategia Estrategia_pry { get; set; }
+        // fields
+        private Estrategia _estrategia;
 
-        public Proyecto():base()
+        // constructor
+        public Proyecto(Estrategia estrategia):base()
         {
             Index = 4;
-            Service = $"{serviceURL}/{Index}";
+            SelectedIndex = -1;
+            OidField = "OBJECTID";
             ElementName = "Proyecto";
             ElementType = "la hoja de excel o la tabla de geodatabase";
             FilterType = ItemFilters.tables_all;
+            Service = $"{serviceURL}/{Index}";
 
-            //SelectionCommand = new RelayCommand(() => OnEstrategiaSelecionada(), () => true);
+            SelectionCommand = new RelayCommand(() => _estrategia.OnEstrategiaSelecionada(), () => true);
             ShowProWindow = new RelayCommand(() => ShowWindow(), () => true);
             ShowProWindowUpdateCommand = new RelayCommand(() => ShowProWindowUpdate(), () => true);
             AddNewRowCommand = new RelayCommand(() => AddNewRow(), () => true);
             UpdateSelectedRowCommand = new RelayCommand(() => UpdateSelectedRow(), () => true);
             EliminateSelectedRow = new RelayCommand(() => EliminateRow(), () => true);
             UnselectRowCommand = new RelayCommand(() => UnselectRow(), () => true);
-            SelectedIndex = -1;
 
-            OidField = "OBJECTID";
             Columns = new List<string> { "OBJECTID", "ID_estrategia", "ID_proyecto", "nombre", "descripcion", "color", "fondo", "icono",
                 "fecha_linea_base", "fecha_seguimiento1", "fecha_seguimiento2", "fecha_cierre",  "cierre"};
 
-            //Estrategia_pry = estrategia;
+            // Relationships
+            _estrategia = estrategia;
 
         }
 
+        /// properties
+        private string name; public string Name { get => name; set { name = value; NotifyPropertyChanged(() => Name); } }
+        private string description; public string Description { get => description; set { description = value; NotifyPropertyChanged(() => Description); } }
+        private string id; public string Id { get => id; set { id = value; NotifyPropertyChanged(() => Id); } }
+        private string id_estrategia; public string Id_estrategia { get => id_estrategia; set { id_estrategia = value; NotifyPropertyChanged(() => Id_estrategia); } }
+        private string color; public string Color { get => color; set { color = value; NotifyPropertyChanged(() => Color); } }
+        private string image; public string Image { get => image; set { image = value; NotifyPropertyChanged(() => Image); } }
+        private string icon; public string Icon { get => icon; set { icon = value; NotifyPropertyChanged(() => Icon); } }
+        private string fechalineabase; public string FechaLineaBase { get => fechalineabase; set { fechalineabase = value; NotifyPropertyChanged(() => FechaLineaBase); } }
+        private string fechaseguimiento1; public string FechaSeguimiento1 { get => fechaseguimiento1; set { fechaseguimiento1 = value; NotifyPropertyChanged(() => FechaSeguimiento1); } }
+        private string fechaseguimiento2; public string FechaSeguimiento2 { get => fechaseguimiento2; set { fechaseguimiento2 = value; NotifyPropertyChanged(() => FechaSeguimiento2); } }
+        private string fechacierre; public string FechaCierre { get => fechacierre; set { fechacierre = value; NotifyPropertyChanged(() => FechaCierre); } }
+        private int cierre; public int Cierre { get => cierre; set { cierre = value; NotifyPropertyChanged(() => Cierre); } }
 
         // Commands
         public ICommand SelectionCommand { get; }
@@ -56,7 +71,7 @@ namespace ProAppModule1
         public ICommand EliminateSelectedRow { get; }
         public ICommand UnselectRowCommand { get; }
 
-
+        // Methods
         public override object FormatAttributes(Row row)
         {
             var ID_estrategia = ToString(row, "ID_estrategia");
@@ -83,47 +98,38 @@ namespace ProAppModule1
             var _attributes = new
             {
                 ID_estrategia, ID_proyecto, nombre, descripcion, descripcion_carbono, descripcion_coberturas, descripcion_biodiversidad, descripcion_implementaciones,
-                descripcion_aliados, descripcion_contribuciones, descripcion_metas, descripcion_participantes, color, fondo, icono, fecha_linea_base, fecha_seguimiento1,
+                descripcion_aliados, descripcion_contribuciones, descripcion_metas, descripcion_participantes, color = color, fondo, icono, fecha_linea_base, fecha_seguimiento1,
                 fecha_seguimiento2, fecha_cierre, cierre
 
             };
             return _attributes;
         }
 
-        public override async void LoadData()
-        {
-            await FillDataTable();
-            NotifyPropertyChanged(() => data);
-        }
-
 
         // Method to show the Pro Window
-        private CrearProyecto _prowindow1_pry = null;
-
+        private CrearProyecto crearProyecto = null;
         public void ShowWindow()
         {
             {
                 //already open?
-                if (_prowindow1_pry != null)
+                if (crearProyecto != null)
                     return;
-                _prowindow1_pry = new CrearProyecto {Owner = Application.Current.MainWindow};
-                _prowindow1_pry.Closed += (o, e) => { _prowindow1_pry = null; };
-                //_prowindow1.DataContext = EstrategiasDataTable; 
+                crearProyecto = new CrearProyecto {Owner = Application.Current.MainWindow};
+                crearProyecto.Closed += (o, e) => { crearProyecto = null; };
 
-                //var id_Estrategia = "";
-                //if (estrategia_pry.SelectedIndex >= 0)
-                //{
-                //    var row = estrategia_pry.data.Rows[SelectedIndex];
-                //    id_Estrategia = Convert.ToString(row["ID_estrategia"]);
+                if (_estrategia.SelectedIndex >= 0)
+                {
+                    var row = _estrategia.data.Rows[_estrategia.SelectedIndex];
+                    Id_estrategia = Convert.ToString(row["ID_estrategia"]);
+                }
 
-                //}
-
+                // Default values
                 Name = "";
                 Description = "";
                 Color = "";
                 Image = "";
                 Icon = "";
-                Id_estrategia = "";
+                Id_estrategia = Id_estrategia;
                 Id = "";
                 FechaLineaBase = "";
                 FechaSeguimiento1 = "";
@@ -131,29 +137,27 @@ namespace ProAppModule1
                 FechaCierre = "";
                 Cierre = 2020;
 
-                _prowindow1_pry.DataContext = this;
-                _prowindow1_pry.Show();
+                crearProyecto.DataContext = this;
+                crearProyecto.Show();
 
             }
 
         }
 
         // Method to show the Pro Window
-        private EditarProyecto _prowindow2_pry = null;
-
+        private EditarProyecto editarProyecto = null;
         public void ShowProWindowUpdate()
 
         {
             {
                 //already open?
-                if (_prowindow2_pry != null)
+                if (editarProyecto != null)
                     return;
-                _prowindow2_pry = new EditarProyecto {Owner = Application.Current.MainWindow};
-                _prowindow2_pry.Closed += (o, e) => { _prowindow2_pry = null; };
+                editarProyecto = new EditarProyecto {Owner = Application.Current.MainWindow};
+                editarProyecto.Closed += (o, e) => { editarProyecto = null; };
 
                 if (SelectedIndex >= 0)
                 {
-
                     var row = data.Rows[SelectedIndex];
                     Name = Convert.ToString(row["Nombre"]);
                     Description = Convert.ToString(row["Descripcion"]);
@@ -167,62 +171,34 @@ namespace ProAppModule1
                     FechaSeguimiento2 = (FechaSeguimiento2 == null) ? null : UnixTimeStampToDateString(Convert.ToString(row["fecha_seguimiento2"]));
                     FechaCierre = (FechaCierre == null) ? null : UnixTimeStampToDateString(Convert.ToString(row["fecha_cierre"]));
                     Cierre = StringToInt(Convert.ToString(row["cierre"]));
-
                 }
                 else
                 {
-                    ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Seleccione el elemento que desea actualizar de la tabla de Proyectos", "Actualizar registro", MessageBoxButton.OK, MessageBoxImage.Information);
-                    _prowindow2_pry.Close();
+                    ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show($"Seleccione el elemento que desea actualizar de {ElementName}", "Actualizar registro", MessageBoxButton.OK, MessageBoxImage.Information);
+                    editarProyecto.Close();
                     return;
                 }
 
-                _prowindow2_pry.DataContext = this;
-                _prowindow2_pry.Show();
+                editarProyecto.DataContext = this;
+                editarProyecto.Show();
 
             }
         }
 
-
-        public async void EliminateRow()
-        {
-            
-            if (SelectedIndex >= 0)
-            {
-                var answer = ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("¿Desea eliminar el elemento seleccionado y sus registros relacionados?",
-                    "Borrar registro", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes);
-                if (answer == MessageBoxResult.Yes)
-                {
-                    var row = data.Rows[SelectedIndex];
-
-                    var _objectid = row[OidField];
-                    if (_objectid != null)
-                    {
-                        var objectid = Convert.ToInt32(_objectid);
-                        WebInteraction.DeleteFeatures(Service, objectid);
-                    }
-
-                    await FillDataTable();
-                    NotifyPropertyChanged(() => data);
-                }
-
-            }
-        }
 
         public async void UpdateSelectedRow()
         {
-
             if (SelectedIndex >= 0)
             {
 
                 var row = data.Rows[SelectedIndex];
 
-                //var id_Estrategia = "";
-                //if (estrategia_pry.SelectedIndex >= 0)
-                //{
-                //    var rowEstrategia = estrategia_pry.data.Rows[SelectedIndex];
-                //    id_Estrategia = Convert.ToString(rowEstrategia["ID_estrategia"]);
+                if (_estrategia.SelectedIndex >= 0)
+                {
+                    var rowEstrategia = _estrategia.data.Rows[SelectedIndex];
+                    Id_estrategia = Convert.ToString(rowEstrategia["ID_estrategia"]);
 
-                //}
+                }
 
                 var _objectid = row[OidField];
                 if (_objectid != null)
@@ -249,182 +225,37 @@ namespace ProAppModule1
 
                 await FillDataTable();
                 NotifyPropertyChanged(() => data);
-
-                if (_prowindow2_pry != null)
-                    _prowindow2_pry.Close();
-
+                editarProyecto?.Close();
+            }
+            else
+            {
+                ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show($"Seleccione el elemento que desea actualizar de {ElementName}", "Actualizar registro", MessageBoxButton.OK, MessageBoxImage.Information);
+                editarProyecto.Close();
             }
         }
-
-
-
 
         public async void AddNewRow()
         {
-
-
-        var _attributes = new
-        {
-            ID_estrategia = Id_estrategia,
-            ID_Proyecto = Id,
-            nombre = Name,
-            Descripcion = Description,
-            color = Color,
-            fondo = Image,
-            icono = Icon,
-            fecha_linea_base = (FechaLineaBase == null) ? null : (double?)DateStringToUnixTimeStamp(FechaLineaBase),
-            fecha_seguimiento1 = (FechaSeguimiento1 == null) ? null : (double?)DateStringToUnixTimeStamp(FechaSeguimiento1),
-            fecha_seguimiento2 = (FechaSeguimiento2 == null) ? null : (double?)DateStringToUnixTimeStamp(FechaSeguimiento2),
-            fecha_cierre = (FechaCierre == null) ? null : (double?)DateStringToUnixTimeStamp(FechaCierre),
-            cierre = Cierre
-        };
-
+            var _attributes = new
+            {
+                ID_estrategia = Id_estrategia,
+                ID_Proyecto = Id,
+                nombre = Name,
+                Descripcion = Description,
+                color = Color,
+                fondo = Image,
+                icono = Icon,
+                fecha_linea_base = (FechaLineaBase == null) ? null : (double?)DateStringToUnixTimeStamp(FechaLineaBase),
+                fecha_seguimiento1 = (FechaSeguimiento1 == null) ? null : (double?)DateStringToUnixTimeStamp(FechaSeguimiento1),
+                fecha_seguimiento2 = (FechaSeguimiento2 == null) ? null : (double?)DateStringToUnixTimeStamp(FechaSeguimiento2),
+                fecha_cierre = (FechaCierre == null) ? null : (double?)DateStringToUnixTimeStamp(FechaCierre),
+                cierre = Cierre
+            };
 
             var objectid = WebInteraction.AddFeatures(Service, _attributes);
-
             await FillDataTable();
             NotifyPropertyChanged(() => data);
-
-            if (_prowindow1_pry != null)
-                _prowindow1_pry.Close();
-
-        }
-
-        /// fields 
-
-
-
-
-        private string name;
-        public string Name
-        {
-            get => name;
-            set
-            {
-                name = value;
-                NotifyPropertyChanged(() => Name);
-            }
-        }
-
-        private string description;
-        public string Description
-        {
-            get => description;
-            set
-            {
-                description = value;
-                NotifyPropertyChanged(() => Description);
-            }
-        }
-
-        private string id;
-        public string Id
-        {
-            get => id;
-            set
-            {
-                id = value;
-                NotifyPropertyChanged(() => Id);
-            }
-        }
-
-        private string id_estrategia;
-        public string Id_estrategia
-        {
-            get => id_estrategia;
-            set
-            {
-                id_estrategia = value;
-                NotifyPropertyChanged(() => Id_estrategia);
-            }
-        }
-
-        private string color;
-        public string Color
-        {
-            get => color;
-            set
-            {
-                color = value;
-                NotifyPropertyChanged(() => Color);
-            }
-        }
-
-        private string image;
-        public string Image
-        {
-            get => image;
-            set
-            {
-                image = value;
-                NotifyPropertyChanged(() => Image);
-            }
-        }
-
-        private string icon;
-        public string Icon
-        {
-            get => icon;
-            set
-            {
-                icon = value;
-                NotifyPropertyChanged(() => Icon);
-            }
-        }
-
-        private string fechalineabase;
-        public string FechaLineaBase
-        {
-            get => fechalineabase;
-            set
-            {
-                fechalineabase = value;
-                NotifyPropertyChanged(()=> FechaLineaBase);
-            }
-        }
-
-        private string fechaseguimiento1;
-        public string FechaSeguimiento1
-        {
-            get => fechaseguimiento1;
-            set
-            {
-                fechaseguimiento1 = value;
-                NotifyPropertyChanged(() => FechaSeguimiento1);
-            }
-        }
-
-        private string fechaseguimiento2;
-        public string FechaSeguimiento2
-        {
-            get => fechaseguimiento2;
-            set
-            {
-                fechaseguimiento2 = value;
-                NotifyPropertyChanged(() => FechaSeguimiento2);
-            }
-        }
-
-        private string fechacierre;
-        public string FechaCierre
-        {
-            get => fechacierre;
-            set
-            {
-                fechacierre = value;
-                NotifyPropertyChanged(() => FechaCierre);
-            }
-        }
-
-        private int cierre;
-        public int Cierre
-        {
-            get => cierre;
-            set
-            {
-                cierre = value;
-                NotifyPropertyChanged(() => Cierre);
-            }
+            crearProyecto?.Close();
         }
 
     }

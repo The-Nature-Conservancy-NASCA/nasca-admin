@@ -16,14 +16,15 @@ namespace ProAppModule1
     public class Estrategia:Element
     {
 
+        // constructor
         public Estrategia():base()
         {
             Index=3;
-            Service = $"{serviceURL}/{Index}";
-            //var Service2 = $"{serviceURL}/4";
+            OidField = "OBJECTID";
             ElementName = "Estrategia";
             ElementType = "la hoja de excel o la tabla de geodatabase";
             FilterType = ItemFilters.tables_all;
+            Service = $"{serviceURL}/{Index}";
 
             SelectionCommand = new RelayCommand(() => OnEstrategiaSelecionada(), () => true);
             ShowProWindow = new RelayCommand(() => ShowWindow(), () => true);
@@ -34,14 +35,21 @@ namespace ProAppModule1
             UnselectRowCommand = new RelayCommand(() => UnselectRow(), () => true);
             SelectedIndex = -1;
 
-
-            OidField = "OBJECTID";
             Columns = new List<string> { "OBJECTID", "nombre", "descripcion", "ID_estrategia", "color", "fondo", "icono" };
 
         }
 
-        // Commands
+        /// Properties
+        private string name; public string Name { get => name; set { name = value; NotifyPropertyChanged(() => Name); } }
+        private string description; public string Description { get => description; set { description = value; NotifyPropertyChanged(() => Description); } }
+        private string id; public string Id { get => id; set { id = value; NotifyPropertyChanged(() => Id); } }
+        private string color; public string Color { get => color; set { color = value; NotifyPropertyChanged(() => Color); } }
+        private string image; public string Image { get => image; set { image = value; NotifyPropertyChanged(() => Image); } }
+        private string icon; public string Icon { get => icon; set { icon = value; NotifyPropertyChanged(() => Icon); } }
+        private Proyecto _proyecto; public Proyecto Proyecto { get => _proyecto; set { _proyecto = value; NotifyPropertyChanged(()=>Proyecto); } }
 
+
+        // Commands
         public ICommand SelectionCommand { get; }
         public ICommand ShowProWindow { get; }
         public ICommand ShowProWindowUpdateCommand { get; }
@@ -50,6 +58,8 @@ namespace ProAppModule1
         public ICommand EliminateSelectedRow { get; }
         public ICommand UnselectRowCommand { get; }
 
+
+        // Methods
         public override object FormatAttributes(Row row)
         {
 
@@ -65,32 +75,18 @@ namespace ProAppModule1
 
         }
 
-        public override async void LoadData()
-        {
-            await FillDataTable();
-            NotifyPropertyChanged(() => data);
-        }
-
-        public override async void UnselectRow()
-        {
-            SelectedIndex = -1;
-            data.DefaultView.RowFilter = null;
-
-            await FillDataTable();
-            NotifyPropertyChanged(() => data);
-        }
-
         // Method to show the Pro Window
-        public ProWindow1 _prowindow1 = null;
+        public ProWindow1 crearEstrategia = null;
         public void ShowWindow()
         {
             {
                 //already open?
-                if (_prowindow1 != null)
+                if (crearEstrategia != null)
                     return;
-                _prowindow1 = new ProWindow1 {Owner = Application.Current.MainWindow};
-                _prowindow1.Closed += (o, e) => { _prowindow1 = null; };
+                crearEstrategia = new ProWindow1 {Owner = Application.Current.MainWindow};
+                crearEstrategia.Closed += (o, e) => { crearEstrategia = null; };
 
+                // Default values
                 Id = "";
                 Name = "";
                 Description = "";
@@ -98,24 +94,22 @@ namespace ProAppModule1
                 Image = "";
                 Icon = "";
 
-                _prowindow1.DataContext = this;
-                _prowindow1.Show();
+                crearEstrategia.DataContext = this;
+                crearEstrategia.Show();
 
             }
         }
 
         // Method to show the Pro Window
-        private Update _prowindow2 = null;
-
+        private Update editarEstrategia = null;
         public void ShowProWindowUpdate()
-
         {
             {
                 //already open?
-                if (_prowindow2 != null)
+                if (editarEstrategia != null)
                     return;
-                _prowindow2 = new Update {Owner = Application.Current.MainWindow};
-                _prowindow2.Closed += (o, e) => { _prowindow2 = null; };
+                editarEstrategia = new Update {Owner = Application.Current.MainWindow};
+                editarEstrategia.Closed += (o, e) => { editarEstrategia = null; };
 
                 if (SelectedIndex >= 0)
                 {
@@ -130,42 +124,16 @@ namespace ProAppModule1
                 else
                 {
                     ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("Seleccione el elemento que desea actualizar de la tabla de Estrategias", "Actualiazar registro", MessageBoxButton.OK, MessageBoxImage.Information);
-                    _prowindow2.Close();
+                    editarEstrategia.Close();
                     return;
                 }
 
-                _prowindow2.DataContext = this;
-                _prowindow2.Show();
+                editarEstrategia.DataContext = this;
+                editarEstrategia.Show();
 
             }
         }
 
-
-        public async void EliminateRow()
-        {
-            if (SelectedIndex >= 0)
-            {
-                var answer = ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("¿Desea eliminar el elemento seleccionado y sus registros relacionados?",
-                    "Borrar registro", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes);
-
-                if (answer == MessageBoxResult.Yes)
-                {
-                    var row = data.Rows[SelectedIndex];
-                    var _objectid = row[OidField];
-                    //var estrategia = Convert.ToString(row["ID_estrategia"]);
-
-                    if (_objectid != null)
-                    {
-                        var objectid = Convert.ToInt32(_objectid);
-                        WebInteraction.DeleteFeatures(Service, objectid);
-                    }
-
-                    await FillDataTable();
-                    NotifyPropertyChanged(() => data);
-
-                }
-            }
-        }
 
         public async void UpdateSelectedRow()
         {
@@ -192,9 +160,13 @@ namespace ProAppModule1
                 await FillDataTable();
                 NotifyPropertyChanged(() => data);
 
-                if (_prowindow2 != null)
-                    _prowindow2.Close();
+                editarEstrategia?.Close();
 
+            }
+            else
+            {
+                ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show($"Seleccione el elemento que desea actualizar de {ElementName}", "Actualizar registro", MessageBoxButton.OK, MessageBoxImage.Information);
+                editarEstrategia.Close();
             }
         }
 
@@ -214,86 +186,24 @@ namespace ProAppModule1
             await FillDataTable();
             NotifyPropertyChanged(() => data);
 
-            if (_prowindow1 != null)
-                _prowindow1.Close();
+            crearEstrategia?.Close();
         }
 
         public void OnEstrategiaSelecionada()
         {
-
-            if (SelectedIndex >= 0)
-            {
-                var row = data.Rows[SelectedIndex];
-                var estrategia = Convert.ToString(row["ID_estrategia"]);
-                //ProyectosDataTable.DefaultView.RowFilter = String.Format("ID_estrategia = '{0}'", estrategia);
-            }
+            if (SelectedIndex < 0) return;
+            var row = data.Rows[SelectedIndex];
+            var estrategia = Convert.ToString(row["ID_estrategia"]);
+            _proyecto.data.DefaultView.RowFilter = $"ID_estrategia = '{estrategia}'";
         }
 
-        /// fields
-        private string name;
-        public string Name
+        public override async void UnselectRow()
         {
-            get => name;
-            set
-            {
-                name = value;
-                NotifyPropertyChanged(() => Name);
-            }
-        }
+            SelectedIndex = -1;
+            _proyecto.data.DefaultView.RowFilter = null;
 
-        private string description;
-        public string Description
-        {
-            get => description;
-            set
-            {
-                description = value;
-                NotifyPropertyChanged(() => Description);
-            }
-        }
-
-        private string id;
-        public string Id
-        {
-            get => id;
-            set
-            {
-                id = value;
-                NotifyPropertyChanged(() => Id);
-            }
-        }
-
-        private string color;
-        public string Color
-        {
-            get => color;
-            set
-            {
-                color = value;
-                NotifyPropertyChanged(() => Color);
-            }
-        }
-
-        private string image;
-        public string Image
-        {
-            get => image;
-            set
-            {
-                image = value;
-                NotifyPropertyChanged(() => Image);
-            }
-        }
-
-        private string icon;
-        public string Icon
-        {
-            get => icon;
-            set
-            {
-                icon = value;
-                NotifyPropertyChanged(() => Icon);
-            }
+            await FillDataTable();
+            NotifyPropertyChanged(() => _proyecto.data);
         }
 
     }
