@@ -4,19 +4,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web.Script.Serialization;
-using ArcGIS.Desktop.Core;
-using ArcGIS.Desktop.Framework.Threading.Tasks;
-
 
 namespace ProAppModule1
 
 {
     class WebInteraction
     {
-
-
 
         public static Object Query(string service, string where, string outFields)
 
@@ -116,6 +110,56 @@ namespace ProAppModule1
             return;
         }
 
+        public static void DeleteFeatures(string service, string where)
+
+        {
+            var token = Dockpane1ViewModel.token;
+            if (token == "")
+            {
+                Dockpane1ViewModel.Hide();
+                return;
+            }
+
+
+            // Create a request for the URL.    
+            var operation = "deleteFeatures";
+            var url = $"{service}/{operation}";
+            WebRequest request = WebRequest.Create(url);
+            request.Method = "POST";
+
+            var format = "json";
+            var postData = $"where={where}&f={format}&token={token}";
+            byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentLength = byteArray.Length;
+
+            Stream dataStream = request.GetRequestStream();
+            dataStream.Write(byteArray, 0, byteArray.Length);
+            dataStream.Close();
+
+            // Get the response.  
+            WebResponse response = request.GetResponse();
+            // Display the status.  
+            Debug.WriteLine(((HttpWebResponse)response).StatusDescription);
+
+            // Get the stream containing content returned by the server. 
+            // The using block ensures the stream is automatically closed. 
+            using (dataStream = response.GetResponseStream())
+            {
+                // Open the stream using a StreamReader for easy access.  
+                StreamReader reader = new StreamReader(dataStream);
+                // Read the content.  
+                string responseFromServer = reader.ReadToEnd();
+                // Display the content.  
+                Debug.WriteLine(responseFromServer);
+
+            }
+
+            // Close the response.  
+            response.Close();
+            return;
+        }
 
         public static int AddFeatures(string service, Object _attributes)
 

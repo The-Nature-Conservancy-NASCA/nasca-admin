@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,7 +12,6 @@ using ArcGIS.Desktop.Core;
 using ArcGIS.Desktop.Core.Geoprocessing;
 using ArcGIS.Desktop.Framework;
 using ArcGIS.Desktop.Framework.Contracts;
-using ArcGIS.Desktop.Framework.Dialogs;
 using ArcGIS.Desktop.Framework.Threading.Tasks;
 
 namespace ProAppModule1
@@ -42,19 +40,10 @@ namespace ProAppModule1
 
         }
 
-        public ICommand BrowseFileCommand { get; }
-        public ICommand UploadCommand { get; }
-
         // Properties
-        private Item item;
-        public Item Item { get => item; set { item = value; NotifyPropertyChanged(() => item); } }
-
-        private string file;
-        public string File { get => file; set { file = value; NotifyPropertyChanged(() => file); } }
-
-        private int selectedIndex;
-        public int SelectedIndex {get => selectedIndex; set {selectedIndex = value; NotifyPropertyChanged(() => SelectedIndex); } }
-
+        private Item item; public Item Item { get => item; set { item = value; NotifyPropertyChanged(() => item); } }
+        private string file; public string File { get => file; set { file = value; NotifyPropertyChanged(() => file); } }
+        private int selectedIndex; public int SelectedIndex {get => selectedIndex; set {selectedIndex = value; NotifyPropertyChanged(() => SelectedIndex); } }
         public string Service { get; set; }
         public DataTable data { get; set; }
         public TableDefinition Definition { get; private set; }
@@ -65,6 +54,26 @@ namespace ProAppModule1
         public string Type { get; set; }
         private Uri Gdb;
         public RowCursor Cursor { get; private set; }
+
+        // Advanced properties
+        public virtual object AddRow => new { };
+        public virtual object UpdateRow => new { };
+        private int objectid;
+        public int Objectid
+        {
+            get
+            {
+                if (SelectedIndex < 0)
+                    return -1;
+                var row = data.Rows[SelectedIndex];
+                var _objectid = Convert.ToInt32(row[OidField]);
+                return _objectid;
+            }
+        }
+
+        // Commands
+        public ICommand BrowseFileCommand { get; }
+        public ICommand UploadCommand { get; }
 
         // Methods
 
@@ -79,13 +88,31 @@ namespace ProAppModule1
             NotifyPropertyChanged(() => data);
         }
 
+        public async void AddNewRow(object addRow)
+        {
+
+            var _objectid = WebInteraction.AddFeatures(Service, addRow);
+
+            await FillDataTable();
+            NotifyPropertyChanged(() => data);
+
+        }
+
+        public async void UpdateSelectedRow(int _objectid, object updateRow)
+        {
+            if (updateRow ==null)
+                return;
+
+            WebInteraction.UpdateFeatures(Service, _objectid, updateRow);
+            await FillDataTable();
+            NotifyPropertyChanged(() => data);
+        }
 
         public Task FillDataTable()
         {
             return QueuedTask.Run(() =>
             {
                 var _resultTable = new DataTable();
-
                 foreach (var column in Columns)
                 {
                     _resultTable.Columns.Add(new DataColumn(column));
@@ -127,110 +154,78 @@ namespace ProAppModule1
             }
         }
 
-
-
-        public virtual async void UnselectRow()
-        {
-
-        }
-
-        public async void EliminateRow()
-        {
-
-            if (SelectedIndex >= 0)
-            {
-                var answer = ArcGIS.Desktop.Framework.Dialogs.MessageBox.Show("¿Desea eliminar el elemento seleccionado y sus registros relacionados?",
-                    "Borrar registro", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes);
-                if (answer == MessageBoxResult.Yes)
-                {
-                    var row = data.Rows[SelectedIndex];
-
-                    var _objectid = row[OidField];
-                    if (_objectid != null)
-                    {
-                        var objectid = Convert.ToInt32(_objectid);
-                        WebInteraction.DeleteFeatures(Service, objectid);
-                    }
-
-                    await FillDataTable();
-                    NotifyPropertyChanged(() => data);
-                }
-
-            }
-        }
-
+        public virtual async void UnselectRow() { return; }
+        public virtual void UploadData() { }
+        public virtual object FormatAttributes(Row row) { return new { }; }
 
         public async Task<int> GetProperties(Item _item)
         {
             var path = new Uri(_item.Path);
             var directory = new Uri(path, ".");
 
-            if (Type == "File Geodatabase Feature Class")
+            switch (Type)
             {
-                var gdbPath = directory.AbsolutePath.Remove(directory.AbsolutePath.Length - 1);
-                Gdb = new Uri(gdbPath);
-
-                Featureclass = await QueuedTask.Run(() =>
+                case "File Geodatabase Feature Class":
                 {
-                    var geodatabase = new Geodatabase(new FileGeodatabaseConnectionPath(Gdb));
-                    var fc = geodatabase.OpenDataset<FeatureClass>(Item.Title);
-                    return fc;
-                });
+                    var gdbPath = directory.AbsolutePath.Remove(directory.AbsolutePath.Length - 1);
+                    Gdb = new Uri(gdbPath);
 
-                Table = await QueuedTask.Run(() =>
+                    Featureclass = await QueuedTask.Run(() =>
+                    {
+                        var geodatabase = new Geodatabase(new FileGeodatabaseConnectionPath(Gdb));
+                        var fc = geodatabase.OpenDataset<FeatureClass>(Item.Title);
+                        return fc;
+                    });
+
+                    Table = await QueuedTask.Run(() =>
+                    {
+                        Table table = Featureclass;
+                        return table;
+                    });
+                    break;
+                }
+                case "Shapefile":
+                    Table = await QueuedTask.Run(() =>
+                    {
+                        var shapefilePath = new FileSystemConnectionPath(directory, FileSystemDatastoreType.Shapefile);
+                        var shapefile = new FileSystemDatastore(shapefilePath);
+                        var tbl = shapefile.OpenDataset<Table>(_item.Title);
+                        return tbl;
+                    });
+                    break;
+                case "File Geodatabase Table":
                 {
-                    Table table = Featureclass;
-                    return table;
-                });
+                    var gdbPath = directory.AbsolutePath.Remove(directory.AbsolutePath.Length - 1);
+                    Gdb = new Uri(gdbPath);
 
-            }
-            else if (Type == "Shapefile")
-            {
-
-                Table = await QueuedTask.Run(() =>
+                    Table = await QueuedTask.Run(() =>
+                    {
+                        var geodatabase = new Geodatabase(new FileGeodatabaseConnectionPath(Gdb));
+                        var table = geodatabase.OpenDataset<Table>(_item.Title);
+                        return table;
+                    });
+                    break;
+                }
+                case "Excel Table":
                 {
-                    var shapefilePath = new FileSystemConnectionPath(directory, FileSystemDatastoreType.Shapefile);
-                    var shapefile = new FileSystemDatastore(shapefilePath);
-                    var tbl = shapefile.OpenDataset<Table>(_item.Title);
-                    return tbl;
-                });
+                    var outPath = Project.Current.DefaultGeodatabasePath;
+                    var outName = $"Tabla_{DateTime.Now:yyyyMMddHHmmssfff}";
+                    var xlsFile = Item.PhysicalPath;
+                    var sheetName = Item.Name.Remove(Item.Name.Length-1);
+                    //var outTable = "memory\\table";
 
-            }
-
-            else if (Type == "File Geodatabase Table")
-            {
-
-                var gdbPath = directory.AbsolutePath.Remove(directory.AbsolutePath.Length - 1);
-                Gdb = new Uri(gdbPath);
-
-                Table = await QueuedTask.Run(() =>
+                    Table = await ConvertExcelToTable(xlsFile, sheetName, outPath, outName);
+                    break;
+                }
+                case "Text File":
                 {
-                    var geodatabase = new Geodatabase(new FileGeodatabaseConnectionPath(Gdb));
-                    var table = geodatabase.OpenDataset<Table>(_item.Title);
-                    return table;
-                });
+                    var outPath = Project.Current.DefaultGeodatabasePath;
+                    var outName = $"Tabla_{DateTime.Now:yyyyMMddHHmmssfff}";
+                    var csvFile = Item.Path;
 
-            }
-
-            else if (Type == "Excel Table")
-            {
-                var outPath = Project.Current.DefaultGeodatabasePath;
-                var outName = $"Tabla_{DateTime.Now:yyyyMMddHHmmssfff}";
-                var xlsFile = Item.PhysicalPath;
-                var sheetName = Item.Name.Remove(Item.Name.Length-1);
-                //var outTable = "memory\\table";
-
-                Table = await ConvertExcelToTable(xlsFile, sheetName, outPath, outName);
-          
-            }
-
-            else if (Type == "Text File")
-            {
-                var outPath = Project.Current.DefaultGeodatabasePath;
-                var outName = $"Tabla_{DateTime.Now:yyyyMMddHHmmssfff}";
-                var csvFile = Item.Path;
-
-                Table = await ConvertCSVToTable(csvFile, outPath, outName);
+                    Table = await ConvertCSVToTable(csvFile, outPath, outName);
+                    break;
+                }
             }
 
             Definition = await QueuedTask.Run(() =>
@@ -298,7 +293,6 @@ namespace ProAppModule1
 
         }
 
-
         public double DateStringToUnixTimeStamp(string dateTimeString)
         {
 
@@ -316,7 +310,6 @@ namespace ProAppModule1
             return  dtDateTime.ToString("dd/MM/yyyy");
 
         }
-
 
         public static int StringToInt(string value)
         {
@@ -397,8 +390,7 @@ namespace ProAppModule1
             return new_value;
         }
 
-        public virtual void UploadData() {}
-        public virtual object FormatAttributes(Row row) { return new { }; }
+
 
     }
 }
