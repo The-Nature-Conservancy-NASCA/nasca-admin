@@ -162,6 +162,48 @@
     <Compile Include="Cobertura.cs" />
     <Compile Include="Color.cs" />
     <Compile Include="Contribucion.cs" />
+    <Compile Include="EditarIcono.xaml.cs">
+      <DependentUpon>EditarIcono.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditarImagen.xaml.cs">
+      <DependentUpon>EditarImagen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditarTexto.xaml.cs">
+      <DependentUpon>EditarTexto.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CrearTexto.xaml.cs">
+      <DependentUpon>CrearTexto.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CrearIcono.xaml.cs">
+      <DependentUpon>CrearIcono.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CrearImagen.xaml.cs">
+      <DependentUpon>CrearImagen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditarColor.xaml.cs">
+      <DependentUpon>EditarColor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CrearColor.xaml.cs">
+      <DependentUpon>CrearColor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditarParticipante.xaml.cs">
+      <DependentUpon>EditarParticipante.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CrearParticipante.xaml.cs">
+      <DependentUpon>CrearParticipante.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditarMeta.xaml.cs">
+      <DependentUpon>EditarMeta.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CrearMeta.xaml.cs">
+      <DependentUpon>CrearMeta.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CrearContribucion.xaml.cs">
+      <DependentUpon>CrearContribucion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditarContribucion.xaml.cs">
+      <DependentUpon>EditarContribucion.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EditarAliado.xaml.cs">
       <DependentUpon>EditarAliado.xaml</DependentUpon>
     </Compile>
@@ -207,6 +249,62 @@
     <Compile Include="WebInteraction.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="EditarIcono.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="EditarImagen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="EditarTexto.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CrearTexto.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CrearIcono.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CrearImagen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="EditarColor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CrearColor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="EditarParticipante.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CrearParticipante.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="EditarMeta.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CrearMeta.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CrearContribucion.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="EditarContribucion.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="EditarAliado.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -317,7 +317,7 @@
                         </Grid>
                     </Grid>
                 </TabItem>
-                <TabItem Header="Constribuciones">
+                <TabItem Header="Contribuciones">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="63*"/>

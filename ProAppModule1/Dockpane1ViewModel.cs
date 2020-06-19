@@ -23,35 +23,52 @@ namespace ProAppModule1
         //private const string _serviceURL = "https://services.arcgis.com/F7DSX1DSNSiWmOqh/arcgis/rest/services/GeodatabaseTNC_Pruebas/FeatureServer"; // Testing
 
 
-        public Region Region { get; } = new Region();
+        public Region Region { get; set; }
         public Predio Predio { get; } = new Predio();
         public Biodiversidad Biodiversidad { get; } = new Biodiversidad();
         public Estrategia Estrategia { get; set; } 
         public Proyecto Proyecto { get; set; } 
-        public Participante Participante { get; } = new Participante();
-        public Meta Meta { get; } = new Meta();
-        public Aliado Aliado { get; } = new Aliado();
+        public Participante Participante { get; set; } 
+        public Meta Meta { get; set; } 
+        public Aliado Aliado { get; set; } 
         public Implementacion Implementacion { get; } = new Implementacion();
-        public Contribucion Contribucion { get; } = new Contribucion();
-        public Carrusel Carrusel { get; } = new Carrusel();
+        public Contribucion Contribucion { get; set; }
+        public Carrusel Carrusel { get; set; } 
         public Carbono Carbono { get; } = new Carbono();
-        public Color Color { get; } = new Color();
+        public Color Color { get; set; } 
         public Cobertura Cobertura { get; } = new Cobertura();
-        public IconosBiodiversidad IconosBiodiversidad { get; } = new IconosBiodiversidad();
-        public Textos Textos { get; } = new Textos();
+        public IconosBiodiversidad IconosBiodiversidad { get; set; }
+        public Textos Textos { get; set; } 
 
         // Dock Panel Constructor 
         protected Dockpane1ViewModel()
         {
+            Region = new Region();
             Estrategia = new Estrategia();
             Proyecto =  new Proyecto(Estrategia);
             Estrategia.Proyecto = Proyecto;
+            Aliado = new Aliado(Proyecto);
+            Contribucion = new Contribucion(Proyecto);
+            Meta = new Meta(Proyecto);
+            Participante = new Participante(Proyecto);
+            Color = new Color();
+            IconosBiodiversidad = new IconosBiodiversidad();
+            Carrusel = new Carrusel(Region);
+            Textos = new Textos();
 
             // Load data 
             if (token != "")
             {
                 Estrategia.LoadData();
                 Proyecto.LoadData();
+                Aliado.LoadData();
+                Contribucion.LoadData();
+                Meta.LoadData();
+                Participante.LoadData();
+                Color.LoadData();
+                IconosBiodiversidad.LoadData();
+                Carrusel.LoadData();
+                Textos.LoadData();
             }
 
         }

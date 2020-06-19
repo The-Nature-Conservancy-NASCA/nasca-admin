@@ -1,4 +1,4 @@
-﻿<controls:ProWindow x:Class="ProAppModule1.EditarAliado"        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<controls:ProWindow x:Class="ProAppModule1.EditarMeta"        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:controls="clr-namespace:ArcGIS.Desktop.Framework.Controls;assembly=ArcGIS.Desktop.Framework"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -26,6 +26,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid  Grid.Row="0">
             <Grid.ColumnDefinitions>
@@ -41,8 +42,8 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
 
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="Tipo" Margin="5" VerticalAlignment="Center" Width="100" Height="28"></Label>
-            <TextBox Grid.Column="1" Text="{Binding tipo, Mode=TwoWay}"  Height="28" Margin="5"></TextBox>
+            <Label Grid.Column="0" Content="Meta" Margin="5" VerticalAlignment="Center" Width="100" Height="28"></Label>
+            <TextBox Grid.Column="1" Text="{Binding meta, Mode=TwoWay}"  Height="28" Margin="5"></TextBox>
 
         </Grid>
         <Grid  Grid.Row="2">
@@ -51,8 +52,8 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
 
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="Nombre" Margin="5"  Width="100" Height="28"></Label>
-            <TextBox Grid.Column="1"  Text="{Binding nombre , Mode=TwoWay}"  Height="28" Margin="5"></TextBox>
+            <Label Grid.Column="0" Content="Valor" Margin="5"  Width="100" Height="28"></Label>
+            <TextBox Grid.Column="1"  Text="{Binding valor , Mode=TwoWay}"  Height="28" Margin="5"></TextBox>
 
         </Grid>
         <Grid  Grid.Row="3">
@@ -61,8 +62,8 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
 
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="Logo" Margin="5"  Width="100" Height="28"></Label>
-            <TextBox Grid.Column="1"  Text="{Binding logo , Mode=TwoWay}"  Height="28" Margin="5"></TextBox>
+            <Label Grid.Column="0" Content="Progreso" Margin="5"  Width="100" Height="28"></Label>
+            <TextBox Grid.Column="1"  Text="{Binding progreso , Mode=TwoWay}"  Height="28" Margin="5"></TextBox>
 
         </Grid>
         <Grid  Grid.Row="4">
@@ -71,10 +72,21 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
 
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="URL" Margin="5"  Width="100" Height="28"></Label>
-            <TextBox Grid.Column="1"  Text="{Binding Url , Mode=TwoWay}"  Height="28" Margin="5"></TextBox>
+            <Label Grid.Column="0" Content="Unidad" Margin="5"  Width="100" Height="28"></Label>
+            <TextBox Grid.Column="1"  Text="{Binding unidad , Mode=TwoWay}"  Height="28" Margin="5"></TextBox>
 
         </Grid>
-        <Button Grid.Row="5" Style="{DynamicResource Esri_Button}" Command="{Binding UpdateSelectedRowCommand}"  Content="Actualizar" Width="100" Height="28" HorizontalAlignment="Left" Margin="5"></Button>
+        <Grid  Grid.Row="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="Momento" Margin="5"  Width="100" Height="28"></Label>
+            <TextBox Grid.Column="1"  Text="{Binding momento , Mode=TwoWay}"  Height="28" Margin="5"></TextBox>
+
+        </Grid>
+
+        <Button Grid.Row="6" Style="{DynamicResource Esri_Button}" Command="{Binding UpdateSelectedRowCommand}"  Content="Actualizar" Width="100" Height="28" HorizontalAlignment="Left" Margin="5"></Button>
     </Grid>
 </controls:ProWindow>
