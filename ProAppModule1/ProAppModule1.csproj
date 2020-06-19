@@ -162,6 +162,12 @@
     <Compile Include="Cobertura.cs" />
     <Compile Include="Color.cs" />
     <Compile Include="Contribucion.cs" />
+    <Compile Include="EditarAliado.xaml.cs">
+      <DependentUpon>EditarAliado.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CrearAliado.xaml.cs">
+      <DependentUpon>CrearAliado.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Element.cs" />
     <Compile Include="Estrategia.cs" />
     <Compile Include="Geoprocessor.cs" />
@@ -201,6 +207,14 @@
     <Compile Include="WebInteraction.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="EditarAliado.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CrearAliado.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="CrearProyecto.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

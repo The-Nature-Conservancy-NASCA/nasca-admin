@@ -7,7 +7,7 @@
         xmlns:extensions="clr-namespace:ArcGIS.Desktop.Extensions;assembly=ArcGIS.Desktop.Extensions"
         xmlns:xctk1="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Update" Height="530" Width="500"
+        Title="Actualizar" Height="530" Width="500"
         WindowStartupLocation="CenterOwner"
     >
     <controls:ProWindow.Resources>

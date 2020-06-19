@@ -25,11 +25,11 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -46,26 +46,14 @@
 
                 </DockPanel>
 
-                <TextBlock Grid.Row="0" Text="Estrategias" HorizontalAlignment="Left" Margin="5,5,0,4.4"  Style="{DynamicResource Esri_TextBlockH2}"></TextBlock>
-                <Grid Grid.Row="1" Margin="5,4.6,5.4,4.6" Grid.ColumnSpan="2">
-                    <DataGrid Name ="dataGrid" Margin="5" Style="{DynamicResource Esri_DataGrid}" AutoGenerateColumns="True" ItemsSource="{Binding Path=Estrategia.data, Mode=TwoWay}" SelectedIndex="{Binding Path=Estrategia.SelectedIndex}">
-                        <DataGrid.Columns>
-                            <!--<DataGridCheckBoxColumn></DataGridCheckBoxColumn>-->
-                        </DataGrid.Columns>
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SelectionChanged">
-                                <i:InvokeCommandAction Command="{Binding Path=Estrategia.SelectionCommand}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </DataGrid>
-                </Grid>
-                <Grid  Grid.Row="2" Margin="5,5.4,5.4,5.2" Grid.ColumnSpan="2">
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Estrategias" HorizontalAlignment="Left" Margin="5,5,0,4.4"  Style="{DynamicResource Esri_TextBlockH2}"></TextBlock>
+                <Grid  Grid.Row="1" Margin="5,5.4,5.4,5.2" Grid.ColumnSpan="2" Grid.Column="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
@@ -78,34 +66,35 @@
                     <Button Grid.Column="2"  ToolTip="Eliminar" Command="{Binding Path=Estrategia.EliminateSelectedRow}" Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
                         <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericDeleteRed32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
                     </Button>
-                    <Button Grid.Column="3" ToolTip="Añadir Adjunto" Command="{Binding AttachmentEstrategiaCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/Picture32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
-                    </Button>
-                    <Button Grid.Column="6" ToolTip="Subir" Command="{Binding Path=Estrategia.UploadCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/VersionPost-32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
-                    </Button>
-                    <TextBox Grid.Column="4" Margin="2" Text="{Binding Path=Estrategia.File , Mode=TwoWay}"></TextBox>
-                    <Button Grid.Column="5" ToolTip="Elegir archivo" Command="{Binding Path=Estrategia.BrowseFileCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <TextBox Grid.Column="3" Margin="2" Text="{Binding Path=Estrategia.File , Mode=TwoWay}"></TextBox>
+                    <Button Grid.Column="4" ToolTip="Elegir archivo" Command="{Binding Path=Estrategia.BrowseFileCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
                         <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/FolderConnectionAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
                     </Button>
-
+                    <Button Grid.Column="5" ToolTip="Subir" Command="{Binding Path=Estrategia.UploadCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/VersionPost-32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                    </Button>
                 </Grid>
-
-                <TextBlock Grid.Row="3" Text="Proyectos"  HorizontalAlignment="Left" Margin="5,4.8,0,4.8"  Style="{DynamicResource Esri_TextBlockH2}"></TextBlock>
-                <Grid Grid.Row="4" Margin="5,5.2,5.4,5" Grid.ColumnSpan="2">
-                    <DataGrid Name ="proyectoGrid" Margin="5" Style="{DynamicResource Esri_DataGrid}" AutoGenerateColumns="True" ItemsSource="{Binding Path=Proyecto.data, Mode=TwoWay}" SelectedIndex="{Binding Path=Proyecto.SelectedIndex}">
+                <Grid Grid.Row="2" Margin="5,4.6,5.4,4.6" Grid.ColumnSpan="2" Grid.Column="0">
+                    <DataGrid Name ="dataGrid" Margin="5" Style="{DynamicResource Esri_DataGrid}" AutoGenerateColumns="True" ItemsSource="{Binding Path=Estrategia.data, Mode=TwoWay}" SelectedIndex="{Binding Path=Estrategia.SelectedIndex}">
                         <DataGrid.Columns>
                             <!--<DataGridCheckBoxColumn></DataGridCheckBoxColumn>-->
                         </DataGrid.Columns>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding Path=Estrategia.SelectionCommand}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
                     </DataGrid>
                 </Grid>
-                <Grid Grid.Row="5" Margin="5,5,5.4,4.6" Grid.ColumnSpan="2">
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Proyectos"  HorizontalAlignment="Left" Margin="5,4.8,0,4.8"  Style="{DynamicResource Esri_TextBlockH2}"></TextBlock>
+                <Grid Grid.Row="4" Margin="5,5,5.4,4.6" Grid.ColumnSpan="2" Grid.Column="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
@@ -118,20 +107,25 @@
                     <Button Grid.Column="2" ToolTip="Eliminar" Command="{Binding Path=Proyecto.EliminateSelectedRow}" Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Bottom">
                         <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericDeleteRed32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
                     </Button>
-                    <Button Grid.Column="3" ToolTip="Añadir Adjunto" Command="{Binding AttachmentEstrategiaCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/Picture32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
-                    </Button>
-                    <Button Grid.Column="6" ToolTip="Subir" Command="{Binding Path=Proyecto.UploadCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/VersionPost-32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
-                    </Button>
-                    <TextBox Grid.Column="4" Margin="2" Text="{Binding Path=Proyecto.File , Mode=TwoWay}"></TextBox>
-                    <Button Grid.Column="5" ToolTip="Elegir archivo" Command="{Binding Path=Proyecto.BrowseFileCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <TextBox Grid.Column="3" Margin="2" Text="{Binding Path=Proyecto.File , Mode=TwoWay}"></TextBox>
+                    <Button Grid.Column="4" ToolTip="Elegir archivo" Command="{Binding Path=Proyecto.BrowseFileCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
                         <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/FolderConnectionAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
                     </Button>
+                    <Button Grid.Column="5" ToolTip="Subir" Command="{Binding Path=Proyecto.UploadCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/VersionPost-32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                    </Button>
+                </Grid>
+                <Grid Grid.Row="5" Margin="5,5.2,5.4,5" Grid.ColumnSpan="2" Grid.Column="0">
+                    <DataGrid Name ="proyectoGrid" Margin="5" Style="{DynamicResource Esri_DataGrid}" AutoGenerateColumns="True" ItemsSource="{Binding Path=Proyecto.data, Mode=TwoWay}" SelectedIndex="{Binding Path=Proyecto.SelectedIndex}">
+                        <DataGrid.Columns>
+                            <!--<DataGridCheckBoxColumn></DataGridCheckBoxColumn>-->
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </Grid>
 
-                <TextBlock Grid.Row="6" Text="Regiones"  HorizontalAlignment="Left" Margin="5,5.4,0,4.2"  Style="{DynamicResource Esri_TextBlockH2}"></TextBlock>
-                <Grid  Grid.Row="7" Margin="5,4.8,5.4,4.8" Grid.ColumnSpan="2">
+
+                <TextBlock Grid.Row="6" Grid.Column="0" Text="Regiones"  HorizontalAlignment="Left" Margin="5,5.4,0,4.2"  Style="{DynamicResource Esri_TextBlockH2}"></TextBlock>
+                <Grid  Grid.Row="7" Margin="5,4.8,5.4,4.8" Grid.ColumnSpan="2" Grid.Column="0">
                     <Grid.RowDefinitions>
                         <RowDefinition ></RowDefinition>
                         <RowDefinition ></RowDefinition>
@@ -144,14 +138,14 @@
                     <Button Grid.Column="2" ToolTip="Subir" Command="{Binding Path=Region.UploadCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
                         <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/VersionPost-32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
                     </Button>
-                    <TextBox Grid.Column="0"  Text="{Binding Path=Region.File , Mode=TwoWay}" Margin="2"  ></TextBox>
-                    <Button Grid.Column="1" ToolTip="Elegir archivo" Command="{Binding Path=Region.BrowseFileCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <TextBox Grid.Row="0" Grid.Column="0"  Text="{Binding Path=Region.File , Mode=TwoWay}" Margin="2"  ></TextBox>
+                    <Button Grid.Row="0" Grid.Column="1" ToolTip="Elegir archivo" Command="{Binding Path=Region.BrowseFileCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
                         <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/FolderConnectionAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
                     </Button>
                 </Grid>
 
-                <TextBlock Grid.Row="8" Text="Predios"  HorizontalAlignment="Left" Margin="5,5.2,0,4.4"  Style="{DynamicResource Esri_TextBlockH2}"></TextBlock>
-                <Grid Grid.Row="9" Margin="5,4.6,5.4,5" Grid.ColumnSpan="2">
+                <TextBlock Grid.Row="8" Grid.Column="0" Text="Predios"  HorizontalAlignment="Left" Margin="5,5.2,0,4.4"  Style="{DynamicResource Esri_TextBlockH2}"></TextBlock>
+                <Grid Grid.Row="9" Margin="5,4.6,5.4,5" Grid.ColumnSpan="2" Grid.Column="0">
                     <Grid.RowDefinitions>
                         <RowDefinition ></RowDefinition>
                         <RowDefinition ></RowDefinition>
@@ -164,8 +158,8 @@
                     <Button  Grid.Column="2" ToolTip="Subir" Command="{Binding Path=Predio.UploadCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
                         <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/VersionPost-32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
                     </Button>
-                    <TextBox  Grid.Column="0"  Text="{Binding Path=Predio.File , Mode=TwoWay}" Margin="2"  ></TextBox>
-                    <Button  Grid.Column="1" ToolTip="Elegir archivo" Command="{Binding Path=Predio.BrowseFileCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <TextBox Grid.Row="0" Grid.Column="0"  Text="{Binding Path=Predio.File , Mode=TwoWay}" Margin="2"  ></TextBox>
+                    <Button Grid.Row="0" Grid.Column="1" ToolTip="Elegir archivo" Command="{Binding Path=Predio.BrowseFileCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
                         <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/FolderConnectionAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
                     </Button>
                 </Grid>
@@ -268,186 +262,441 @@
             </Grid>
         </TabItem>
         <TabItem Header="Otros">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-
-                <TextBlock Grid.Row="0" Text="Aliados"  HorizontalAlignment="Left" Margin="5"  Style="{DynamicResource Esri_TextBlockH2}"></TextBlock>
-                <Grid Grid.Row="1" Margin="5">
-                    <Grid.RowDefinitions>
-                        <RowDefinition ></RowDefinition>
-                        <RowDefinition ></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Button Grid.Column="2" ToolTip="Subir" Command="{Binding Path=Aliado.UploadCommand}"  Height="20" Margin="2,2,0,2" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/VersionPost-32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
-                    </Button>
-                    <TextBox Grid.Column="0"  Text="{Binding Path=Aliado.File , Mode=TwoWay}" Margin="1.8,2,1.4,2" ></TextBox>
-                    <Button Grid.Column="1" ToolTip="Elegir archivo" Command="{Binding Path=Aliado.BrowseFileCommand}"  Height="20" Margin="1.6,2,0,2" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/FolderConnectionAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
-                    </Button>
-                </Grid>
-
-                <TextBlock Grid.Row="2" Text="Contribuciones"  HorizontalAlignment="Left" Margin="5"  Style="{DynamicResource Esri_TextBlockH2}"></TextBlock>
-                <Grid Grid.Row="3" Margin="5">
-                    <Grid.RowDefinitions>
-                        <RowDefinition ></RowDefinition>
-                        <RowDefinition ></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Button Grid.Column="2" ToolTip="Subir" Command="{Binding Path=Contribucion.UploadCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/VersionPost-32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
-                    </Button>
-                    <TextBox Grid.Column="0"  Text="{Binding Path=Contribucion.File , Mode=TwoWay}" Margin="2"  ></TextBox>
-                    <Button Grid.Column="1" ToolTip="Elegir archivo" Command="{Binding Path=Contribucion.BrowseFileCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/FolderConnectionAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
-                    </Button>
-                </Grid>
-
-                <TextBlock Grid.Row="4" Text="Metas"  HorizontalAlignment="Left" Margin="5"  Style="{DynamicResource Esri_TextBlockH2}"></TextBlock>
-                <Grid Grid.Row="5" Margin="5">
-                    <Grid.RowDefinitions>
-                        <RowDefinition ></RowDefinition>
-                        <RowDefinition ></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Button Grid.Column="2" ToolTip="Subir" Command="{Binding Path=Meta.UploadCommand}"  Height="20" Margin="2,2,0,2" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/VersionPost-32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
-                    </Button>
-                    <TextBox Grid.Column="0"  Text="{Binding Path=Meta.File , Mode=TwoWay}" Margin="1.8,2,1.4,2" ></TextBox>
-                    <Button Grid.Column="1" ToolTip="Elegir archivo" Command="{Binding Path=Meta.BrowseFileCommand}"  Height="20" Margin="1.6,2,0,2" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/FolderConnectionAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
-                    </Button>
-                </Grid>
-
-                <TextBlock Grid.Row="6" Text="Participantes"  HorizontalAlignment="Left" Margin="5"  Style="{DynamicResource Esri_TextBlockH2}"></TextBlock>
-                <Grid Grid.Row="7" Margin="5">
-                    <Grid.RowDefinitions>
-                        <RowDefinition ></RowDefinition>
-                        <RowDefinition ></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Button Grid.Column="2" ToolTip="Subir" Command="{Binding Path=Participante.UploadCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/VersionPost-32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
-                    </Button>
-                    <TextBox Grid.Column="0"  Text="{Binding Path=Participante.File , Mode=TwoWay}" Margin="2"  ></TextBox>
-                    <Button Grid.Column="1" ToolTip="Elegir archivo" Command="{Binding Path=Participante.BrowseFileCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/FolderConnectionAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
-                    </Button>
-                </Grid>
-
-                <TextBlock Grid.Row="8" Text="Colores Coberturas"  HorizontalAlignment="Left" Margin="5"  Style="{DynamicResource Esri_TextBlockH2}"></TextBlock>
-                <Grid Grid.Row="9" Margin="5">
-                    <Grid.RowDefinitions>
-                        <RowDefinition ></RowDefinition>
-                        <RowDefinition ></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Button Grid.Row="0" Grid.Column="2" ToolTip="Subir" Command="{Binding Path=Color.UploadCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/VersionPost-32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
-                    </Button>
-                    <TextBox Grid.Row="0" Grid.Column="0"  Text="{Binding Path=Color.File , Mode=TwoWay}" Margin="2"  ></TextBox>
-                    <Button Grid.Row="0" Grid.Column="1" ToolTip="Elegir archivo" Command="{Binding Path=Color.BrowseFileCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/FolderConnectionAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
-                    </Button>
-                </Grid>
-
-                <TextBlock Grid.Row="10" Text="Imagenes carrusel"  HorizontalAlignment="Left" Margin="5"  Style="{DynamicResource Esri_TextBlockH2}"></TextBlock>
-                <Grid Grid.Row="11" Margin="5">
-                    <Grid.RowDefinitions>
-                        <RowDefinition ></RowDefinition>
-                        <RowDefinition ></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Button Grid.Row="0" Grid.Column="2" ToolTip="Subir" Command="{Binding Path=Carrusel.UploadCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/VersionPost-32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
-                    </Button>
-                    <TextBox Grid.Row="0" Grid.Column="0"  Text="{Binding Path=Carrusel.File , Mode=TwoWay}" Margin="2"  ></TextBox>
-                    <Button Grid.Row="0" Grid.Column="1" ToolTip="Elegir archivo" Command="{Binding Path=Carrusel.BrowseFileCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/FolderConnectionAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
-                    </Button>
-                </Grid>
-                
-                <TextBlock Grid.Row="12" Text="Íconos Biodiversidad"  HorizontalAlignment="Left" Margin="5"  Style="{DynamicResource Esri_TextBlockH2}"></TextBlock>
-                <Grid Grid.Row="13" Margin="5">
-                    <Grid.RowDefinitions>
-                        <RowDefinition ></RowDefinition>
-                        <RowDefinition ></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Button Grid.Row="0" Grid.Column="2" ToolTip="Subir" Command="{Binding Path=IconosBiodiversidad.UploadCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/VersionPost-32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
-                    </Button>
-                    <TextBox Grid.Row="0" Grid.Column="0"  Text="{Binding Path=IconosBiodiversidad.File , Mode=TwoWay}" Margin="2"  ></TextBox>
-                    <Button Grid.Row="0" Grid.Column="1" ToolTip="Elegir archivo" Command="{Binding Path=IconosBiodiversidad.BrowseFileCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/FolderConnectionAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
-                    </Button>
-                </Grid>
-
-                <TextBlock Grid.Row="14" Text="Textos Generales"  HorizontalAlignment="Left" Margin="5"  Style="{DynamicResource Esri_TextBlockH2}"></TextBlock>
-                <Grid Grid.Row="15" Margin="5">
-                    <Grid.RowDefinitions>
-                        <RowDefinition ></RowDefinition>
-                        <RowDefinition ></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Button Grid.Row="0" Grid.Column="2" ToolTip="Subir" Command="{Binding Path=Textos.UploadCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/VersionPost-32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
-                    </Button>
-                    <TextBox Grid.Row="0" Grid.Column="0"  Text="{Binding Path=Textos.File , Mode=TwoWay}" Margin="2"  ></TextBox>
-                    <Button Grid.Row="0" Grid.Column="1" ToolTip="Elegir archivo" Command="{Binding Path=Textos.BrowseFileCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/FolderConnectionAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
-                    </Button>
-                </Grid>
-            </Grid>
+            <TabControl>
+                <TabItem Header="Aliados">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="63*"/>
+                            <ColumnDefinition Width="134*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <DockPanel Name="AliadosPanel"  LastChildFill="true" KeyboardNavigation.TabNavigation="Local" Height="30" Grid.ColumnSpan="2" Margin="0,0,0.4,0.4">
+                        </DockPanel>
+                        <Grid  Grid.Row="0" Margin="5,5.4,5.4,5.2" Grid.ColumnSpan="2" Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0"  ToolTip="Agregar registro"  Command="{Binding Path=Aliado.ShowProWindow}" Height="20" Margin="2"  >
+                                <Image   Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <Button Grid.Column="1" ToolTip="Actualizar" Command="{Binding Path=Aliado.ShowProWindowUpdateCommand}"   Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/EditingStartEditing32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <Button Grid.Column="2"  ToolTip="Eliminar" Command="{Binding Path=Aliado.EliminateSelectedRow}" Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericDeleteRed32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <TextBox Grid.Column="3" Margin="2" Text="{Binding Path=Aliado.File , Mode=TwoWay}"></TextBox>
+                            <Button Grid.Column="4" ToolTip="Elegir archivo" Command="{Binding Path=Aliado.BrowseFileCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/FolderConnectionAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <Button Grid.Column="5" ToolTip="Subir" Command="{Binding Path=Aliado.UploadCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/VersionPost-32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                        </Grid>
+                        <Grid Grid.Row="2" Margin="5,4.6,5.4,4.6" Grid.ColumnSpan="2" Grid.Column="0">
+                            <DataGrid Name ="AliadosGrid" Margin="5" Style="{DynamicResource Esri_DataGrid}" AutoGenerateColumns="True" ItemsSource="{Binding Path=Aliado.data, Mode=TwoWay}" SelectedIndex="{Binding Path=Aliado.SelectedIndex}">
+                                <DataGrid.Columns>
+                                    <!--<DataGridCheckBoxColumn></DataGridCheckBoxColumn>-->
+                                </DataGrid.Columns>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding Path=Aliado.SelectionCommand}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </DataGrid>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Constribuciones">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="63*"/>
+                            <ColumnDefinition Width="134*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <DockPanel Name="ContribucionPanel"  LastChildFill="true" KeyboardNavigation.TabNavigation="Local" Height="30" Grid.ColumnSpan="2" Margin="0,0,0.4,0.4">
+                        </DockPanel>
+                        <Grid  Grid.Row="0" Margin="5,5.4,5.4,5.2" Grid.ColumnSpan="2" Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0"  ToolTip="Agregar registro"  Command="{Binding Path=Contribucion.ShowProWindow}" Height="20" Margin="2"  >
+                                <Image   Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <Button Grid.Column="1" ToolTip="Actualizar" Command="{Binding Path=Contribucion.ShowProWindowUpdateCommand}"   Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/EditingStartEditing32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <Button Grid.Column="2"  ToolTip="Eliminar" Command="{Binding Path=Contribucion.EliminateSelectedRow}" Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericDeleteRed32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <TextBox Grid.Column="3" Margin="2" Text="{Binding Path=Contribucion.File , Mode=TwoWay}"></TextBox>
+                            <Button Grid.Column="4" ToolTip="Elegir archivo" Command="{Binding Path=Contribucion.BrowseFileCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/FolderConnectionAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <Button Grid.Column="5" ToolTip="Subir" Command="{Binding Path=Contribucion.UploadCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/VersionPost-32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                        </Grid>
+                        <Grid Grid.Row="2" Margin="5,4.6,5.4,4.6" Grid.ColumnSpan="2" Grid.Column="0">
+                            <DataGrid Name ="ContribucionGrid" Margin="5" Style="{DynamicResource Esri_DataGrid}" AutoGenerateColumns="True" ItemsSource="{Binding Path=Contribucion.data, Mode=TwoWay}" SelectedIndex="{Binding Path=Contribucion.SelectedIndex}">
+                                <DataGrid.Columns>
+                                    <!--<DataGridCheckBoxColumn></DataGridCheckBoxColumn>-->
+                                </DataGrid.Columns>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding Path=Contribucion.SelectionCommand}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </DataGrid>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Metas">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="63*"/>
+                            <ColumnDefinition Width="134*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <DockPanel Name="MetaPanel"  LastChildFill="true" KeyboardNavigation.TabNavigation="Local" Height="30" Grid.ColumnSpan="2" Margin="0,0,0.4,0.4">
+                        </DockPanel>
+                        <Grid  Grid.Row="0" Margin="5,5.4,5.4,5.2" Grid.ColumnSpan="2" Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0"  ToolTip="Agregar registro"  Command="{Binding Path=Meta.ShowProWindow}" Height="20" Margin="2"  >
+                                <Image   Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <Button Grid.Column="1" ToolTip="Actualizar" Command="{Binding Path=Meta.ShowProWindowUpdateCommand}"   Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/EditingStartEditing32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <Button Grid.Column="2"  ToolTip="Eliminar" Command="{Binding Path=Meta.EliminateSelectedRow}" Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericDeleteRed32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <TextBox Grid.Column="3" Margin="2" Text="{Binding Path=Meta.File , Mode=TwoWay}"></TextBox>
+                            <Button Grid.Column="4" ToolTip="Elegir archivo" Command="{Binding Path=Meta.BrowseFileCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/FolderConnectionAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <Button Grid.Column="5" ToolTip="Subir" Command="{Binding Path=Meta.UploadCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/VersionPost-32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                        </Grid>
+                        <Grid Grid.Row="2" Margin="5,4.6,5.4,4.6" Grid.ColumnSpan="2" Grid.Column="0">
+                            <DataGrid Name ="MetaGrid" Margin="5" Style="{DynamicResource Esri_DataGrid}" AutoGenerateColumns="True" ItemsSource="{Binding Path=Meta.data, Mode=TwoWay}" SelectedIndex="{Binding Path=Meta.SelectedIndex}">
+                                <DataGrid.Columns>
+                                    <!--<DataGridCheckBoxColumn></DataGridCheckBoxColumn>-->
+                                </DataGrid.Columns>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding Path=Meta.SelectionCommand}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </DataGrid>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Participantes">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="63*"/>
+                            <ColumnDefinition Width="134*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <DockPanel Name="ParticipantePanel"  LastChildFill="true" KeyboardNavigation.TabNavigation="Local" Height="30" Grid.ColumnSpan="2" Margin="0,0,0.4,0.4">
+                        </DockPanel>
+                        <Grid  Grid.Row="0" Margin="5,5.4,5.4,5.2" Grid.ColumnSpan="2" Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0"  ToolTip="Agregar registro"  Command="{Binding Path=Participante.ShowProWindow}" Height="20" Margin="2"  >
+                                <Image   Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <Button Grid.Column="1" ToolTip="Actualizar" Command="{Binding Path=Participante.ShowProWindowUpdateCommand}"   Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/EditingStartEditing32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <Button Grid.Column="2"  ToolTip="Eliminar" Command="{Binding Path=Participante.EliminateSelectedRow}" Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericDeleteRed32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <TextBox Grid.Column="3" Margin="2" Text="{Binding Path=Participante.File , Mode=TwoWay}"></TextBox>
+                            <Button Grid.Column="4" ToolTip="Elegir archivo" Command="{Binding Path=Participante.BrowseFileCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/FolderConnectionAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <Button Grid.Column="5" ToolTip="Subir" Command="{Binding Path=Participante.UploadCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/VersionPost-32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                        </Grid>
+                        <Grid Grid.Row="2" Margin="5,4.6,5.4,4.6" Grid.ColumnSpan="2" Grid.Column="0">
+                            <DataGrid Name ="ParticipanteGrid" Margin="5" Style="{DynamicResource Esri_DataGrid}" AutoGenerateColumns="True" ItemsSource="{Binding Path=Participante.data, Mode=TwoWay}" SelectedIndex="{Binding Path=Participante.SelectedIndex}">
+                                <DataGrid.Columns>
+                                    <!--<DataGridCheckBoxColumn></DataGridCheckBoxColumn>-->
+                                </DataGrid.Columns>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding Path=Participante.SelectionCommand}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </DataGrid>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Colores">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="63*"/>
+                            <ColumnDefinition Width="134*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <DockPanel Name="ColorPanel"  LastChildFill="true" KeyboardNavigation.TabNavigation="Local" Height="30" Grid.ColumnSpan="2" Margin="0,0,0.4,0.4">
+                        </DockPanel>
+                        <Grid  Grid.Row="0" Margin="5,5.4,5.4,5.2" Grid.ColumnSpan="2" Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0"  ToolTip="Agregar registro"  Command="{Binding Path=Color.ShowProWindow}" Height="20" Margin="2"  >
+                                <Image   Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <Button Grid.Column="1" ToolTip="Actualizar" Command="{Binding Path=Color.ShowProWindowUpdateCommand}"   Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/EditingStartEditing32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <Button Grid.Column="2"  ToolTip="Eliminar" Command="{Binding Path=Color.EliminateSelectedRow}" Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericDeleteRed32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <TextBox Grid.Column="3" Margin="2" Text="{Binding Path=Color.File , Mode=TwoWay}"></TextBox>
+                            <Button Grid.Column="4" ToolTip="Elegir archivo" Command="{Binding Path=Color.BrowseFileCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/FolderConnectionAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <Button Grid.Column="5" ToolTip="Subir" Command="{Binding Path=Color.UploadCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/VersionPost-32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                        </Grid>
+                        <Grid Grid.Row="2" Margin="5,4.6,5.4,4.6" Grid.ColumnSpan="2" Grid.Column="0">
+                            <DataGrid Name ="ColorGrid" Margin="5" Style="{DynamicResource Esri_DataGrid}" AutoGenerateColumns="True" ItemsSource="{Binding Path=Color.data, Mode=TwoWay}" SelectedIndex="{Binding Path=Color.SelectedIndex}">
+                                <DataGrid.Columns>
+                                    <!--<DataGridCheckBoxColumn></DataGridCheckBoxColumn>-->
+                                </DataGrid.Columns>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding Path=Color.SelectionCommand}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </DataGrid>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Imagenes carrusel">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="63*"/>
+                            <ColumnDefinition Width="134*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <DockPanel Name="CarruselPanel"  LastChildFill="true" KeyboardNavigation.TabNavigation="Local" Height="30" Grid.ColumnSpan="2" Margin="0,0,0.4,0.4">
+                        </DockPanel>
+                        <Grid  Grid.Row="0" Margin="5,5.4,5.4,5.2" Grid.ColumnSpan="2" Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0"  ToolTip="Agregar registro"  Command="{Binding Path=Carrusel.ShowProWindow}" Height="20" Margin="2"  >
+                                <Image   Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <Button Grid.Column="1" ToolTip="Actualizar" Command="{Binding Path=Carrusel.ShowProWindowUpdateCommand}"   Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/EditingStartEditing32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <Button Grid.Column="2"  ToolTip="Eliminar" Command="{Binding Path=Carrusel.EliminateSelectedRow}" Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericDeleteRed32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <TextBox Grid.Column="3" Margin="2" Text="{Binding Path=Carrusel.File , Mode=TwoWay}"></TextBox>
+                            <Button Grid.Column="4" ToolTip="Elegir archivo" Command="{Binding Path=Carrusel.BrowseFileCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/FolderConnectionAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <Button Grid.Column="5" ToolTip="Subir" Command="{Binding Path=Carrusel.UploadCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/VersionPost-32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                        </Grid>
+                        <Grid Grid.Row="2" Margin="5,4.6,5.4,4.6" Grid.ColumnSpan="2" Grid.Column="0">
+                            <DataGrid Name ="CarruselGrid" Margin="5" Style="{DynamicResource Esri_DataGrid}" AutoGenerateColumns="True" ItemsSource="{Binding Path=Carrusel.data, Mode=TwoWay}" SelectedIndex="{Binding Path=Carrusel.SelectedIndex}">
+                                <DataGrid.Columns>
+                                    <!--<DataGridCheckBoxColumn></DataGridCheckBoxColumn>-->
+                                </DataGrid.Columns>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding Path=Carrusel.SelectionCommand}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </DataGrid>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Íconos Biodiversidad">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="63*"/>
+                            <ColumnDefinition Width="134*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <DockPanel Name="IconosBiodiversidadPanel"  LastChildFill="true" KeyboardNavigation.TabNavigation="Local" Height="30" Grid.ColumnSpan="2" Margin="0,0,0.4,0.4">
+                        </DockPanel>
+                        <Grid  Grid.Row="0" Margin="5,5.4,5.4,5.2" Grid.ColumnSpan="2" Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0"  ToolTip="Agregar registro"  Command="{Binding Path=IconosBiodiversidad.ShowProWindow}" Height="20" Margin="2"  >
+                                <Image   Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <Button Grid.Column="1" ToolTip="Actualizar" Command="{Binding Path=IconosBiodiversidad.ShowProWindowUpdateCommand}"   Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/EditingStartEditing32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <Button Grid.Column="2"  ToolTip="Eliminar" Command="{Binding Path=IconosBiodiversidad.EliminateSelectedRow}" Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericDeleteRed32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <TextBox Grid.Column="3" Margin="2" Text="{Binding Path=IconosBiodiversidad.File , Mode=TwoWay}"></TextBox>
+                            <Button Grid.Column="4" ToolTip="Elegir archivo" Command="{Binding Path=IconosBiodiversidad.BrowseFileCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/FolderConnectionAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <Button Grid.Column="5" ToolTip="Subir" Command="{Binding Path=IconosBiodiversidad.UploadCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/VersionPost-32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                        </Grid>
+                        <Grid Grid.Row="2" Margin="5,4.6,5.4,4.6" Grid.ColumnSpan="2" Grid.Column="0">
+                            <DataGrid Name ="IconosBiodiversidadGrid" Margin="5" Style="{DynamicResource Esri_DataGrid}" AutoGenerateColumns="True" ItemsSource="{Binding Path=IconosBiodiversidad.data, Mode=TwoWay}" SelectedIndex="{Binding Path=IconosBiodiversidad.SelectedIndex}">
+                                <DataGrid.Columns>
+                                    <!--<DataGridCheckBoxColumn></DataGridCheckBoxColumn>-->
+                                </DataGrid.Columns>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding Path=IconosBiodiversidad.SelectionCommand}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </DataGrid>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Textos Generales">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="63*"/>
+                            <ColumnDefinition Width="134*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <DockPanel Name="TextosPanel"  LastChildFill="true" KeyboardNavigation.TabNavigation="Local" Height="30" Grid.ColumnSpan="2" Margin="0,0,0.4,0.4">
+                        </DockPanel>
+                        <Grid  Grid.Row="0" Margin="5,5.4,5.4,5.2" Grid.ColumnSpan="2" Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0"  ToolTip="Agregar registro"  Command="{Binding Path=Textos.ShowProWindow}" Height="20" Margin="2"  >
+                                <Image   Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <Button Grid.Column="1" ToolTip="Actualizar" Command="{Binding Path=Textos.ShowProWindowUpdateCommand}"   Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/EditingStartEditing32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <Button Grid.Column="2"  ToolTip="Eliminar" Command="{Binding Path=Textos.EliminateSelectedRow}" Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/GenericDeleteRed32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <TextBox Grid.Column="3" Margin="2" Text="{Binding Path=Textos.File , Mode=TwoWay}"></TextBox>
+                            <Button Grid.Column="4" ToolTip="Elegir archivo" Command="{Binding Path=Textos.BrowseFileCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/FolderConnectionAdd32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                            <Button Grid.Column="5" ToolTip="Subir" Command="{Binding Path=Textos.UploadCommand}"  Height="20" Margin="2" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                                <Image Source="pack://application:,,,/ArcGIS.Desktop.Resources;component/Images/VersionPost-32.png" HorizontalAlignment="Center" VerticalAlignment="Center" ></Image>
+                            </Button>
+                        </Grid>
+                        <Grid Grid.Row="2" Margin="5,4.6,5.4,4.6" Grid.ColumnSpan="2" Grid.Column="0">
+                            <DataGrid Name ="TextosGrid" Margin="5" Style="{DynamicResource Esri_DataGrid}" AutoGenerateColumns="True" ItemsSource="{Binding Path=Textos.data, Mode=TwoWay}" SelectedIndex="{Binding Path=Textos.SelectedIndex}">
+                                <DataGrid.Columns>
+                                    <!--<DataGridCheckBoxColumn></DataGridCheckBoxColumn>-->
+                                </DataGrid.Columns>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding Path=Textos.SelectionCommand}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </DataGrid>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+    
         </TabItem>
     </TabControl>
 </UserControl>
