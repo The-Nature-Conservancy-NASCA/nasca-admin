@@ -18,11 +18,6 @@ namespace ProAppModule1
         // Dockpane id
         private const string _dockPaneID = "ProAppModule1_Dockpane1";
 
-        // Constants
-        private const string _serviceURL = "https://services.arcgis.com/F7DSX1DSNSiWmOqh/arcgis/rest/services/GeodatabaseTNC/FeatureServer"; // Production
-        //private const string _serviceURL = "https://services.arcgis.com/F7DSX1DSNSiWmOqh/arcgis/rest/services/GeodatabaseTNC_Pruebas/FeatureServer"; // Testing
-
-
         public Region Region { get; set; }
         public Predio Predio { get; } = new Predio();
         public Biodiversidad Biodiversidad { get; } = new Biodiversidad();

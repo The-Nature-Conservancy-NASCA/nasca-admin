@@ -19,7 +19,7 @@ namespace ProAppModule1
     {
         private Uri _gdb;
         //private readonly string token = WebInteraction.GenerateToken("GeoTNCDev", "GeoTNC123");
-        private readonly string token = Dockpane1ViewModel.token;
+        //private readonly string token = Dockpane1ViewModel.token;
 
         private SpatialReference webMercator = SpatialReferenceBuilder.CreateSpatialReference(102100);
 
@@ -33,7 +33,12 @@ namespace ProAppModule1
 
         private int AddFeatures(List<Object> features, Element element) {
 
+            // Get the current token
+            var active_portal = ArcGISPortalManager.Current.GetActivePortal();
+            var token = active_portal.GetToken();
+
             // Create a request for the URL.          
+
             var url = $"{element.Service}/addFeatures";
 
             // Serialize the objects to json

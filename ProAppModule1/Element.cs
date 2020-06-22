@@ -113,25 +113,28 @@ namespace ProAppModule1
             return QueuedTask.Run(() =>
             {
                 var _resultTable = new DataTable();
-                foreach (var column in Columns)
+                if (Columns != null)
                 {
-                    _resultTable.Columns.Add(new DataColumn(column));
-                }
-
-                var features = WebInteraction.Query(Service, "1=1", "*");
-
-                foreach (var feature in (System.Collections.ArrayList)features)
-                {
-                    var feat = (Dictionary<string, object>)feature;
-                    var atts = (Dictionary<string, object>)feat["attributes"];
-
-                    var addRow = _resultTable.NewRow();
                     foreach (var column in Columns)
                     {
-                        addRow[column] = atts[column];
+                        _resultTable.Columns.Add(new DataColumn(column));
                     }
 
-                    _resultTable.Rows.Add(addRow);
+                    var features = WebInteraction.Query(Service, "1=1", "*");
+
+                    foreach (var feature in (System.Collections.ArrayList)features)
+                    {
+                        var feat = (Dictionary<string, object>)feature;
+                        var atts = (Dictionary<string, object>)feat["attributes"];
+
+                        var addRow = _resultTable.NewRow();
+                        foreach (var column in Columns)
+                        {
+                            addRow[column] = atts[column];
+                        }
+
+                        _resultTable.Rows.Add(addRow);
+                    }
                 }
 
                 data = _resultTable;
